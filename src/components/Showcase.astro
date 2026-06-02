@@ -29,18 +29,24 @@
     <ul class="callouts">
       <li>
         <span class="dot" style="--c: var(--iris)"></span>
-        <strong>Tools sidebar</strong> — every <code>read</code>,
-        <code>grep</code>, and <code>delegate_to_*</code> call, live.
+        <div class="co-body">
+          <strong>Tools sidebar</strong>
+          <p>Every <code>read</code>, <code>grep</code>, and <code>delegate_to_*</code> call, live.</p>
+        </div>
       </li>
       <li>
         <span class="dot" style="--c: var(--foam)"></span>
-        <strong>Intern delegation</strong> — the senior routes work to the
-        <code>mimo</code> intern with one tool call.
+        <div class="co-body">
+          <strong>Intern delegation</strong>
+          <p>The senior routes work to the <code>mimo</code> intern with one tool call.</p>
+        </div>
       </li>
       <li>
         <span class="dot" style="--c: var(--gold)"></span>
-        <strong>Live status bar</strong> — branch, model, generating timer, and
-        cost-per-turn at a glance.
+        <div class="co-body">
+          <strong>Live status bar</strong>
+          <p>Branch, model, generating timer, and cost-per-turn at a glance.</p>
+        </div>
       </li>
     </ul>
   </div>
@@ -74,22 +80,29 @@
     display: flex;
     align-items: flex-start;
     gap: 0.7rem;
-    color: var(--subtle);
-    font-size: 0.95rem;
   }
-  .callouts strong {
+  .co-body strong {
+    display: block;
     color: var(--text);
+    font-size: 0.98rem;
+    margin-bottom: 0.25rem;
+  }
+  .co-body p {
+    color: var(--subtle);
+    font-size: 0.9rem;
+    line-height: 1.55;
   }
   .callouts code {
     color: var(--foam);
     font-size: 0.85em;
+    white-space: nowrap;
   }
   .dot {
     width: 9px;
     height: 9px;
     border-radius: 50%;
     background: var(--c);
-    margin-top: 0.45rem;
+    margin-top: 0.4rem;
     flex-shrink: 0;
   }
   @media (min-width: 760px) {

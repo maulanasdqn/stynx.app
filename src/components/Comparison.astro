@@ -1,0 +1,140 @@
+---
+const tools = ["stynx-code", "opencode", "Pi", "Aider"];
+
+const rows = [
+  { label: "Built with", v: ["Rust", "Go", "TypeScript", "Python"] },
+  { label: "Install", v: ["cargo · single binary", "script · brew · npm", "npm", "pip / uv"] },
+  { label: "Bring any model", v: ["✓", "✓", "✓ 15+", "✓"] },
+  { label: "Delegate to cheaper “intern” models", v: ["✓ named tools, multi", "—", "—", "Partial"] },
+  { label: "Permission modes", v: ["✓ 4 modes", "✓", "Minimal · extensible", "Confirm prompts"] },
+  { label: "Auto context compaction", v: ["✓ 60% · 4-stage", "✓", "Via extension", "Partial"] },
+  { label: "MCP support", v: ["✓", "✓", "Via extension", "—"] },
+  { label: "Design", v: ["Batteries-included TUI", "Batteries-included TUI", "Minimal & extensible", "Git-native · repo-map"] },
+  { label: "License", v: ["MIT", "MIT", "Open source", "Apache-2.0"] },
+];
+
+const cell = (val: string) => {
+  if (val === "✓") return { kind: "yes", text: "✓" };
+  if (val === "—") return { kind: "no", text: "—" };
+  if (val.startsWith("✓")) return { kind: "yes-text", text: val };
+  return { kind: "text", text: val };
+};
+---
+
+<section class="section compare" id="compare">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// how it compares</span>
+      <h2 class="section-title">Among open-source agents</h2>
+      <p class="section-sub">
+        stynx-code is open source and so are its closest peers. Here's the honest
+        shape of how it lines up against other open-source terminal agents — pick
+        whatever fits your workflow.
+      </p>
+    </div>
+
+    <div class="table-wrap reveal">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th class="rowhead"></th>
+            {tools.map((t, i) => <th class={i === 0 ? "own" : ""}>{t}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((r) => (
+              <tr>
+                <th class="rowhead" scope="row">{r.label}</th>
+                {r.v.map((val, i) => {
+                  const c = cell(val);
+                  return <td class={`${i === 0 ? "own " : ""}${c.kind}`}>{c.text}</td>;
+                })}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <p class="disclaimer reveal">
+      Reflects each tool's primary, documented design as of mid-2026. These
+      projects all move fast — check their own docs for the latest.
+    </p>
+  </div>
+</section>
+
+<style>
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--hl-med);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .cmp {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 680px;
+    font-size: 0.9rem;
+  }
+  .cmp th,
+  .cmp td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--hl-low);
+    vertical-align: middle;
+  }
+  .cmp thead th {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--subtle);
+    border-bottom: 1px solid var(--hl-med);
+    white-space: nowrap;
+  }
+  .rowhead {
+    color: var(--text);
+    font-weight: 500;
+    max-width: 18rem;
+  }
+  td.text,
+  td.yes-text {
+    color: var(--subtle);
+  }
+  td.yes {
+    color: var(--foam);
+    font-weight: 700;
+  }
+  td.yes-text {
+    color: var(--foam);
+    font-weight: 600;
+  }
+  td.no {
+    color: var(--muted);
+    text-align: center;
+    width: 1%;
+  }
+
+  /* Highlighted stynx-code column */
+  .own {
+    background: color-mix(in srgb, var(--iris) 9%, transparent);
+  }
+  thead th.own {
+    color: var(--iris);
+    font-weight: 700;
+    border-bottom: 2px solid var(--iris);
+  }
+  tbody td.own {
+    color: var(--text);
+  }
+  tbody td.own.yes,
+  tbody td.own.yes-text {
+    color: var(--foam);
+  }
+
+  .disclaimer {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+const items = [
+  {
+    k: "Parallel tool execution",
+    v: "Concurrent-safe tools run in parallel via tokio::spawn; everything else stays sequential. The agentic loop runs up to 200 turns.",
+  },
+  {
+    k: "Automatic context compaction",
+    v: "At 60% of the token limit the engine compacts the conversation through a 4-stage pipeline — Auto → Micro → Session Memory → Full.",
+  },
+  {
+    k: "File-edit undo stack",
+    v: "Every write and edit is tracked. /undo [n] restores the last n file mutations — instantly, with no git required.",
+  },
+  {
+    k: "Resilient by default",
+    v: "Provider overload triggers exponential backoff with up to 3 retries, so a flaky endpoint doesn't kill your session.",
+  },
+  {
+    k: "Persistent bash session",
+    v: "bash is a long-lived shell, not disposable subshells. cd, export, and sourced files survive across calls — plus background processes.",
+  },
+  {
+    k: "Headless & scriptable",
+    v: "An Axum HTTP API for headless operation, one-shot -p prompts, stdin pipe mode, and --json output for scripting.",
+  },
+];
+---
+
+<section class="section" id="power">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// under the hood</span>
+      <h2 class="section-title">Built for real work, not demos.</h2>
+      <p class="section-sub">
+        A 17-crate Rust workspace where most crates follow clean architecture.
+        The engine is the point — here's what it does for you.
+      </p>
+    </div>
+
+    <div class="power-grid">
+      {
+        items.map((it, idx) => (
+          <article class="row reveal">
+            <span class="num">{String(idx + 1).padStart(2, "0")}</span>
+            <div>
+              <h3>{it.k}</h3>
+              <p>{it.v}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .power-grid {
+    display: grid;
+    gap: 1px;
+    background: var(--hl-med);
+    border: 1px solid var(--hl-med);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .row {
+    display: flex;
+    gap: 1.1rem;
+    padding: 1.5rem;
+    background: var(--surface);
+    transition: background 0.2s var(--ease);
+  }
+  .row:hover {
+    background: var(--overlay);
+  }
+  .num {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--iris);
+    padding-top: 0.2rem;
+  }
+  .row h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+  }
+  .row p {
+    color: var(--subtle);
+    font-size: 0.93rem;
+  }
+  @media (min-width: 760px) {
+    .power-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

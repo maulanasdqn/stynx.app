@@ -1,0 +1,153 @@
+---
+import TerminalWindow from "./TerminalWindow.astro";
+
+const interns = [
+  { name: "deepseek", color: "var(--foam)" },
+  { name: "qwen-coder", color: "var(--iris)" },
+  { name: "kimi", color: "var(--gold)" },
+  { name: "gemini-flash", color: "var(--rose)" },
+  { name: "mimo", color: "var(--pine)" },
+];
+---
+
+<section class="section intern" id="intern">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// the differentiator</span>
+      <h2 class="section-title">Claude is the senior. The rest are interns.</h2>
+      <p class="section-sub">
+        Run Claude as the lead and delegate grunt work to cheaper models. Each
+        intern becomes its own <code>delegate_to_&lt;name&gt;</code> tool the
+        senior can pick from — or you call one directly with
+        <code>/intern &lt;name&gt; &lt;task&gt;</code>.
+      </p>
+    </div>
+
+    <div class="intern-grid">
+      <div class="reveal">
+        <div class="fanout" aria-hidden="true">
+          <div class="senior">
+            <span class="role">senior</span>
+            <span class="who">claude-sonnet-4-6</span>
+          </div>
+          <div class="links">
+            {interns.map(() => <span class="link"></span>)}
+          </div>
+          <div class="interns">
+            {
+              interns.map((i) => (
+                <span class="chip" style={`--c:${i.color}`}>
+                  delegate_to_{i.name.replace("-", "_")}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+
+        <p class="note">
+          Interns run a restricted toolset — <code>bash</code>, <code>read</code>,
+          <code>file_write</code>, <code>file_edit</code>, <code>glob</code>,
+          <code>grep</code> — and can't spawn further sub-agents. They return
+          <em>Summary / Files changed / Output</em>; the senior reviews and
+          integrates.
+        </p>
+      </div>
+
+      <div class="reveal">
+        <TerminalWindow title="stynx — /intern-bench">
+          <div><span class="prompt">&gt;</span> <span class="cmd">/intern-bench</span></div>
+          <div class="muted">🏁 Intern Benchmark — 3 intern(s) × 6 tasks</div>
+          <div>&nbsp;</div>
+          <div class="muted">Leaderboard (avg score, then speed):</div>
+          <div><span class="accent">🥇 #1</span>  deepseek    <span class="ok">8.5/10</span>  pass 6/6   <span class="muted">42.3s</span></div>
+          <div><span class="rose">🥈 #2</span>  qwen-coder  <span class="ok">7.2/10</span>  pass 5/6   <span class="muted">55.1s</span></div>
+          <div><span class="love">🥉 #3</span>  mimo        <span class="accent">5.0/10</span>  pass 4/6   <span class="muted">88.0s</span></div>
+          <div>&nbsp;</div>
+          <div class="muted">↳ full report → .stynx/intern-bench.md</div>
+        </TerminalWindow>
+        <p class="note">
+          Not sure which intern is pulling its weight? The built-in benchmark
+          runs a fixed task suite against each, then has the main model
+          <strong>grade every answer</strong> (LLM-as-judge) for a ranked
+          leaderboard.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intern {
+    background: linear-gradient(180deg, transparent, var(--hl-low), transparent);
+  }
+  .intern-grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .fanout {
+    background: var(--surface);
+    border: 1px solid var(--hl-med);
+    border-radius: var(--radius);
+    padding: 1.6rem;
+    text-align: center;
+  }
+  .senior {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--iris), var(--rose));
+    color: var(--base);
+    font-family: var(--font-mono);
+  }
+  .senior .role {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.8;
+  }
+  .senior .who {
+    font-weight: 700;
+  }
+  .links {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    height: 28px;
+    margin: 0.2rem 0;
+  }
+  .link {
+    width: 1px;
+    background: linear-gradient(var(--hl-high), transparent);
+  }
+  .interns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.55rem;
+  }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    padding: 0.4rem 0.7rem;
+    border-radius: 999px;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 32%, transparent);
+  }
+  .note {
+    margin-top: 1.2rem;
+    color: var(--subtle);
+    font-size: 0.95rem;
+  }
+  .note code {
+    color: var(--foam);
+    font-size: 0.85em;
+  }
+  @media (min-width: 880px) {
+    .intern-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

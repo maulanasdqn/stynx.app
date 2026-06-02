@@ -1,0 +1,81 @@
+---
+const providers = [
+  { name: "Anthropic", note: "native Claude API", color: "var(--rose)" },
+  { name: "DeepSeek", note: "deepseek-chat", color: "var(--foam)" },
+  { name: "OpenAI", note: "gpt-*", color: "var(--text)" },
+  { name: "OpenRouter", note: "100+ models", color: "var(--iris)" },
+  { name: "Qwen / DashScope", note: "qwen-max", color: "var(--gold)" },
+  { name: "Together", note: "OpenAI-compatible", color: "var(--pine)" },
+  { name: "Ollama", note: "local, free", color: "var(--love)" },
+];
+---
+
+<section class="section providers">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// bring any model</span>
+      <h2 class="section-title">Speaks Claude natively. Talks to everything else.</h2>
+      <p class="section-sub">
+        Native Anthropic SSE streaming, plus any OpenAI-compatible endpoint for
+        cheap delegation. Mix providers freely — DeepSeek and OpenRouter
+        together, local Ollama, whatever you want.
+      </p>
+    </div>
+
+    <div class="prov-grid reveal">
+      {
+        providers.map((p) => (
+          <div class="prov" style={`--c:${p.color}`}>
+            <span class="dot" />
+            <span class="pname">{p.name}</span>
+            <span class="pnote">{p.note}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .prov-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+  .prov {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.95rem 1.1rem;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--hl-med);
+    font-family: var(--font-mono);
+    transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+  }
+  .prov:hover {
+    border-color: var(--c);
+    transform: translateY(-2px);
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--c);
+    flex-shrink: 0;
+  }
+  .pname {
+    font-size: 0.92rem;
+    color: var(--text);
+  }
+  .pnote {
+    margin-left: auto;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  @media (min-width: 720px) {
+    .prov-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

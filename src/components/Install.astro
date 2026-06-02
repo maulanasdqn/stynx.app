@@ -1,0 +1,135 @@
+---
+import TerminalWindow from "./TerminalWindow.astro";
+const repo = "https://github.com/maulanasdqn/stynx-code";
+---
+
+<section class="section install" id="install">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// install</span>
+      <h2 class="section-title">Up and running in a minute.</h2>
+      <p class="section-sub">
+        Published on <a class="crates-link" href="https://crates.io/crates/stynx-code" target="_blank" rel="noopener">crates.io</a> —
+        one <code>cargo install</code> away. The product is <code>stynx-code</code>;
+        the command you'll actually type is <code>stynx</code>.
+      </p>
+    </div>
+
+    <div class="fast-install reveal">
+      <span class="fast-label">Fastest way in</span>
+      <TerminalWindow title="bash — from crates.io">
+        <div><span class="muted"># install the latest release</span></div>
+        <div><span class="prompt">$</span> cargo install <span class="ok">stynx-code</span></div>
+        <div>&nbsp;</div>
+        <div><span class="muted"># then just run it</span></div>
+        <div><span class="prompt">$</span> <span class="ok">stynx</span></div>
+      </TerminalWindow>
+    </div>
+
+    <div class="install-grid">
+      <div class="reveal">
+        <h3 class="block-label">Build from source</h3>
+        <TerminalWindow title="bash">
+          <div><span class="muted"># from source</span></div>
+          <div><span class="prompt">$</span> git clone {repo}</div>
+          <div><span class="prompt">$</span> cd stynx-code</div>
+          <div><span class="prompt">$</span> cargo install --path stynx-code</div>
+          <div>&nbsp;</div>
+          <div><span class="muted"># with nix</span></div>
+          <div><span class="prompt">$</span> nix develop</div>
+          <div><span class="prompt">$</span> cargo build --release --workspace</div>
+          <div><span class="prompt">$</span> ./target/release/stynx</div>
+        </TerminalWindow>
+      </div>
+
+      <div class="reveal">
+        <h3 class="block-label">Quickstart</h3>
+        <TerminalWindow title="stynx">
+          <div><span class="muted"># interactive TUI (the main mode)</span></div>
+          <div><span class="prompt">$</span> <span class="ok">stynx</span></div>
+          <div>&nbsp;</div>
+          <div><span class="muted"># one-shot prompt</span></div>
+          <div><span class="prompt">$</span> stynx -p <span class="rose">"find every TODO under src/"</span></div>
+          <div>&nbsp;</div>
+          <div><span class="muted"># pipe mode — read stdin as the prompt</span></div>
+          <div><span class="prompt">$</span> echo <span class="rose">"explain this file"</span> | stynx</div>
+          <div>&nbsp;</div>
+          <div><span class="muted"># JSON output for scripting</span></div>
+          <div><span class="prompt">$</span> stynx --json -p <span class="rose">"list modified files"</span></div>
+        </TerminalWindow>
+      </div>
+    </div>
+
+    <div class="cta-band reveal">
+      <div>
+        <h3>Ready when you are.</h3>
+        <p>MIT licensed. No telemetry. Your keys, your machine.</p>
+      </div>
+      <a class="btn btn-primary" href={repo} target="_blank" rel="noopener">
+        Star on GitHub →
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .crates-link {
+    color: var(--gold);
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+    transition: color 0.18s var(--ease);
+  }
+  .crates-link:hover {
+    color: var(--rose);
+  }
+  .fast-install {
+    max-width: 620px;
+    margin-bottom: 2.4rem;
+  }
+  .fast-label {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .block-label {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--subtle);
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .install-grid {
+    display: grid;
+    gap: 1.6rem;
+  }
+  .cta-band {
+    margin-top: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.4rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    border-radius: var(--radius);
+    background:
+      radial-gradient(120% 140% at 0% 0%, rgba(196, 167, 231, 0.16), transparent 60%),
+      var(--surface);
+    border: 1px solid var(--hl-med);
+  }
+  .cta-band h3 {
+    font-size: 1.4rem;
+  }
+  .cta-band p {
+    color: var(--subtle);
+    margin-top: 0.3rem;
+  }
+  @media (min-width: 860px) {
+    .install-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

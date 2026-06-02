@@ -1,0 +1,72 @@
+---
+const repo = "https://github.com/maulanasdqn/stynx-code";
+---
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="f-brand">
+      <span class="brand-mark">▚</span>
+      <span class="brand-name">stynx<span class="brand-accent">-code</span></span>
+    </div>
+    <p class="f-tag">Built in Rust · MIT licensed · v3.12.2</p>
+    <nav class="f-links" aria-label="Footer">
+      <a href={repo} target="_blank" rel="noopener">GitHub</a>
+      <a href="#features">Features</a>
+      <a href="#install">Install</a>
+    </nav>
+  </div>
+  <div class="container f-fine">
+    <span>An interactive AI coding assistant for the terminal.</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--hl-low);
+    padding-block: 2.5rem;
+    background: var(--surface);
+  }
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 2rem;
+    justify-content: space-between;
+  }
+  .f-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+  .brand-mark {
+    color: var(--iris);
+  }
+  .brand-accent {
+    color: var(--muted);
+  }
+  .f-tag {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .f-links {
+    display: flex;
+    gap: 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+  }
+  .f-links a {
+    color: var(--subtle);
+    transition: color 0.18s var(--ease);
+  }
+  .f-links a:hover {
+    color: var(--foam);
+  }
+  .f-fine {
+    margin-top: 1.2rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+</style>

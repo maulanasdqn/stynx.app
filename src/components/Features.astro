@@ -1,0 +1,105 @@
+---
+const features = [
+  {
+    icon: "▚",
+    color: "var(--iris)",
+    title: "Modern terminal UI",
+    body: "Sidebar, command palette, model picker, session list, runtime theme switcher, @-file mentions, slash-command popover, toasts, and a colorized diff renderer for every edit.",
+  },
+  {
+    icon: "⚇",
+    color: "var(--foam)",
+    title: "Intern mode",
+    body: "Claude as the senior, cheaper OpenAI-compatible models as interns. Each shows up as its own delegate_to_<name> tool the senior can pick from — or call directly.",
+  },
+  {
+    icon: "⛨",
+    color: "var(--love)",
+    title: "Permission-first",
+    body: "Normal · Auto-accept · Plan · Bypass modes, per-tool allow rules, and an in-TUI confirmation modal. No terminal mode-switching, ever.",
+  },
+  {
+    icon: "/",
+    color: "var(--gold)",
+    title: "Skills as slash commands",
+    body: "Drop a markdown file under .claude/skills/ and it instantly appears as /your-skill — discoverable in the slash-command popover.",
+  },
+  {
+    icon: "⟳",
+    color: "var(--rose)",
+    title: "Sessions",
+    body: "Automatic per-project persistence at ~/.stynx-code/projects/<slug>/session.json. Rewind exchanges, undo file edits, export transcripts.",
+  },
+  {
+    icon: "⎈",
+    color: "var(--pine)",
+    title: "Hooks",
+    body: "session-start, pre-tool-use, post-tool-use, and stop shell hooks let you wire stynx into anything — linters, audits, notifications.",
+  },
+];
+---
+
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// features</span>
+      <h2 class="section-title">Everything you expect from an agent — in a TUI.</h2>
+      <p class="section-sub">
+        A self-contained app, not a wrapper. Real keybindings, real state, real
+        tools — rendered with <code>ratatui</code> and tuned for the keyboard.
+      </p>
+    </div>
+
+    <div class="grid">
+      {
+        features.map((f) => (
+          <article class="card reveal">
+            <span class="icon" style={`--c:${f.color}`}>{f.icon}</span>
+            <h3>{f.title}</h3>
+            <p>{f.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.1rem;
+    grid-template-columns: 1fr;
+  }
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+    margin-bottom: 1rem;
+  }
+  .card h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+  }
+  .card p {
+    color: var(--subtle);
+    font-size: 0.95rem;
+  }
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

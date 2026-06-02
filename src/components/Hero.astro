@@ -1,0 +1,197 @@
+---
+import TerminalWindow from "./TerminalWindow.astro";
+const repo = "https://github.com/maulanasdqn/stynx-code";
+
+const ascii = String.raw` ____   _____ __   __ _   _ __  __
+/ ___| |_   _|\ \ / /| \ | |\ \/ /
+\___ \   | |   \ V / |  \| | \  /
+ ___) |  | |    | |  | |\  | /  \
+|____/   |_|    |_|  |_| \_|/_/\_\
+            c o d e`;
+---
+
+<section class="hero" id="top">
+  <div class="container hero-grid">
+    <div class="hero-copy reveal">
+      <span class="tag hero-badge">
+        <span class="ping"></span> v3.12.2 · written in Rust · MIT
+      </span>
+
+      <h1 class="hero-title">
+        The AI coding agent that <span class="grad">lives in your terminal</span>.
+      </h1>
+
+      <p class="hero-sub">
+        <strong>stynx-code</strong> is a self-contained terminal app for getting
+        work done with an LLM. Native Claude API, any OpenAI-compatible endpoint,
+        and an autonomous tool-using loop behind a permission system that prompts
+        only when you ask it to.
+      </p>
+
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#install">Get started →</a>
+        <a class="btn btn-ghost" href={repo} target="_blank" rel="noopener">
+          View on GitHub
+        </a>
+      </div>
+
+      <a class="install-pill" href="#install">
+        <span class="prompt">$</span> cargo install stynx-code
+        <span class="pill-note">on crates.io</span>
+      </a>
+
+      <ul class="hero-stats" aria-label="Project stats">
+        <li><strong>17</strong> crates</li>
+        <li><strong>40</strong> tools</li>
+        <li><strong>4</strong> permission modes</li>
+        <li><strong>∞</strong> interns</li>
+      </ul>
+    </div>
+
+    <div class="hero-demo reveal">
+      <pre class="ascii" aria-hidden="true">{ascii}</pre>
+      <TerminalWindow title="stynx — one-shot">
+        <div><span class="prompt">$</span> <span class="cmd">stynx -p</span> <span class="rose">"find every TODO under src/ and group by file"</span></div>
+        <div class="muted">· thinking…</div>
+        <div><span class="pine">⏺ grep</span> <span class="muted">pattern="TODO" path="src/" -n</span></div>
+        <div class="ok">  ↳ 7 matches across 3 files</div>
+        <div><span class="pine">⏺ read</span> <span class="muted">src/engine/loop.rs</span></div>
+        <div class="ok">  ↳ ok</div>
+        <div class="answer">
+          <span class="accent">src/engine/loop.rs</span>  — 3 TODOs<br />
+          <span class="accent">src/tui/render.rs</span>   — 2 TODOs<br />
+          <span class="accent">src/tools/bash.rs</span>   — <span class="type-line caret">2 TODOs</span>
+        </div>
+      </TerminalWindow>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: 4.5rem 5.5rem;
+  }
+  .hero-grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+  }
+  .hero-badge {
+    color: var(--text);
+  }
+  .ping {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--foam);
+    box-shadow: 0 0 0 0 rgba(156, 207, 216, 0.6);
+    animation: ping 2s var(--ease) infinite;
+  }
+  @keyframes ping {
+    0% {
+      box-shadow: 0 0 0 0 rgba(156, 207, 216, 0.5);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(156, 207, 216, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(156, 207, 216, 0);
+    }
+  }
+  .hero-title {
+    margin-top: 1.2rem;
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+  }
+  .grad {
+    background: linear-gradient(120deg, var(--iris), var(--foam), var(--rose));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero-sub {
+    margin-top: 1.3rem;
+    max-width: 36rem;
+    color: var(--subtle);
+    font-size: 1.1rem;
+  }
+  .hero-sub strong {
+    color: var(--text);
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+  .install-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.4rem;
+    padding: 0.6rem 0.95rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--hl-med);
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    color: var(--text);
+    transition: border-color 0.18s var(--ease), transform 0.18s var(--ease);
+  }
+  .install-pill:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+  }
+  .install-pill .prompt {
+    color: var(--iris);
+  }
+  .install-pill .pill-note {
+    margin-left: 0.3rem;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.8rem;
+    margin-top: 2.4rem;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .hero-stats strong {
+    display: block;
+    font-size: 1.5rem;
+    color: var(--gold);
+    line-height: 1.1;
+  }
+  .hero-demo {
+    position: relative;
+  }
+  .ascii {
+    font-family: var(--font-mono);
+    font-size: clamp(0.5rem, 1.5vw, 0.72rem);
+    line-height: 1.2;
+    color: var(--iris);
+    margin-bottom: 1rem;
+    overflow-x: auto;
+    opacity: 0.9;
+  }
+  .answer {
+    margin-top: 0.6rem;
+    color: var(--text);
+  }
+  .type-line {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: bottom;
+    animation: typing 1.6s steps(8, end) 0.8s both;
+  }
+
+  @media (min-width: 768px) {
+    .hero-grid {
+      grid-template-columns: 1.05fr 1fr;
+    }
+  }
+</style>

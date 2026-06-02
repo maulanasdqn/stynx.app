@@ -1,0 +1,205 @@
+---
+import TerminalWindow from "./TerminalWindow.astro";
+
+const mechanisms = [
+  {
+    title: "Delegate the grunt work",
+    body: "Hand mechanical edits, greps, and boilerplate to cheap interns. The expensive senior only spends tokens on the thinking that matters.",
+    color: "var(--foam)",
+  },
+  {
+    title: "Context stays lean",
+    body: "Automatic compaction kicks in at 60% of the token limit, summarizing older turns so every following request carries less weight.",
+    color: "var(--iris)",
+  },
+  {
+    title: "Right model, right turn",
+    body: "/fast drops to haiku for cheap, instant turns, and the effort dial only spends deep-reasoning tokens when a task actually needs them.",
+    color: "var(--gold)",
+  },
+  {
+    title: "Cost in plain sight",
+    body: "A live token + cost readout sits in the status bar, and /cost breaks down the spend — so you never burn tokens blind.",
+    color: "var(--rose)",
+  },
+];
+---
+
+<section class="section tokens" id="tokens">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// token economy</span>
+      <h2 class="section-title">Get more done while burning <span class="grad">fewer tokens</span>.</h2>
+      <p class="section-sub">
+        Premium models are expensive per token. stynx-code is built to spend them
+        sparingly — push the cheap work to interns, keep context small, and only
+        reach for deep reasoning when it pays off.
+      </p>
+    </div>
+
+    <div class="tok-grid">
+      <ul class="mech reveal">
+        {
+          mechanisms.map((m) => (
+            <li style={`--c:${m.color}`}>
+              <span class="bar" />
+              <div>
+                <h3>{m.title}</h3>
+                <p>{m.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="reveal">
+        <TerminalWindow title="stynx — /cost">
+          <div><span class="prompt">&gt;</span> <span class="cmd">/cost</span></div>
+          <div class="muted">session usage</div>
+          <div>&nbsp;</div>
+          <div><span class="rose">senior</span>  claude-sonnet-4-6  <span class="muted">22.3k tok</span></div>
+          <div><span class="foam">intern</span>  deepseek           <span class="muted">40.4k tok</span> <span class="ok">← offloaded</span></div>
+          <div><span class="foam">intern</span>  qwen-coder         <span class="muted">15.7k tok</span> <span class="ok">← offloaded</span></div>
+          <div class="rule">──────────────────────────────────</div>
+          <div class="muted">most tokens ran on cheap interns</div>
+          <div><span class="accent">total this session</span>   <span class="ok">$0.0129</span></div>
+        </TerminalWindow>
+        <p class="footnote">
+          Illustrative — actual usage depends on your task, models, and config.
+        </p>
+      </div>
+    </div>
+
+    <div class="why reveal">
+      <h3>Why it adds up</h3>
+      <p>
+        In a normal agent loop, the <strong>entire growing conversation is
+        re-sent to the priciest model on every single turn</strong> — so cost
+        climbs with each step, not just with the work you actually asked for.
+        stynx-code attacks both halves of that bill at once:
+      </p>
+      <ul class="why-list">
+        <li><span class="k foam">fewer tokens hit the expensive model</span> — interns absorb the bulk of the reads, greps, and edits, so the senior's pricey context only carries the decisions.</li>
+        <li><span class="k iris">the conversation itself stays smaller</span> — compaction caps how big each request can get, instead of letting it balloon turn after turn.</li>
+      </ul>
+      <p class="why-tldr">
+        Same work, fewer premium tokens, lower spend. That's the whole idea.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tokens {
+    background: linear-gradient(180deg, transparent, var(--hl-low), transparent);
+  }
+  .grad {
+    background: linear-gradient(120deg, var(--foam), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .tok-grid {
+    display: grid;
+    gap: 2.4rem;
+    align-items: center;
+  }
+  .mech {
+    list-style: none;
+    display: grid;
+    gap: 1.2rem;
+  }
+  .mech li {
+    display: flex;
+    gap: 1rem;
+  }
+  .bar {
+    width: 3px;
+    border-radius: 3px;
+    background: var(--c);
+    flex-shrink: 0;
+  }
+  .mech h3 {
+    font-size: 1.08rem;
+    margin-bottom: 0.35rem;
+  }
+  .mech p {
+    color: var(--subtle);
+    font-size: 0.94rem;
+  }
+  .mech code,
+  .footnote code {
+    color: var(--foam);
+  }
+  .rule {
+    color: var(--hl-high);
+  }
+  .foam {
+    color: var(--foam);
+  }
+  .footnote {
+    margin-top: 0.9rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .why {
+    margin-top: 2.6rem;
+    padding: 1.8rem;
+    border: 1px solid var(--hl-med);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(120% 130% at 0% 0%, rgba(156, 207, 216, 0.1), transparent 55%),
+      var(--surface);
+  }
+  .why h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.7rem;
+  }
+  .why p {
+    color: var(--subtle);
+    max-width: 60rem;
+  }
+  .why strong {
+    color: var(--text);
+  }
+  .why-list {
+    list-style: none;
+    display: grid;
+    gap: 0.7rem;
+    margin: 1rem 0;
+  }
+  .why-list li {
+    color: var(--subtle);
+    font-size: 0.95rem;
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .why-list li::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+  .why-list .k {
+    font-weight: 600;
+  }
+  .why-list .k.foam {
+    color: var(--foam);
+  }
+  .why-list .k.iris {
+    color: var(--iris);
+  }
+  .why-tldr {
+    margin-top: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    color: var(--gold) !important;
+  }
+  @media (min-width: 900px) {
+    .tok-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+

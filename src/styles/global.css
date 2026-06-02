@@ -172,6 +172,18 @@ pre {
   transform: translateY(-2px);
 }
 
+.btn-foam {
+  background: linear-gradient(135deg, var(--foam), var(--pine));
+  color: var(--base);
+  font-weight: 600;
+  box-shadow: 0 8px 30px rgba(156, 207, 216, 0.26);
+}
+
+.btn-foam:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(156, 207, 216, 0.4);
+}
+
 /* ── Card surface ──────────────────────────────────────────────────────── */
 .card {
   background: linear-gradient(180deg, var(--surface), var(--base));

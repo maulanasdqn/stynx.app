@@ -1,0 +1,100 @@
+---
+// Real stynx-code session screenshot — senior delegating to a `mimo` intern.
+---
+
+<section class="section showcase" id="showcase">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// see it in action</span>
+      <h2 class="section-title">Real sessions. Real delegation.</h2>
+      <p class="section-sub">
+        A live <code>stynx</code> session: the senior reads the README, then
+        hands the analysis to a <code>mimo</code> intern via
+        <code>delegate_to_mimo</code> — model, elapsed time, and running cost
+        right there in the status bar.
+      </p>
+    </div>
+
+    <figure class="shot reveal">
+      <img
+        src="/stynx-tui.png"
+        width="1999"
+        height="1251"
+        alt="stynx-code terminal UI: the Tools sidebar shows a Read of README.md and a delegate_to_mimo call; the conversation shows the senior delegating README analysis to a mimo intern; the status bar shows the develop branch, deepseek-v4-pro model, a 1m 30s generating timer and a $0.0129 cost."
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+
+    <ul class="callouts">
+      <li>
+        <span class="dot" style="--c: var(--iris)"></span>
+        <strong>Tools sidebar</strong> — every <code>read</code>,
+        <code>grep</code>, and <code>delegate_to_*</code> call, live.
+      </li>
+      <li>
+        <span class="dot" style="--c: var(--foam)"></span>
+        <strong>Intern delegation</strong> — the senior routes work to the
+        <code>mimo</code> intern with one tool call.
+      </li>
+      <li>
+        <span class="dot" style="--c: var(--gold)"></span>
+        <strong>Live status bar</strong> — branch, model, generating timer, and
+        cost-per-turn at a glance.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .shot {
+    margin: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--hl-med);
+    box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.75);
+    background:
+      radial-gradient(120% 120% at 50% 0%, rgba(196, 167, 231, 0.14), transparent 55%),
+      var(--surface);
+    line-height: 0;
+  }
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .callouts {
+    list-style: none;
+    margin-top: 2rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+  .callouts li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    color: var(--subtle);
+    font-size: 0.95rem;
+  }
+  .callouts strong {
+    color: var(--text);
+  }
+  .callouts code {
+    color: var(--foam);
+    font-size: 0.85em;
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--c);
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+  }
+  @media (min-width: 760px) {
+    .callouts {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

@@ -14,12 +14,13 @@ const interns = [
   <div class="container">
     <div class="section-head reveal">
       <span class="eyebrow">// the differentiator</span>
-      <h2 class="section-title">Claude is the senior. The rest are interns.</h2>
+      <h2 class="section-title">You pick the senior. The rest are interns.</h2>
       <p class="section-sub">
-        Run Claude as the lead and delegate grunt work to cheaper models. Each
-        intern becomes its own <code>delegate_to_&lt;name&gt;</code> tool the
-        senior can pick from — or you call one directly with
-        <code>/intern &lt;name&gt; &lt;task&gt;</code>.
+        The lead model is your choice — Claude, DeepSeek, Qwen, or anything you
+        configure. Swap it any time with <code>/model</code>. Every other model
+        becomes an intern, surfaced as its own
+        <code>delegate_to_&lt;name&gt;</code> tool the senior can pick from — or
+        you call one directly with <code>/intern &lt;name&gt; &lt;task&gt;</code>.
       </p>
     </div>
 
@@ -27,8 +28,9 @@ const interns = [
       <div class="reveal">
         <div class="fanout" aria-hidden="true">
           <div class="senior">
-            <span class="role">senior</span>
+            <span class="role">senior · your pick</span>
             <span class="who">claude-sonnet-4-6</span>
+            <span class="swap">⇄ swap with /model</span>
           </div>
           <div class="links">
             {interns.map(() => <span class="link"></span>)}
@@ -109,6 +111,11 @@ const interns = [
   }
   .senior .who {
     font-weight: 700;
+  }
+  .senior .swap {
+    font-size: 0.66rem;
+    opacity: 0.75;
+    margin-top: 0.15rem;
   }
   .links {
     display: flex;

@@ -4,36 +4,83 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
 }
 
 const {
   title = "stynx-code — AI coding agent for your terminal",
-  description = "An interactive AI coding assistant for the terminal. Multi-provider, tool-using, fast.",
+  description = "An interactive, tool-using AI coding agent for the terminal. Bring any model as the senior, delegate to cheaper interns, with extended thinking, a tunable effort dial, and an autonomous agentic loop. Written in Rust, MIT licensed.",
+  image = "/stynx-tui.png",
 } = Astro.props;
+
+const SITE = "https://stynx.app";
+const canonical = new URL(Astro.url.pathname, SITE).href;
+const ogImage = new URL(image, SITE).href;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "stynx-code",
+  alternateName: "stynx",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "Linux, macOS",
+  description,
+  url: SITE,
+  downloadUrl: "https://crates.io/crates/stynx-code",
+  softwareVersion: "0.33.12",
+  programmingLanguage: "Rust",
+  license: "https://opensource.org/licenses/MIT",
+  image: ogImage,
+  author: { "@type": "Person", name: "maulanasdqn" },
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+};
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content="maulanasdqn" />
+    <meta
+      name="keywords"
+      content="stynx, stynx-code, AI coding agent, terminal AI, TUI, Rust, Claude, intern mode, multi-provider, agentic, coding assistant, CLI"
+    />
+    <meta name="theme-color" content="#191724" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="stynx-code" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta name="theme-color" content="#191724" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1999" />
+    <meta property="og:image:height" content="1251" />
+    <meta property="og:image:alt" content="stynx-code terminal UI mid-session, delegating to an intern" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

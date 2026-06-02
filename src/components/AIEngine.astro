@@ -1,0 +1,166 @@
+---
+import TerminalWindow from "./TerminalWindow.astro";
+
+const efforts = ["low", "medium", "high", "max"];
+const active = "high";
+
+const capabilities = [
+  {
+    cmd: "/think",
+    title: "Extended thinking",
+    body: "Toggle visible reasoning. The model plans in a thinking block before it touches a single tool — and you see every line of it.",
+    color: "var(--iris)",
+  },
+  {
+    cmd: "/effort",
+    title: "Effort dial",
+    body: "low · medium · high · max. Trade latency for depth per task — quick edits stay snappy, hard bugs get the deep pass.",
+    color: "var(--foam)",
+  },
+  {
+    cmd: "/fast · /model",
+    title: "Fluid model control",
+    body: "Swap models mid-session — opus, sonnet, haiku, or any provider. /fast drops to haiku for cheap, instant turns.",
+    color: "var(--gold)",
+  },
+  {
+    cmd: "/plan",
+    title: "Plan mode",
+    body: "Read-only tools only. Let the model explore, reason, and propose a plan with zero risk of mutating your tree.",
+    color: "var(--rose)",
+  },
+];
+---
+
+<section class="section ai" id="ai">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// the ai engine</span>
+      <h2 class="section-title">AI that thinks before it acts.</h2>
+      <p class="section-sub">
+        A real agentic loop — up to <strong>200 turns</strong> of plan → call
+        tools → review → repeat. Reasoning is visible, effort is tunable, and
+        the model is yours to swap on the fly.
+      </p>
+    </div>
+
+    <div class="ai-grid">
+      <div class="reveal">
+        <TerminalWindow title="stynx — extended thinking">
+          <div><span class="prompt">&gt;</span> <span class="rose">refactor the auth module to the new token flow</span></div>
+          <div class="muted">◆ thinking · high effort</div>
+          <div class="think">
+            The auth module resolves credentials in 4 stages. To swap the
+            token flow I touch <span class="accent">resolve_token()</span> and the
+            retry path without breaking the keychain fallback…
+          </div>
+          <div><span class="pine">⏺ read</span> <span class="muted">stynx-code-auth/src/lib.rs</span></div>
+          <div><span class="pine">⏺ grep</span> <span class="muted">"resolve_token" -n</span></div>
+          <div><span class="pine">⏺ file_edit</span> <span class="muted">stynx-code-auth/src/token.rs</span></div>
+          <div class="ok">  ↳ applied · 3 hunks</div>
+          <div><span class="ok">✓ done</span> <span class="muted">in 4 turns · 12.4k tokens</span></div>
+        </TerminalWindow>
+
+        <div class="dial" role="group" aria-label="Effort level">
+          <span class="dial-label">effort</span>
+          {
+            efforts.map((e) => (
+              <span class={`step${e === active ? " on" : ""}`}>{e}</span>
+            ))
+          }
+        </div>
+      </div>
+
+      <ul class="cap-list">
+        {
+          capabilities.map((c) => (
+            <li class="cap reveal" style={`--c:${c.color}`}>
+              <code class="cap-cmd">{c.cmd}</code>
+              <h3>{c.title}</h3>
+              <p>{c.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ai-grid {
+    display: grid;
+    gap: 2.2rem;
+    align-items: start;
+  }
+  .think {
+    color: var(--subtle);
+    font-style: italic;
+    padding: 0.4rem 0 0.6rem 0.9rem;
+    border-left: 2px solid var(--hl-high);
+    margin: 0.3rem 0 0.5rem;
+  }
+  .dial {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .dial-label {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-right: 0.3rem;
+  }
+  .step {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--hl-med);
+    color: var(--muted);
+    background: var(--surface);
+  }
+  .step.on {
+    color: var(--base);
+    background: linear-gradient(135deg, var(--foam), var(--iris));
+    border-color: transparent;
+    font-weight: 600;
+  }
+  .cap-list {
+    list-style: none;
+    display: grid;
+    gap: 1.1rem;
+  }
+  .cap {
+    border: 1px solid var(--hl-med);
+    border-left: 3px solid var(--c);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    padding: 1.2rem 1.3rem;
+    transition: transform 0.2s var(--ease), border-color 0.2s var(--ease);
+  }
+  .cap:hover {
+    transform: translateX(4px);
+  }
+  .cap-cmd {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--c);
+  }
+  .cap h3 {
+    font-size: 1.08rem;
+    margin: 0.35rem 0 0.4rem;
+  }
+  .cap p {
+    color: var(--subtle);
+    font-size: 0.92rem;
+  }
+  @media (min-width: 900px) {
+    .ai-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

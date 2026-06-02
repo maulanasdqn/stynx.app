@@ -1,0 +1,831 @@
+---
+import Layout from "../layouts/Layout.astro";
+import DocCode from "../components/docs/DocCode.astro";
+
+const repo = "https://github.com/maulanasdqn/stynx-code";
+
+// Table of contents — grouped. `id` must match each <section id> below.
+const toc = [
+  {
+    group: "Getting started",
+    items: [
+      { id: "overview", label: "What it is" },
+      { id: "install", label: "Installation" },
+      { id: "quickstart", label: "Quickstart" },
+      { id: "auth", label: "Authentication" },
+    ],
+  },
+  {
+    group: "Configuration",
+    items: [
+      { id: "config", label: "settings.json" },
+      { id: "models", label: "Models & AI controls" },
+      { id: "permissions", label: "Permission system" },
+      { id: "plan", label: "Plan mode" },
+    ],
+  },
+  {
+    group: "Delegation",
+    items: [
+      { id: "interns", label: "Intern mode" },
+      { id: "bench", label: "Benchmarking interns" },
+    ],
+  },
+  {
+    group: "Workflow",
+    items: [
+      { id: "sessions", label: "Sessions & history" },
+      { id: "skills", label: "Skills" },
+      { id: "hooks", label: "Hooks" },
+    ],
+  },
+  {
+    group: "Reference",
+    items: [
+      { id: "tools", label: "Tools" },
+      { id: "bash", label: "Terminal sessions" },
+      { id: "compaction", label: "Context compaction" },
+      { id: "mcp", label: "MCP & LSP" },
+      { id: "server", label: "Headless server" },
+      { id: "keys", label: "Keybindings" },
+      { id: "commands", label: "Slash commands" },
+      { id: "architecture", label: "Architecture" },
+    ],
+  },
+];
+
+const keys = [
+  ["Enter", "Submit message"],
+  ["Shift+Enter", "Newline (also Alt+Enter, Ctrl+J)"],
+  ["Esc", "Interrupt streaming · or vim normal mode"],
+  ["Ctrl+P", "Command palette"],
+  ["Ctrl+S", "Session list"],
+  ["Ctrl+M", "Switch model"],
+  ["Ctrl+B", "Toggle sidebar"],
+  ["Ctrl+T", "Toggle tool block details"],
+  ["Shift+Tab", "Cycle permission mode"],
+  ["Shift+↑/↓", "Scroll messages by line (works while typing)"],
+  ["PgUp/PgDn", "Scroll by page"],
+  ["Ctrl+Alt+U/D", "Scroll messages by half page"],
+  ["@", "File-mention picker"],
+  ["/", "Slash-command popover"],
+  ["Ctrl+C", "Quit"],
+];
+
+const commands = [
+  ["/help", "Show help"],
+  ["/status", "git status"],
+  ["/version", "Show stynx version"],
+  ["/quit, /exit", "Exit"],
+  ["/model [name]", "Switch model (aliases: opus/sonnet/haiku)"],
+  ["/fast", "Toggle fast (haiku) mode"],
+  ["/effort low|medium|high|max", "Set reasoning effort"],
+  ["/think", "Toggle extended thinking"],
+  ["/mode", "Cycle permission mode"],
+  ["/plan [task]", "Toggle plan mode (read-only tools only)"],
+  ["/compact", "Summarize older turns to free up context"],
+  ["/cost", "Show token usage and cost"],
+  ["/usage", "Show plan limits (OAuth only)"],
+  ["/diff", "Show git diff"],
+  ["/review", "Review the current diff"],
+  ["/commit", "Generate a commit message"],
+  ["/init", "Create/update CLAUDE.md"],
+  ["/memory", "Show CLAUDE.md"],
+  ["/add <path>", "Pin a file into every message"],
+  ["/files", "List pinned files"],
+  ["/skills", "List available skills"],
+  ["/intern <task>", "Hand work to the first intern"],
+  ["/intern <name> <task>", "Hand work to a specific intern"],
+  ["/intern-bench [name]", "Benchmark & rank interns"],
+  ["/session", "List / load sessions"],
+  ["/rewind [n]", "Remove last n exchanges"],
+  ["/undo [n]", "Restore last n file edits"],
+  ["/export", "Write transcript to disk"],
+  ["/copy", "Copy last response to clipboard"],
+  ["/config", "Show merged config"],
+  ["/permissions", "Show allow / deny rules"],
+  ["/login, /logout", "Credential management"],
+  ["!<command>", "Run a shell command without leaving the TUI"],
+];
+
+const providerRows = [
+  ["deepseek", "https://api.deepseek.com/v1", "DEEPSEEK_API_KEY"],
+  ["openrouter", "https://openrouter.ai/api/v1", "OPENROUTER_API_KEY"],
+  ["openai", "https://api.openai.com/v1", "OPENAI_API_KEY"],
+  ["qwen", "https://dashscope-intl.aliyuncs.com/compatible-mode/v1", "QWEN_API_KEY"],
+  ["custom", "(set via base_url)", "(set via api_key_env)"],
+];
+
+const tools = [
+  ["File I/O", "read · file_write · file_edit", "Read files, create new files, and apply surgical edits. Every write/edit is pushed to the undo stack."],
+  ["Discovery", "glob · grep", "Find files by pattern and search file contents with regex."],
+  ["Shell", "bash", "A single persistent shell session — cd, export, and sourced state survive across calls. Supports background processes."],
+  ["Web", "web_fetch · web_search", "Fetch a URL as text and run web searches."],
+  ["Tasks (todo)", "todo_read · todo_write", "Maintain a structured task list for the current turn."],
+  ["Background tasks", "task_create · task_get · task_list · task_stop · task_update · task_output", "Spawn and manage long-running background jobs."],
+  ["Scheduling", "cron_create · cron_delete", "Schedule recurring or future work."],
+  ["Interaction", "ask_user_question", "Pause and ask you a structured question mid-run."],
+  ["Integration", "MCP (dynamic) · lsp", "Tools loaded per MCP server, plus language-server queries."],
+  ["Skills", "skill", "Invoke a markdown-defined skill as a tool."],
+  ["Misc", "notebook_edit · repl · send_message · sleep · synthetic_output · plan_mode", "Notebook cell edits, a REPL, messaging, delays, and mode control."],
+];
+---
+
+<Layout
+  title="Documentation — stynx-code"
+  description="Technical documentation for stynx-code: installation, configuration, models & AI controls, the permission system, intern delegation, sessions, skills, hooks, the full tool reference, keybindings, and slash commands."
+>
+  <div class="docs">
+    <!-- Sidebar TOC -->
+    <aside class="sidebar" aria-label="Documentation navigation">
+      <a class="back" href="/">← stynx<span class="dim">-code</span></a>
+      <nav>
+        {
+          toc.map((g) => (
+            <div class="toc-group">
+              <p class="toc-title">{g.group}</p>
+              <ul>
+                {g.items.map((it) => (
+                  <li><a href={`#${it.id}`} data-toc={it.id}>{it.label}</a></li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </nav>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <header class="doc-hero">
+        <span class="eyebrow">// documentation · v0.33.12</span>
+        <h1>stynx-code</h1>
+        <p class="lede">
+          An interactive AI coding assistant for the terminal. Multi-provider,
+          tool-using, fast. This page maps every feature and explains how to use
+          it. The product is <code>stynx-code</code>; the command you type is
+          <code>stynx</code>.
+        </p>
+      </header>
+
+      <!-- OVERVIEW -->
+      <section id="overview">
+        <h2>What it is</h2>
+        <p>
+          A self-contained terminal app for getting work done with an LLM. It
+          speaks Anthropic's Claude API natively and any OpenAI-compatible
+          endpoint (DeepSeek, OpenAI, OpenRouter, Together, local Ollama, …) for
+          cheap delegation. It runs an autonomous tool-using loop with bash, file
+          edit, glob, grep, and web fetch behind a permission system that prompts
+          you only when you ask it to.
+        </p>
+        <p>
+          The engine runs concurrent-safe tools in parallel via
+          <code>tokio::spawn</code> and sequential ones in order. Context is
+          compacted automatically at a 60% token threshold. File mutations are
+          tracked on an undo stack, and provider overload triggers exponential
+          backoff with up to 3 retries.
+        </p>
+        <ul class="bullets">
+          <li><strong>Modern terminal UI</strong> — sidebar, command palette, model picker, session list, runtime theme switcher (rose-pine, catppuccin, tokyo-night, gruvbox), mouse + bracketed paste, <code>@</code>-file mentions, slash-command popover, toasts, and a colorized diff renderer.</li>
+          <li><strong>Intern mode</strong> — a senior model delegates to one or more cheaper OpenAI-compatible models, each exposed as a <code>delegate_to_&lt;name&gt;</code> tool.</li>
+          <li><strong>Permission-first</strong> — Normal / Auto-accept / Plan / Bypass modes with per-tool allow rules.</li>
+          <li><strong>Skills as slash commands</strong> — drop a markdown file under <code>.claude/skills/</code> and it appears as <code>/your-skill</code>.</li>
+          <li><strong>Sessions</strong> — automatic per-project persistence.</li>
+          <li><strong>Hooks</strong> — shell hooks for <code>session-start</code>, <code>pre-tool-use</code>, <code>post-tool-use</code>, and <code>stop</code>.</li>
+        </ul>
+      </section>
+
+      <!-- INSTALL -->
+      <section id="install">
+        <h2>Installation</h2>
+        <p>The installed binary is <code>stynx</code>. Published on crates.io.</p>
+        <DocCode title="bash — fastest, from crates.io">{`# install the latest release
+cargo install stynx-code
+
+# then run it
+stynx`}</DocCode>
+        <DocCode title="bash — from source / with nix">{`# from source
+git clone https://github.com/maulanasdqn/stynx-code
+cd stynx-code
+cargo install --path stynx-code
+
+# with nix
+nix develop
+cargo build --release --workspace
+./target/release/stynx`}</DocCode>
+      </section>
+
+      <!-- QUICKSTART -->
+      <section id="quickstart">
+        <h2>Quickstart</h2>
+        <p>Four ways to run, depending on whether you want the interactive UI or a scriptable one-shot.</p>
+        <DocCode title="bash">{`# interactive TUI (the main mode)
+stynx
+
+# one-shot prompt
+stynx -p "find every TODO comment under src/ and group by file"
+
+# pipe mode — read stdin as the prompt
+echo "explain this file" | stynx
+
+# JSON output for scripting
+stynx --json -p "list files modified in the last commit"`}</DocCode>
+      </section>
+
+      <!-- AUTH -->
+      <section id="auth">
+        <h2>Authentication</h2>
+        <p>Anthropic credentials are resolved in this order — the first one found wins:</p>
+        <ol class="bullets">
+          <li>macOS Keychain / Linux libsecret (the Claude Code OAuth token at <code>Claude Code-credentials</code>)</li>
+          <li><code>~/.claude/.credentials.json</code></li>
+          <li><code>~/.claude/settings.json</code> → <code>auth_token</code></li>
+          <li>The <code>ANTHROPIC_API_KEY</code> environment variable</li>
+        </ol>
+        <p>Run <code>/login</code> inside <code>stynx</code> for interactive instructions, and <code>/logout</code> to clear credentials. Intern (OpenAI-compatible) keys are read from environment variables — see <a href="#interns">Intern mode</a>.</p>
+      </section>
+
+      <!-- CONFIG -->
+      <section id="config">
+        <h2>Configuration — settings.json</h2>
+        <p>
+          <code>~/.claude/settings.json</code> (global) and project-local settings
+          are merged. Run <code>/config</code> in a session to see the merged view.
+        </p>
+        <DocCode title="~/.claude/settings.json">{`{
+  "model": "claude-sonnet-4-6",
+  "max_turns": 200,
+  "max_tokens": 8192,
+  "effort": "medium",
+  "commit_attribution": false,
+  "interns": [
+    { "name": "deepseek", "provider": "deepseek", "model": "deepseek-chat" }
+  ],
+  "permissions": {
+    "allow": ["bash:cargo *", "read:*"],
+    "deny":  ["bash:rm -rf*"]
+  },
+  "hooks": {
+    "SessionStart":  [{ "command": "scripts/session-start.sh" }],
+    "PreToolUse":    [{ "matcher": "file_write", "command": "scripts/check.sh" }],
+    "PostToolUse":   [{ "command": "scripts/audit.sh" }]
+  }
+}`}</DocCode>
+        <table class="tbl">
+          <thead><tr><th>Key</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>model</code></td><td>Default senior model.</td></tr>
+            <tr><td><code>max_turns</code></td><td>Max agentic turns per request (default 200).</td></tr>
+            <tr><td><code>max_tokens</code></td><td>Max output tokens per response.</td></tr>
+            <tr><td><code>effort</code></td><td>Default reasoning effort: low / medium / high / max.</td></tr>
+            <tr><td><code>commit_attribution</code></td><td><code>false</code> (default) omits AI attribution from commits — no <code>Co-Authored-By</code> trailers. Set <code>true</code> to add it back.</td></tr>
+            <tr><td><code>interns</code></td><td>Array of delegate models (see Intern mode).</td></tr>
+            <tr><td><code>permissions</code></td><td><code>allow</code> / <code>deny</code> rule lists (see Permission system).</td></tr>
+            <tr><td><code>hooks</code></td><td>Lifecycle shell hooks (see Hooks).</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- MODELS -->
+      <section id="models">
+        <h2>Models &amp; AI controls</h2>
+        <p>The senior model is your choice and can change at any time mid-session. These controls tune how it thinks and how much it spends.</p>
+        <table class="tbl">
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>/model [name]</code></td><td>Switch the senior model. Aliases: <code>opus</code>, <code>sonnet</code>, <code>haiku</code>. Also bound to <kbd>Ctrl+M</kbd>.</td></tr>
+            <tr><td><code>/fast</code></td><td>Toggle fast mode — drops to <code>claude-haiku-4-5</code> for cheap, instant turns.</td></tr>
+            <tr><td><code>/think</code></td><td>Toggle extended thinking. The model emits a visible reasoning block before acting (also <kbd>Alt+T</kbd>).</td></tr>
+            <tr><td><code>/effort low|medium|high|max</code></td><td>Set reasoning effort — trade latency for depth per task.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- PERMISSIONS -->
+      <section id="permissions">
+        <h2>Permission system</h2>
+        <p>stynx is permission-first. Tool calls are gated by the current mode and your allow/deny rules; confirmation happens in an in-TUI modal — no terminal mode-switching.</p>
+        <table class="tbl">
+          <thead><tr><th>Mode</th><th>Behavior</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Normal</strong></td><td>Prompts before each gated tool call.</td></tr>
+            <tr><td><strong>Auto-accept</strong></td><td>Runs tools without prompting.</td></tr>
+            <tr><td><strong>Plan</strong></td><td>Read-only tools only — no mutations (see Plan mode).</td></tr>
+            <tr><td><strong>Bypass</strong></td><td>Skips all permission checks.</td></tr>
+          </tbody>
+        </table>
+        <p>Cycle modes with <kbd>Shift+Tab</kbd> or <code>/mode</code>. Define per-tool rules in <code>settings.json</code> — patterns are <code>tool:argument-glob</code>:</p>
+        <DocCode title="permissions">{`"permissions": {
+  "allow": ["bash:cargo *", "read:*"],
+  "deny":  ["bash:rm -rf*"]
+}`}</DocCode>
+        <p>Run <code>/permissions</code> to view the active allow/deny rules.</p>
+      </section>
+
+      <!-- PLAN -->
+      <section id="plan">
+        <h2>Plan mode</h2>
+        <p>
+          <code>/plan [task]</code> toggles plan mode, restricting the model to
+          read-only tools. It can explore, reason, and propose a plan with zero
+          risk of mutating your working tree — ideal for scoping a change before
+          you let it write. Toggle back to a write-capable mode to execute.
+        </p>
+      </section>
+
+      <!-- INTERNS -->
+      <section id="interns">
+        <h2>Intern mode</h2>
+        <p>
+          Run any model as the senior and delegate grunt work to one or more
+          cheaper OpenAI-compatible models. Each intern becomes its own
+          <code>delegate_to_&lt;name&gt;</code> tool the senior can pick from —
+          chosen by each tool's <code>description</code>, so describe what each is
+          good at. Interns run a restricted toolset (<code>bash</code>,
+          <code>read</code>, <code>file_write</code>, <code>file_edit</code>,
+          <code>glob</code>, <code>grep</code>) and cannot spawn sub-agents. They
+          return <em>Summary / Files changed / Output</em>; the senior reviews and
+          integrates.
+        </p>
+
+        <h3>Option 1 — .env shorthand</h3>
+        <DocCode title=".env">{`# DeepSeek (legacy single-intern shortcut)
+DEEPSEEK_API_KEY=sk-...
+DEEPSEEK_MODEL=deepseek-chat                  # optional
+
+# OpenRouter — declare multiple interns via name:model pairs
+OPENROUTER_API_KEY=sk-or-...
+OPENROUTER_INTERNS=qwen-coder:qwen/qwen3-coder,haiku:anthropic/claude-haiku-4.5,kimi:moonshotai/kimi-k2
+
+# Qwen / Alibaba DashScope (auto-registers a "qwen" intern)
+QWEN_API_KEY=sk-...
+QWEN_MODEL=qwen-plus                          # optional`}</DocCode>
+        <p>Copy <code>.env.example</code> to <code>.env</code>, fill in keys, and add it to <code>.gitignore</code> — stynx autoloads it on startup. At launch you'll see one <code>· intern ready: &lt;name&gt;</code> line per intern that resolved; interns missing their key are silently skipped.</p>
+
+        <h3>Option 2 — interns array in settings.json</h3>
+        <DocCode title="settings.json">{`{
+  "interns": [
+    { "name": "deepseek",   "provider": "deepseek",   "model": "deepseek-chat",
+      "description": "Cheap general-purpose intern; boilerplate and mechanical refactors." },
+    { "name": "qwen-coder", "provider": "openrouter", "model": "qwen/qwen3-coder",
+      "description": "Coding specialist; strong at multi-file edits." },
+    { "name": "local",      "provider": "custom",     "model": "qwen2.5-coder:32b",
+      "base_url": "http://localhost:11434/v1", "api_key_env": "OLLAMA_API_KEY",
+      "description": "Local Ollama intern; free but slower." }
+  ]
+}`}</DocCode>
+
+        <h3>Provider shorthand</h3>
+        <table class="tbl">
+          <thead><tr><th>provider</th><th>base_url</th><th>default key env</th></tr></thead>
+          <tbody>
+            {providerRows.map((r) => (
+              <tr><td><code>{r[0]}</code></td><td><code>{r[1]}</code></td><td><code>{r[2]}</code></td></tr>
+            ))}
+          </tbody>
+        </table>
+
+        <h3>Invoking interns</h3>
+        <DocCode title="in-session">{`/intern                                    # show available interns
+/intern list every public fn and one-line it   # picks the first intern
+/intern qwen-coder write a unit test for util::strip_ansi`}</DocCode>
+        <p>Or let the senior decide: <em>"refactor every <code>println!</code> in src/foo.rs to <code>tracing::info!</code>; hand it to qwen-coder"</em> — the senior calls <code>delegate_to_qwen_coder</code> with a focused task.</p>
+      </section>
+
+      <!-- BENCH -->
+      <section id="bench">
+        <h2>Benchmarking interns</h2>
+        <p>Not sure which intern earns its keep? The built-in benchmark runs a fixed suite of self-contained tasks (coding, debugging, an algorithm, reasoning, instruction-following, a refactor) against each intern, then has the <strong>main model grade every answer</strong> against a per-task rubric on a 0–10 scale (LLM-as-judge). Each run is timed.</p>
+        <DocCode title="in-session">{`/intern-bench                 # benchmark every configured intern
+/intern-bench qwen-coder      # benchmark just one
+
+🏁 Intern Benchmark — 3 intern(s) × 6 tasks
+
+Leaderboard (avg score, then speed):
+  🥇 #1  deepseek    8.5/10   pass 6/6     42.3s
+  🥈 #2  qwen-coder  7.2/10   pass 5/6     55.1s
+  🥉 #3  mimo        5.0/10   pass 4/6     88.0s`}</DocCode>
+        <p>The full report — including the judge's one-line note per task — is written to <code>.stynx/intern-bench.md</code>. The benchmark forces Auto-accept while it runs and restores your previous permission mode afterward.</p>
+      </section>
+
+      <!-- SESSIONS -->
+      <section id="sessions">
+        <h2>Sessions &amp; history</h2>
+        <p>Sessions persist automatically per project at <code>~/.stynx-code/projects/&lt;slug&gt;/session.json</code>. History is fully editable.</p>
+        <table class="tbl">
+          <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>/session</code></td><td>List and load sessions (also <kbd>Ctrl+S</kbd>).</td></tr>
+            <tr><td><code>/rewind [n]</code></td><td>Remove the last n exchanges.</td></tr>
+            <tr><td><code>/undo [n]</code></td><td>Restore the last n file edits from the undo stack.</td></tr>
+            <tr><td><code>/export</code></td><td>Write the transcript to disk.</td></tr>
+            <tr><td><code>/copy</code></td><td>Copy the last response to the clipboard.</td></tr>
+            <tr><td><code>/cost</code> · <code>/usage</code></td><td>Show token usage / cost, and plan limits (OAuth only).</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- SKILLS -->
+      <section id="skills">
+        <h2>Skills</h2>
+        <p>
+          Skills are markdown files that become slash commands. Drop a file under
+          <code>.claude/skills/</code> and it appears as <code>/your-skill</code>
+          in the slash-command popover, with its description shown inline. List
+          what's available with <code>/skills</code>. The <code>skill</code> tool
+          lets the model invoke them programmatically.
+        </p>
+      </section>
+
+      <!-- HOOKS -->
+      <section id="hooks">
+        <h2>Hooks</h2>
+        <p>Each hook command receives the relevant JSON on stdin and writes text to stdout (mixed into the conversation as a system message). Configure them under <code>hooks</code> in <code>settings.json</code>.</p>
+        <table class="tbl">
+          <thead><tr><th>Hook</th><th>When it runs</th></tr></thead>
+          <tbody>
+            <tr><td><code>SessionStart</code></td><td>Once when a session begins.</td></tr>
+            <tr><td><code>PreToolUse</code></td><td>Before each tool call; exit non-zero to short-circuit it.</td></tr>
+            <tr><td><code>PostToolUse</code></td><td>After each tool call; can post-process the result.</td></tr>
+            <tr><td><code>Stop</code></td><td>When the assistant finishes a turn.</td></tr>
+          </tbody>
+        </table>
+        <p>Each entry takes an optional <code>matcher</code> (substring against the tool name) and a required <code>command</code>.</p>
+      </section>
+
+      <!-- TOOLS -->
+      <section id="tools">
+        <h2>Tools</h2>
+        <p>The engine provides 40 tools — 37 built-in plus 3 MCP dynamic-tool wrappers. Concurrent-safe tools run in parallel; the rest run sequentially.</p>
+        <table class="tbl">
+          <thead><tr><th>Category</th><th>Tools</th><th>Purpose</th></tr></thead>
+          <tbody>
+            {tools.map((t) => (
+              <tr><td>{t[0]}</td><td><code>{t[1]}</code></td><td>{t[2]}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <!-- BASH -->
+      <section id="bash">
+        <h2>Terminal sessions</h2>
+        <p>
+          <code>bash</code> is a <strong>persistent shell</strong>, not a series of
+          disposable subshells. The first call boots a long-lived
+          <code>bash --norc --noprofile</code> process; every later call runs
+          through the same shell, so <code>cd</code>, <code>export</code>, sourced
+          files, and function definitions survive across calls.
+        </p>
+        <p>For long-running processes (dev servers, watchers, log tails), pass <code>background: true</code>:</p>
+        <DocCode title="bash tool — background processes">{`{"command": "bun run dev", "background": true}   // → "started background process 'bg1'"
+{"status": "bg1"}                                // new output since last read
+{"status": "bg1", "full": true}                  // everything it has emitted
+{"list": true}                                   // all background processes
+{"kill": "bg1"}                                  // stop it`}</DocCode>
+        <p>Foreground commands have a 120s default timeout (override with <code>"timeout"</code>). For longer work, use <code>background: true</code> — a timed-out foreground command leaves the shell in an unknown state.</p>
+      </section>
+
+      <!-- COMPACTION -->
+      <section id="compaction">
+        <h2>Context compaction</h2>
+        <p>
+          When tokens exceed 60% of the limit, the engine summarizes the
+          conversation and sends it to the provider for compaction; if that call
+          fails, it falls back to keeping the last 6 messages intact. The
+          <code>stynx-code-compact</code> crate provides a deeper 4-stage pipeline
+          — <strong>Auto → Micro → Session Memory → Full</strong>. You can also
+          trigger it manually with <code>/compact</code>.
+        </p>
+      </section>
+
+      <!-- MCP -->
+      <section id="mcp">
+        <h2>MCP &amp; LSP</h2>
+        <p>
+          stynx loads tools dynamically per MCP (Model Context Protocol) server,
+          exposing each server's tools to the model alongside the built-ins. The
+          <code>lsp</code> tool queries language servers for diagnostics and
+          symbol information via the services layer's LSP bridge.
+        </p>
+      </section>
+
+      <!-- SERVER -->
+      <section id="server">
+        <h2>Headless server</h2>
+        <p>
+          The <code>stynx-code-server</code> crate exposes an Axum HTTP API for
+          headless operation, while <code>stynx-code-bridge</code> provides
+          external integration over stdio, WebSocket, and JWT. Combined with
+          one-shot <code>-p</code> prompts, stdin pipe mode, and
+          <code>--json</code> output, stynx drops cleanly into scripts and CI.
+        </p>
+      </section>
+
+      <!-- KEYS -->
+      <section id="keys">
+        <h2>Keybindings</h2>
+        <table class="tbl">
+          <thead><tr><th>Key</th><th>Action</th></tr></thead>
+          <tbody>
+            {keys.map((k) => (
+              <tr><td><kbd>{k[0]}</kbd></td><td>{k[1]}</td></tr>
+            ))}
+          </tbody>
+        </table>
+        <p>Mouse scroll works in any terminal with mouse capture.</p>
+      </section>
+
+      <!-- COMMANDS -->
+      <section id="commands">
+        <h2>Slash commands</h2>
+        <table class="tbl">
+          <thead><tr><th>Command</th><th>Description</th></tr></thead>
+          <tbody>
+            {commands.map((c) => (
+              <tr><td><code>{c[0]}</code></td><td>{c[1]}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ARCHITECTURE -->
+      <section id="architecture">
+        <h2>Architecture</h2>
+        <p>A 17-crate Rust workspace; most crates follow clean architecture with <code>domain</code>, <code>application</code>, and <code>infrastructure</code> layers.</p>
+        <table class="tbl">
+          <thead><tr><th>Crate</th><th>Responsibility</th></tr></thead>
+          <tbody>
+            <tr><td><code>stynx-code</code></td><td>Main executable — CLI, TUI orchestration, agent/intern delegation, skill loading, prompt assembly.</td></tr>
+            <tr><td><code>stynx-code-engine</code></td><td>Core query engine — agentic loop, tool execution, compaction, hooks, undo stack.</td></tr>
+            <tr><td><code>stynx-code-tools</code></td><td>40 tools — file I/O, shell, web, tasks, scheduling, LSP, MCP wrappers.</td></tr>
+            <tr><td><code>stynx-code-provider</code></td><td>Anthropic SSE streaming and OpenAI-compatible integrations.</td></tr>
+            <tr><td><code>stynx-code-tui</code></td><td>ratatui terminal UI — state, rendering, themes, widgets.</td></tr>
+            <tr><td><code>stynx-code-server</code></td><td>Axum HTTP API for headless operation.</td></tr>
+            <tr><td><code>stynx-code-auth</code></td><td>OAuth PKCE and API-key credential resolution.</td></tr>
+            <tr><td><code>stynx-code-permission</code></td><td>Interactive and config-driven permission gating.</td></tr>
+            <tr><td><code>stynx-code-commands</code></td><td>Slash-command expansion and file-reference resolution.</td></tr>
+            <tr><td><code>stynx-code-memory</code></td><td>Per-project session persistence.</td></tr>
+            <tr><td><code>stynx-code-config</code></td><td>Global + project settings, hooks, intern config.</td></tr>
+            <tr><td><code>stynx-code-services</code></td><td>Analytics, LSP bridge, rate limiting, token estimation, diagnostics, notifications.</td></tr>
+            <tr><td><code>stynx-code-compact</code></td><td>Conversation summarization pipeline.</td></tr>
+            <tr><td><code>stynx-code-bridge</code></td><td>External integration bridge (stdio, WebSocket, JWT).</td></tr>
+            <tr><td><code>stynx-code-plugins</code></td><td>Plugin lifecycle — subprocess plugins, builtins, config.</td></tr>
+            <tr><td><code>stynx-code-types</code></td><td>Core traits/structs for tools, providers, messages, permissions.</td></tr>
+            <tr><td><code>stynx-code-errors</code></td><td>Common application error types and results.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <footer class="doc-foot">
+        <p>License: MIT · <a href={repo} target="_blank" rel="noopener">github.com/maulanasdqn/stynx-code</a></p>
+        <a class="btn btn-ghost" href="/">← Back to home</a>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Scrollspy: highlight the active TOC entry -->
+  <script is:inline>
+    (function () {
+      const links = new Map();
+      document.querySelectorAll("[data-toc]").forEach((a) =>
+        links.set(a.getAttribute("data-toc"), a)
+      );
+      const sections = document.querySelectorAll(".content section[id]");
+      if (!("IntersectionObserver" in window)) return;
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              links.forEach((a) => a.classList.remove("active"));
+              const a = links.get(e.target.id);
+              if (a) a.classList.add("active");
+            }
+          });
+        },
+        { rootMargin: "-20% 0px -70% 0px" }
+      );
+      sections.forEach((s) => io.observe(s));
+    })();
+  </script>
+</Layout>
+
+<style>
+  .docs {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 1180px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    display: none;
+  }
+  .back {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    margin-bottom: 1.6rem;
+    color: var(--text);
+  }
+  .back .dim {
+    color: var(--muted);
+  }
+  .toc-group {
+    margin-bottom: 1.3rem;
+  }
+  .toc-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--iris);
+    margin-bottom: 0.5rem;
+  }
+  .toc-group ul {
+    list-style: none;
+    display: grid;
+    gap: 0.15rem;
+  }
+  .toc-group a {
+    display: block;
+    font-size: 0.88rem;
+    color: var(--subtle);
+    padding: 0.25rem 0.6rem;
+    border-left: 2px solid transparent;
+    border-radius: 0 4px 4px 0;
+    transition: color 0.15s var(--ease), border-color 0.15s var(--ease), background 0.15s var(--ease);
+  }
+  .toc-group a:hover {
+    color: var(--text);
+    background: var(--surface);
+  }
+  .toc-group a.active {
+    color: var(--foam);
+    border-left-color: var(--foam);
+    background: var(--surface);
+  }
+
+  /* Content */
+  .content {
+    min-width: 0;
+    padding-block: 3rem 4rem;
+  }
+  .doc-hero {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--hl-low);
+  }
+  .doc-hero h1 {
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    margin: 0.6rem 0;
+  }
+  .lede {
+    color: var(--subtle);
+    font-size: 1.08rem;
+    max-width: 46rem;
+  }
+
+  .content section {
+    scroll-margin-top: 84px;
+    margin-bottom: 3rem;
+  }
+  .content h2 {
+    font-size: 1.55rem;
+    margin-bottom: 1rem;
+    padding-top: 0.5rem;
+  }
+  .content h3 {
+    font-size: 1.12rem;
+    margin: 1.6rem 0 0.6rem;
+    color: var(--rose);
+  }
+  .content p {
+    color: var(--subtle);
+    margin-bottom: 0.9rem;
+    max-width: 48rem;
+  }
+  .content strong {
+    color: var(--text);
+  }
+  .content em {
+    color: var(--foam);
+    font-style: normal;
+  }
+  .bullets {
+    color: var(--subtle);
+    max-width: 48rem;
+    margin: 0 0 1rem 1.1rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .bullets li {
+    padding-left: 0.2rem;
+  }
+
+  /* inline code */
+  .content :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    color: var(--foam);
+    background: var(--surface);
+    border: 1px solid var(--hl-low);
+    padding: 0.08em 0.38em;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+  /* code inside DocCode blocks should not get the inline pill styling */
+  .content :global(.code code) {
+    color: var(--text);
+    background: none;
+    border: none;
+    padding: 0;
+    white-space: pre;
+    font-size: 0.84rem;
+  }
+
+  kbd {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text);
+    background: var(--overlay);
+    border: 1px solid var(--hl-high);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    padding: 0.1em 0.45em;
+    white-space: nowrap;
+  }
+
+  /* Tables */
+  .tbl {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0 1.4rem;
+    font-size: 0.9rem;
+    display: block;
+    overflow-x: auto;
+  }
+  .tbl th,
+  .tbl td {
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--hl-low);
+    vertical-align: top;
+  }
+  .tbl th {
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom-color: var(--hl-med);
+  }
+  .tbl td {
+    color: var(--subtle);
+  }
+  .tbl tr:hover td {
+    background: var(--surface);
+  }
+
+  .doc-foot {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--hl-low);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .doc-foot p {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0;
+  }
+  .doc-foot a {
+    color: var(--foam);
+  }
+  .doc-foot .btn {
+    color: var(--text);
+  }
+
+  @media (min-width: 920px) {
+    .docs {
+      grid-template-columns: 232px 1fr;
+      gap: 3rem;
+    }
+    .sidebar {
+      display: block;
+      position: sticky;
+      top: 64px;
+      align-self: start;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+      padding: 2.5rem 0;
+    }
+  }
+</style>

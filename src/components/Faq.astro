@@ -1,0 +1,180 @@
+---
+const repo = "https://github.com/maulanasdqn/stynx-code";
+
+const faqs = [
+  {
+    q: "Is stynx-code stable / production-ready?",
+    a: "Not yet — it's early. The version is still pre-1.0 (v0.33.12) and under active development, so expect rough edges, occasional breaking changes, and APIs/flags that may shift between releases. Use it on version-controlled projects, keep backups, and review the diffs it produces before committing. It's very usable day-to-day, just not something to treat as battle-hardened yet.",
+  },
+  {
+    q: "Which models can I use?",
+    a: "Anthropic's Claude API natively, plus any OpenAI-compatible endpoint — DeepSeek, OpenAI, OpenRouter, Qwen/DashScope, Together, and local Ollama. You can mix providers freely and swap the lead model any time with /model.",
+  },
+  {
+    q: "Do I need an API key or a subscription?",
+    a: "You bring your own. Anthropic credentials resolve from the keychain OAuth token, ~/.stynx/.credentials.json or ~/.claude/.credentials.json, or the ANTHROPIC_API_KEY env var. Intern (OpenAI-compatible) keys come from environment variables. Nothing is bundled — your keys, your account.",
+  },
+  {
+    q: "What is intern mode?",
+    a: "You pick a senior model and delegate grunt work to cheaper 'intern' models. Each intern shows up as its own delegate_to_<name> tool the senior can call, or you invoke one directly with /intern <name> <task>. It's the main way stynx-code keeps token spend down.",
+  },
+  {
+    q: "Does it send my code anywhere?",
+    a: "Only to the model providers you configure — that's how any LLM agent works. There's no telemetry and no analytics phoning home; your credentials stay on your machine. It's fully open source (MIT), so you can verify exactly what it does.",
+  },
+  {
+    q: "How much does it cost?",
+    a: "stynx-code itself is free and MIT licensed. You only pay your model providers for token usage — and /cost plus the status-bar readout show your spend live so there are no surprises.",
+  },
+  {
+    q: "How do I install it, and which OS?",
+    a: "cargo install stynx-code (it's published on crates.io), or build from source / with nix. It runs on Linux and macOS; the installed binary is stynx.",
+  },
+  {
+    q: "How do I report a bug or contribute?",
+    a: "Open an issue or pull request on GitHub. Since it's early, bug reports and feedback are genuinely useful right now.",
+  },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+---
+
+<section class="section faq" id="faq">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// faq</span>
+      <h2 class="section-title">Questions, answered.</h2>
+    </div>
+
+    <div class="status-note reveal">
+      <span class="badge">early days</span>
+      <p>
+        Heads up: stynx-code is <strong>pre-1.0 and still under heavy
+        development</strong>. It's stable enough for daily use, but expect the
+        occasional rough edge and breaking change. Work on a git branch and
+        review its edits before committing.
+      </p>
+    </div>
+
+    <div class="faq-list">
+      {
+        faqs.map((f, i) => (
+          <details class="faq-item reveal" open={i === 0}>
+            <summary>
+              <span>{f.q}</span>
+              <span class="chev" aria-hidden="true">+</span>
+            </summary>
+            <p>{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+
+    <p class="more reveal">
+      Still stuck? Everything's documented in the <a href="/docs/">docs</a> or
+      ask on <a href={repo} target="_blank" rel="noopener">GitHub</a>.
+    </p>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</section>
+
+<style>
+  .status-note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.6rem;
+    border: 1px solid color-mix(in srgb, var(--gold) 35%, var(--hl-med));
+    border-left: 3px solid var(--gold);
+    border-radius: var(--radius-sm);
+    background: color-mix(in srgb, var(--gold) 7%, var(--surface));
+  }
+  .status-note .badge {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--base);
+    background: var(--gold);
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .status-note p {
+    color: var(--subtle);
+    font-size: 0.93rem;
+    margin: 0;
+    flex: 1;
+    min-width: 16rem;
+  }
+  .status-note strong {
+    color: var(--gold);
+  }
+
+  .faq-list {
+    display: grid;
+    gap: 0.7rem;
+    max-width: 52rem;
+  }
+  .faq-item {
+    border: 1px solid var(--hl-med);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text);
+    list-style: none;
+    transition: color 0.18s var(--ease);
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item summary:hover {
+    color: var(--foam);
+  }
+  .chev {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    color: var(--iris);
+    transition: transform 0.22s var(--ease);
+    flex-shrink: 0;
+  }
+  .faq-item[open] .chev {
+    transform: rotate(45deg);
+  }
+  .faq-item p {
+    padding: 0 1.2rem 1.15rem;
+    color: var(--subtle);
+    font-size: 0.94rem;
+    margin: 0;
+  }
+  .more {
+    margin-top: 1.6rem;
+    color: var(--subtle);
+    font-size: 0.94rem;
+  }
+  .more a {
+    color: var(--foam);
+    border-bottom: 1px solid color-mix(in srgb, var(--foam) 40%, transparent);
+  }
+</style>

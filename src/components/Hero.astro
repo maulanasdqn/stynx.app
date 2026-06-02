@@ -54,6 +54,8 @@ const ascii = String.raw` ____   _____ __   __ _   _ __  __
           <button class="tab" data-i="4" role="tab">fast</button>
         </div>
 
+        <div class="rot-progress" aria-hidden="true"><span class="bar-fill"></span></div>
+
         <div class="slides">
           <div class="slide is-active" data-i="0">
             <TerminalWindow title="stynx — one-shot">
@@ -258,6 +260,30 @@ const ascii = String.raw` ____   _____ __   __ _   _ __  __
     border-color: transparent;
     font-weight: 600;
   }
+  .rot-progress {
+    height: 2px;
+    background: var(--hl-med);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.85rem;
+  }
+  .bar-fill {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--iris), var(--foam));
+  }
+  @keyframes fill {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  .rotator.paused .bar-fill {
+    animation-play-state: paused;
+  }
   .slides {
     display: grid;
   }
@@ -278,6 +304,9 @@ const ascii = String.raw` ____   _____ __   __ _   _ __  __
     .slide {
       transition: none;
     }
+    .rot-progress {
+      display: none;
+    }
   }
 
   @media (min-width: 768px) {
@@ -295,35 +324,50 @@ const ascii = String.raw` ____   _____ __   __ _   _ __  __
     const slides = [...root.querySelectorAll(".slide")];
     if (!tabs.length || !slides.length) return;
 
+    const bar = root.querySelector(".bar-fill");
+    const DURATION = 5000;
     let i = 0;
     let timer;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    function animateBar() {
+      if (!bar || reduce) return;
+      bar.style.animation = "none";
+      void bar.offsetWidth;
+      bar.style.animation = "fill " + DURATION + "ms linear";
+    }
     function show(n) {
       i = (n + slides.length) % slides.length;
       tabs.forEach((t, k) => t.classList.toggle("is-active", k === i));
       slides.forEach((s, k) => s.classList.toggle("is-active", k === i));
+      animateBar();
     }
-    function next() {
-      show(i + 1);
-    }
-    function start() {
+    function startTimer() {
       if (reduce) return;
-      stop();
-      timer = setInterval(next, 4200);
+      clearInterval(timer);
+      timer = setInterval(() => show(i + 1), DURATION);
     }
-    function stop() {
-      if (timer) clearInterval(timer);
+    function stopTimer() {
+      clearInterval(timer);
     }
 
     tabs.forEach((t, k) =>
       t.addEventListener("click", () => {
         show(k);
-        start();
+        startTimer();
       })
     );
-    root.addEventListener("mouseenter", stop);
-    root.addEventListener("mouseleave", start);
-    start();
+    root.addEventListener("mouseenter", () => {
+      stopTimer();
+      root.classList.add("paused");
+    });
+    root.addEventListener("mouseleave", () => {
+      root.classList.remove("paused");
+      show(i);
+      startTimer();
+    });
+
+    show(0);
+    startTimer();
   })();
 </script>

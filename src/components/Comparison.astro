@@ -35,6 +35,10 @@ const cell = (val: string) => {
 
     <div class="table-wrap reveal">
       <table class="cmp">
+        <colgroup>
+          <col class="col-label" />
+          {tools.map((_, i) => <col class={i === 0 ? "col-own" : "col-data"} />)}
+        </colgroup>
         <thead>
           <tr>
             <th class="rowhead"></th>
@@ -74,8 +78,16 @@ const cell = (val: string) => {
   .cmp {
     width: 100%;
     border-collapse: collapse;
-    min-width: 680px;
+    table-layout: fixed;
+    min-width: 720px;
     font-size: 0.9rem;
+  }
+  .col-label {
+    width: 26%;
+  }
+  .col-own,
+  .col-data {
+    width: 18.5%;
   }
   .cmp th,
   .cmp td {

@@ -19,7 +19,7 @@ const mechanisms = [
   },
   {
     title: "Cost in plain sight",
-    body: "A live token + cost readout sits in the status bar, and /cost breaks down the spend — so you never burn tokens blind.",
+    body: "A live token + cost readout sits in the status bar, and /cost breaks down the spend, so you never burn tokens blind.",
     color: "var(--rose)",
   },
 ];
@@ -32,7 +32,7 @@ const mechanisms = [
       <h2 class="section-title">Get more done while burning <span class="grad">fewer tokens</span>.</h2>
       <p class="section-sub">
         Premium models are expensive per token. stynx-code is built to spend them
-        sparingly — push the cheap work to interns, keep context small, and only
+        sparingly: push the cheap work to interns, keep context small, and only
         reach for deep reasoning when it pays off.
       </p>
     </div>
@@ -53,7 +53,7 @@ const mechanisms = [
       </ul>
 
       <div class="reveal">
-        <TerminalWindow title="stynx — /cost">
+        <TerminalWindow title="stynx · /cost">
           <div><span class="prompt">&gt;</span> <span class="cmd">/cost</span></div>
           <div class="muted">session usage</div>
           <div>&nbsp;</div>
@@ -65,7 +65,7 @@ const mechanisms = [
           <div><span class="accent">total this session</span>   <span class="ok">$0.0129</span></div>
         </TerminalWindow>
         <p class="footnote">
-          Illustrative — actual usage depends on your task, models, and config.
+          Illustrative. Actual usage depends on your task, models, and config.
         </p>
       </div>
     </div>
@@ -74,13 +74,13 @@ const mechanisms = [
       <h3>Why it adds up</h3>
       <p>
         In a normal agent loop, the <strong>entire growing conversation is
-        re-sent to the priciest model on every single turn</strong> — so cost
+        re-sent to the priciest model on every single turn</strong>, so cost
         climbs with each step, not just with the work you actually asked for.
         stynx-code attacks both halves of that bill at once:
       </p>
       <ul class="why-list">
-        <li><span class="k foam">fewer tokens hit the expensive model</span> — interns absorb the bulk of the reads, greps, and edits, so the senior's pricey context only carries the decisions.</li>
-        <li><span class="k iris">the conversation itself stays smaller</span> — compaction caps how big each request can get, instead of letting it balloon turn after turn.</li>
+        <li><span class="k foam">fewer tokens hit the expensive model</span>: interns absorb the bulk of the reads, greps, and edits, so the senior's pricey context only carries the decisions.</li>
+        <li><span class="k iris">the conversation itself stays smaller</span>: compaction caps how big each request can get, instead of letting it balloon turn after turn.</li>
       </ul>
       <p class="why-tldr">
         Same work, fewer premium tokens, lower spend. That's the whole idea.
@@ -91,13 +91,10 @@ const mechanisms = [
 
 <style>
   .tokens {
-    background: linear-gradient(180deg, transparent, var(--hl-low), transparent);
+    background: var(--hl-low);
   }
   .grad {
-    background: linear-gradient(120deg, var(--foam), var(--gold));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--foam);
   }
   .tok-grid {
     display: grid;
@@ -148,9 +145,7 @@ const mechanisms = [
     padding: 1.8rem;
     border: 1px solid var(--hl-med);
     border-radius: var(--radius);
-    background:
-      radial-gradient(120% 130% at 0% 0%, rgba(156, 207, 216, 0.1), transparent 55%),
-      var(--surface);
+    background: var(--surface);
   }
   .why h3 {
     font-size: 1.2rem;

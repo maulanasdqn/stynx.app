@@ -58,21 +58,21 @@ const ascii = String.raw` ____   _____ __   __ _   _ __  __
 
         <div class="slides">
           <div class="slide is-active" data-i="0">
-            <TerminalWindow title="stynx — one-shot">
+            <TerminalWindow title="stynx · one-shot">
               <div><span class="prompt">$</span> <span class="cmd">stynx -p</span> <span class="rose">"find every TODO under src/"</span></div>
               <div class="muted">· thinking…</div>
               <div><span class="pine">⏺ grep</span> <span class="muted">pattern="TODO" path="src/" -n</span></div>
               <div class="ok">  ↳ 7 matches across 3 files</div>
               <div class="answer">
-                <span class="accent">src/engine/loop.rs</span>  — 3 TODOs<br />
-                <span class="accent">src/tui/render.rs</span>   — 2 TODOs<br />
-                <span class="accent">src/tools/bash.rs</span>   — 2 TODOs
+                <span class="accent">src/engine/loop.rs</span>  · 3 TODOs<br />
+                <span class="accent">src/tui/render.rs</span>   · 2 TODOs<br />
+                <span class="accent">src/tools/bash.rs</span>   · 2 TODOs
               </div>
             </TerminalWindow>
           </div>
 
           <div class="slide" data-i="1">
-            <TerminalWindow title="stynx — plan mode">
+            <TerminalWindow title="stynx · plan mode">
               <div><span class="prompt">&gt;</span> <span class="cmd">/plan</span> <span class="rose">add a --version flag</span></div>
               <div class="muted">◆ plan mode · read-only tools</div>
               <div><span class="pine">⏺ read</span> <span class="muted">src/cli.rs</span></div>
@@ -88,7 +88,7 @@ const ascii = String.raw` ____   _____ __   __ _   _ __  __
           </div>
 
           <div class="slide" data-i="2">
-            <TerminalWindow title="stynx — intern delegation">
+            <TerminalWindow title="stynx · intern delegation">
               <div><span class="prompt">&gt;</span> <span class="rose">swap println! → tracing in src/io.rs</span></div>
               <div><span class="iris">⚇ delegate_to_deepseek</span></div>
               <div class="muted">  task: rewrite 14 println! calls</div>
@@ -99,7 +99,7 @@ const ascii = String.raw` ____   _____ __   __ _   _ __  __
           </div>
 
           <div class="slide" data-i="3">
-            <TerminalWindow title="stynx — extended thinking">
+            <TerminalWindow title="stynx · extended thinking">
               <div><span class="prompt">&gt;</span> <span class="cmd">/think</span> <span class="rose">why is this test flaky?</span></div>
               <div class="muted">◆ thinking · high effort</div>
               <div class="think-line">The test shares a TempDir across cases;<br />case order mutates the fixture state…</div>
@@ -109,7 +109,7 @@ const ascii = String.raw` ____   _____ __   __ _   _ __  __
           </div>
 
           <div class="slide" data-i="4">
-            <TerminalWindow title="stynx — fast mode">
+            <TerminalWindow title="stynx · fast mode">
               <div><span class="prompt">&gt;</span> <span class="cmd">/fast</span></div>
               <div><span class="accent">⚡ Fast mode on →</span> <span class="foam">claude-haiku-4-5</span></div>
               <div><span class="prompt">&gt;</span> <span class="rose">rename `cfg` to `config` repo-wide</span></div>
@@ -160,10 +160,7 @@ const ascii = String.raw` ____   _____ __   __ _   _ __  __
     font-size: clamp(2.2rem, 6vw, 3.6rem);
   }
   .grad {
-    background: linear-gradient(120deg, var(--iris), var(--foam), var(--rose));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--iris);
   }
   .hero-sub {
     margin-top: 1.3rem;
@@ -256,7 +253,7 @@ const ascii = String.raw` ____   _____ __   __ _   _ __  __
   }
   .tab.is-active {
     color: var(--base);
-    background: linear-gradient(135deg, var(--iris), var(--foam));
+    background: var(--iris);
     border-color: transparent;
     font-weight: 600;
   }
@@ -271,7 +268,7 @@ const ascii = String.raw` ____   _____ __   __ _   _ __  __
     display: block;
     height: 100%;
     width: 0;
-    background: linear-gradient(90deg, var(--iris), var(--foam));
+    background: var(--iris);
   }
   @keyframes fill {
     from {

@@ -8,19 +8,19 @@ const capabilities = [
   {
     cmd: "/think",
     title: "Extended thinking",
-    body: "Toggle visible reasoning. The model plans in a thinking block before it touches a single tool — and you see every line of it.",
+    body: "Toggle visible reasoning. The model plans in a thinking block before it touches a single tool, and you see every line of it.",
     color: "var(--iris)",
   },
   {
     cmd: "/effort",
     title: "Effort dial",
-    body: "low · medium · high · max. Trade latency for depth per task — quick edits stay snappy, hard bugs get the deep pass.",
+    body: "low · medium · high · max. Trade latency for depth per task: quick edits stay snappy, hard bugs get the deep pass.",
     color: "var(--foam)",
   },
   {
     cmd: "/fast · /model",
     title: "Fluid model control",
-    body: "Swap models mid-session — opus, sonnet, haiku, or any provider. /fast drops to haiku for cheap, instant turns.",
+    body: "Swap models mid-session: opus, sonnet, haiku, or any provider. /fast drops to haiku for cheap, instant turns.",
     color: "var(--gold)",
   },
   {
@@ -38,7 +38,7 @@ const capabilities = [
       <span class="eyebrow">// the ai engine</span>
       <h2 class="section-title">AI that thinks before it acts.</h2>
       <p class="section-sub">
-        A real agentic loop — up to <strong>200 turns</strong> of plan → call
+        A real agentic loop: up to <strong>200 turns</strong> of plan → call
         tools → review → repeat. Reasoning is visible, effort is tunable, and
         the model is yours to swap on the fly.
       </p>
@@ -46,7 +46,7 @@ const capabilities = [
 
     <div class="ai-grid">
       <div class="reveal">
-        <TerminalWindow title="stynx — extended thinking">
+        <TerminalWindow title="stynx · extended thinking">
           <div><span class="prompt">&gt;</span> <span class="rose">refactor the auth module to the new token flow</span></div>
           <div class="muted">◆ thinking · high effort</div>
           <div class="think">
@@ -125,7 +125,7 @@ const capabilities = [
   }
   .step.on {
     color: var(--base);
-    background: linear-gradient(135deg, var(--foam), var(--iris));
+    background: var(--foam);
     border-color: transparent;
     font-weight: 600;
   }

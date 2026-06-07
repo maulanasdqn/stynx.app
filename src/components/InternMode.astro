@@ -14,19 +14,19 @@ const features = [
     icon: "⚇",
     color: "var(--foam)",
     title: "Mix any providers",
-    body: "Run any number of interns at once — DeepSeek, OpenRouter, Qwen, OpenAI, or a local Ollama — side by side, each on its own model.",
+    body: "Run any number of interns at once: DeepSeek, OpenRouter, Qwen, OpenAI, or a local Ollama, side by side, each on its own model.",
   },
   {
     icon: "⛓",
     color: "var(--iris)",
     title: "First-class tools",
-    body: "Every intern is exposed as its own delegate_to_<name> tool, so the senior delegates with a normal tool call — no special syntax.",
+    body: "Every intern is exposed as its own delegate_to_<name> tool, so the senior delegates with a normal tool call, no special syntax.",
   },
   {
     icon: "⇄",
     color: "var(--gold)",
     title: "Routes by description",
-    body: "The senior picks the right intern from each tool's description — write what each is good at (speed, cost, specialty) and it chooses.",
+    body: "The senior picks the right intern from each tool's description: write what each is good at (speed, cost, specialty) and it chooses.",
   },
   {
     icon: "→",
@@ -38,7 +38,7 @@ const features = [
     icon: "⛨",
     color: "var(--pine)",
     title: "Sandboxed & safe",
-    body: "Interns get a restricted toolset — bash, read, file_write, file_edit, glob, grep — and can't spawn further sub-agents.",
+    body: "Interns get a restricted toolset (bash, read, file_write, file_edit, glob, grep) and can't spawn further sub-agents.",
   },
   {
     icon: "🏁",
@@ -57,7 +57,7 @@ const features = [
       <p class="section-sub">
         This is what sets stynx-code apart. Pick any lead model, then let it
         delegate the grunt work to one or more cheaper models running in
-        parallel. The senior does the thinking; the interns do the typing — and
+        parallel. The senior does the thinking; the interns do the typing, and
         you spend a fraction of the tokens. Swap the lead any time with
         <code>/model</code>; every other model becomes a
         <code>delegate_to_&lt;name&gt;</code> tool.
@@ -87,18 +87,18 @@ const features = [
         </div>
 
         <p class="note">
-          Interns run a restricted toolset — <code>bash</code>, <code>read</code>,
+          Interns run a restricted toolset (<code>bash</code>, <code>read</code>,
           <code>file_write</code>, <code>file_edit</code>, <code>glob</code>,
-          <code>grep</code> — and can't spawn further sub-agents. They return
+          <code>grep</code>) and can't spawn further sub-agents. They return
           <em>Summary / Files changed / Output</em>; the senior reviews and
           integrates.
         </p>
       </div>
 
       <div class="reveal">
-        <TerminalWindow title="stynx — /intern-bench">
+        <TerminalWindow title="stynx · /intern-bench">
           <div><span class="prompt">&gt;</span> <span class="cmd">/intern-bench</span></div>
-          <div class="muted">🏁 Intern Benchmark — 3 intern(s) × 6 tasks</div>
+          <div class="muted">🏁 Intern Benchmark · 3 intern(s) × 6 tasks</div>
           <div>&nbsp;</div>
           <div class="muted">Leaderboard (avg score, then speed):</div>
           <div><span class="accent">🥇 #1</span>  deepseek    <span class="ok">8.5/10</span>  pass 6/6   <span class="muted">42.3s</span></div>
@@ -132,7 +132,7 @@ const features = [
 
 <style>
   .intern {
-    background: linear-gradient(180deg, transparent, var(--hl-low), transparent);
+    background: var(--hl-low);
   }
   .intern-grid {
     display: grid;
@@ -151,7 +151,7 @@ const features = [
     flex-direction: column;
     padding: 0.7rem 1.4rem;
     border-radius: var(--radius-sm);
-    background: linear-gradient(135deg, var(--iris), var(--rose));
+    background: var(--iris);
     color: var(--base);
     font-family: var(--font-mono);
   }

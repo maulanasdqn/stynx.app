@@ -5,17 +5,17 @@ const rows = [
   { label: "Built with", v: ["Rust", "Go", "TypeScript", "Python"] },
   { label: "Install", v: ["cargo · single binary", "script · brew · npm", "npm", "pip / uv"] },
   { label: "Bring any model", v: ["✓", "✓", "✓ 15+", "✓"] },
-  { label: "Delegate to cheaper “intern” models", v: ["✓ named tools, multi", "—", "—", "Partial"] },
+  { label: "Delegate to cheaper “intern” models", v: ["✓ named tools, multi", "·", "·", "Partial"] },
   { label: "Permission modes", v: ["✓ 4 modes", "✓", "Minimal · extensible", "Confirm prompts"] },
   { label: "Auto context compaction", v: ["✓ 60% · 4-stage", "✓", "Via extension", "Partial"] },
-  { label: "MCP support", v: ["✓", "✓", "Via extension", "—"] },
+  { label: "MCP support", v: ["✓", "✓", "Via extension", "·"] },
   { label: "Design", v: ["Batteries-included TUI", "Batteries-included TUI", "Minimal & extensible", "Git-native · repo-map"] },
   { label: "License", v: ["MIT", "MIT", "Open source", "Apache-2.0"] },
 ];
 
 const cell = (val: string) => {
   if (val === "✓") return { kind: "yes", text: "✓" };
-  if (val === "—") return { kind: "no", text: "—" };
+  if (val === "·") return { kind: "no", text: "·" };
   if (val.startsWith("✓")) return { kind: "yes-text", text: val };
   return { kind: "text", text: val };
 };
@@ -28,7 +28,7 @@ const cell = (val: string) => {
       <h2 class="section-title">Among open-source agents</h2>
       <p class="section-sub">
         stynx-code is open source and so are its closest peers. Here's the honest
-        shape of how it lines up against other open-source terminal agents — pick
+        shape of how it lines up against other open-source terminal agents. Pick
         whatever fits your workflow.
       </p>
     </div>
@@ -63,7 +63,7 @@ const cell = (val: string) => {
 
     <p class="disclaimer reveal">
       Reflects each tool's primary, documented design as of mid-2026. These
-      projects all move fast — check their own docs for the latest.
+      projects all move fast. Check their own docs for the latest.
     </p>
   </div>
 </section>

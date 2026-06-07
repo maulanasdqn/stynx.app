@@ -50,16 +50,13 @@ body {
   overflow-x: hidden;
 }
 
-/* Layered glow backdrop */
+/* Subtle single glow behind the hero */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
-  background:
-    radial-gradient(60% 50% at 70% -5%, rgba(196, 167, 231, 0.16), transparent 70%),
-    radial-gradient(50% 40% at 10% 10%, rgba(156, 207, 216, 0.1), transparent 70%),
-    radial-gradient(45% 45% at 50% 110%, rgba(235, 188, 186, 0.08), transparent 70%);
+  background: radial-gradient(55% 45% at 72% -8%, rgba(196, 167, 231, 0.1), transparent 70%);
   pointer-events: none;
 }
 
@@ -149,15 +146,14 @@ pre {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--iris), var(--rose));
+  background: var(--iris);
   color: var(--base);
   font-weight: 600;
-  box-shadow: 0 8px 30px rgba(196, 167, 231, 0.28);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 36px rgba(196, 167, 231, 0.4);
+  background: color-mix(in srgb, var(--iris) 88%, white);
 }
 
 .btn-ghost {
@@ -173,20 +169,19 @@ pre {
 }
 
 .btn-foam {
-  background: linear-gradient(135deg, var(--foam), var(--pine));
+  background: var(--foam);
   color: var(--base);
   font-weight: 600;
-  box-shadow: 0 8px 30px rgba(156, 207, 216, 0.26);
 }
 
 .btn-foam:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 36px rgba(156, 207, 216, 0.4);
+  background: color-mix(in srgb, var(--foam) 88%, white);
 }
 
 /* ── Card surface ──────────────────────────────────────────────────────── */
 .card {
-  background: linear-gradient(180deg, var(--surface), var(--base));
+  background: var(--surface);
   border: 1px solid var(--hl-med);
   border-radius: var(--radius);
   padding: 1.5rem;

@@ -4,7 +4,7 @@ import DocCode from "../components/docs/DocCode.astro";
 
 const repo = "https://github.com/maulanasdqn/stynx-code";
 
-// Table of contents — grouped. `id` must match each <section id> below.
+// Table of contents: grouped. `id` must match each <section id> below.
 const toc = [
   {
     group: "Getting started",
@@ -119,7 +119,7 @@ const providerRows = [
 const tools = [
   ["File I/O", "read · file_write · file_edit", "Read files, create new files, and apply surgical edits. Every write/edit is pushed to the undo stack."],
   ["Discovery", "glob · grep", "Find files by pattern and search file contents with regex."],
-  ["Shell", "bash", "A single persistent shell session — cd, export, and sourced state survive across calls. Supports background processes."],
+  ["Shell", "bash", "A single persistent shell session: cd, export, and sourced state survive across calls. Supports background processes."],
   ["Web", "web_fetch · web_search", "Fetch a URL as text and run web searches."],
   ["Tasks (todo)", "todo_read · todo_write", "Maintain a structured task list for the current turn."],
   ["Background tasks", "task_create · task_get · task_list · task_stop · task_update · task_output", "Spawn and manage long-running background jobs."],
@@ -132,7 +132,7 @@ const tools = [
 ---
 
 <Layout
-  title="Documentation — stynx-code"
+  title="Documentation: stynx-code"
   description="Technical documentation for stynx-code: installation, configuration, models & AI controls, the permission system, intern delegation, sessions, skills, hooks, the full tool reference, keybindings, and slash commands."
 >
   <div class="docs">
@@ -187,12 +187,12 @@ const tools = [
           backoff with up to 3 retries.
         </p>
         <ul class="bullets">
-          <li><strong>Modern terminal UI</strong> — sidebar, command palette, model picker, session list, runtime theme switcher (rose-pine, catppuccin, tokyo-night, gruvbox), mouse + bracketed paste, <code>@</code>-file mentions, slash-command popover, toasts, and a colorized diff renderer.</li>
-          <li><strong>Intern mode</strong> — a senior model delegates to one or more cheaper OpenAI-compatible models, each exposed as a <code>delegate_to_&lt;name&gt;</code> tool.</li>
-          <li><strong>Permission-first</strong> — Normal / Auto-accept / Plan / Bypass modes with per-tool allow rules.</li>
-          <li><strong>Skills as slash commands</strong> — drop a markdown file under <code>.claude/skills/</code> and it appears as <code>/your-skill</code>.</li>
-          <li><strong>Sessions</strong> — automatic per-project persistence.</li>
-          <li><strong>Hooks</strong> — shell hooks for <code>session-start</code>, <code>pre-tool-use</code>, <code>post-tool-use</code>, and <code>stop</code>.</li>
+          <li><strong>Modern terminal UI</strong>: sidebar, command palette, model picker, session list, runtime theme switcher (rose-pine, catppuccin, tokyo-night, gruvbox), mouse + bracketed paste, <code>@</code>-file mentions, slash-command popover, toasts, and a colorized diff renderer.</li>
+          <li><strong>Intern mode</strong>: a senior model delegates to one or more cheaper OpenAI-compatible models, each exposed as a <code>delegate_to_&lt;name&gt;</code> tool.</li>
+          <li><strong>Permission-first</strong>: Normal / Auto-accept / Plan / Bypass modes with per-tool allow rules.</li>
+          <li><strong>Skills as slash commands</strong>: drop a markdown file under <code>.claude/skills/</code> and it appears as <code>/your-skill</code>.</li>
+          <li><strong>Sessions</strong>: automatic per-project persistence.</li>
+          <li><strong>Hooks</strong>: shell hooks for <code>session-start</code>, <code>pre-tool-use</code>, <code>post-tool-use</code>, and <code>stop</code>.</li>
         </ul>
       </section>
 
@@ -200,12 +200,12 @@ const tools = [
       <section id="install">
         <h2>Installation</h2>
         <p>The installed binary is <code>stynx</code>. Published on crates.io.</p>
-        <DocCode title="bash — fastest, from crates.io" lang="bash" code={`# install the latest release
+        <DocCode title="bash · fastest, from crates.io" lang="bash" code={`# install the latest release
 cargo install stynx-code
 
 # then run it
 stynx`} />
-        <DocCode title="bash — from source / with nix" lang="bash" code={`# from source
+        <DocCode title="bash · from source / with nix" lang="bash" code={`# from source
 git clone https://github.com/maulanasdqn/stynx-code
 cd stynx-code
 cargo install --path stynx-code
@@ -226,7 +226,7 @@ stynx
 # one-shot prompt
 stynx -p "find every TODO comment under src/ and group by file"
 
-# pipe mode — read stdin as the prompt
+# pipe mode: read stdin as the prompt
 echo "explain this file" | stynx
 
 # JSON output for scripting
@@ -236,7 +236,7 @@ stynx --json -p "list files modified in the last commit"`} />
       <!-- AUTH -->
       <section id="auth">
         <h2>Authentication</h2>
-        <p>Anthropic credentials are resolved in this order — the first one found wins:</p>
+        <p>Anthropic credentials are resolved in this order, the first one found wins:</p>
         <ol class="bullets">
           <li>macOS Keychain / Linux libsecret (the Claude Code OAuth token at <code>Claude Code-credentials</code>)</li>
           <li><code>~/.stynx/.credentials.json</code></li>
@@ -244,12 +244,12 @@ stynx --json -p "list files modified in the last commit"`} />
           <li><code>~/.stynx/settings.json</code> → <code>env.ANTHROPIC_AUTH_TOKEN</code> (with optional <code>env.ANTHROPIC_BASE_URL</code>)</li>
           <li>The <code>ANTHROPIC_API_KEY</code> environment variable</li>
         </ol>
-        <p>Run <code>/login</code> inside <code>stynx</code> for interactive instructions, and <code>/logout</code> to clear credentials. Intern (OpenAI-compatible) keys are read from environment variables — see <a href="#interns">Intern mode</a>.</p>
+        <p>Run <code>/login</code> inside <code>stynx</code> for interactive instructions, and <code>/logout</code> to clear credentials. Intern (OpenAI-compatible) keys are read from environment variables; see <a href="#interns">Intern mode</a>.</p>
       </section>
 
       <!-- CONFIG -->
       <section id="config">
-        <h2>Configuration — settings.json</h2>
+        <h2>Configuration: settings.json</h2>
         <p>
           Settings live in <code>.stynx/settings.json</code>. The global file at
           <code>~/.stynx/settings.json</code> and the project file at
@@ -264,7 +264,7 @@ stynx --json -p "list files modified in the last commit"`} />
           <strong>Migrating from Claude Code?</strong> <code>.stynx/</code> is the
           primary config directory now, but <code>.claude/</code> is still honored
           for credentials, skills &amp; commands, MCP servers, and
-          <code>CLAUDE.md</code> / <code>MEMORY.md</code> — so existing setups keep
+          <code>CLAUDE.md</code> / <code>MEMORY.md</code>, so existing setups keep
           working. Only <code>settings.json</code> itself moved to
           <code>.stynx/</code>. See the <a href="#paths">paths reference</a> below.
         </div>
@@ -294,7 +294,7 @@ stynx --json -p "list files modified in the last commit"`} />
             <tr><td><code>max_turns</code></td><td>Max agentic turns per request (default 200).</td></tr>
             <tr><td><code>max_tokens</code></td><td>Max output tokens per response.</td></tr>
             <tr><td><code>effort</code></td><td>Default reasoning effort: low / medium / high / max.</td></tr>
-            <tr><td><code>commit_attribution</code></td><td><code>false</code> (default) omits AI attribution from commits — no <code>Co-Authored-By</code> trailers. Set <code>true</code> to add it back.</td></tr>
+            <tr><td><code>commit_attribution</code></td><td><code>false</code> (default) omits AI attribution from commits, no <code>Co-Authored-By</code> trailers. Set <code>true</code> to add it back.</td></tr>
             <tr><td><code>interns</code></td><td>Array of delegate models (see Intern mode).</td></tr>
             <tr><td><code>permissions</code></td><td><code>allow</code> / <code>deny</code> rule lists (see Permission system).</td></tr>
             <tr><td><code>hooks</code></td><td>Lifecycle shell hooks (see Hooks).</td></tr>
@@ -307,8 +307,8 @@ stynx --json -p "list files modified in the last commit"`} />
           <tbody>
             <tr><td><code>~/.stynx/settings.json</code></td><td>Global settings.</td></tr>
             <tr><td><code>./.stynx/settings.json</code></td><td>Project settings (merged over global).</td></tr>
-            <tr><td><code>~/.stynx/.credentials.json</code></td><td>Anthropic credentials — primary location.</td></tr>
-            <tr><td><code>~/.claude/.credentials.json</code></td><td>Anthropic credentials — fallback (Claude Code compatible).</td></tr>
+            <tr><td><code>~/.stynx/.credentials.json</code></td><td>Anthropic credentials, primary location.</td></tr>
+            <tr><td><code>~/.claude/.credentials.json</code></td><td>Anthropic credentials, fallback (Claude Code compatible).</td></tr>
             <tr><td><code>~/.claude/skills/</code> · <code>./.claude/skills/</code></td><td>Skills (also <code>.claude/commands/</code>).</td></tr>
             <tr><td><code>.claude/mcp.json</code> · <code>~/.claude/mcp.json</code></td><td>MCP server definitions.</td></tr>
             <tr><td><code>.claude/CLAUDE.md</code> · <code>MEMORY.md</code></td><td>Project instructions / memory.</td></tr>
@@ -328,9 +328,9 @@ stynx --json -p "list files modified in the last commit"`} />
           <thead><tr><th>Command</th><th>What it does</th></tr></thead>
           <tbody>
             <tr><td><code>/model [name]</code></td><td>Switch the senior model. Aliases: <code>opus</code>, <code>sonnet</code>, <code>haiku</code>. Also bound to <kbd>Ctrl+M</kbd>.</td></tr>
-            <tr><td><code>/fast</code></td><td>Toggle fast mode — drops to <code>claude-haiku-4-5</code> for cheap, instant turns.</td></tr>
+            <tr><td><code>/fast</code></td><td>Toggle fast mode, drops to <code>claude-haiku-4-5</code> for cheap, instant turns.</td></tr>
             <tr><td><code>/think</code></td><td>Toggle extended thinking. The model emits a visible reasoning block before acting (also <kbd>Alt+T</kbd>).</td></tr>
-            <tr><td><code>/effort low|medium|high|max</code></td><td>Set reasoning effort — trade latency for depth per task.</td></tr>
+            <tr><td><code>/effort low|medium|high|max</code></td><td>Set reasoning effort, trade latency for depth per task.</td></tr>
           </tbody>
         </table>
       </section>
@@ -338,17 +338,17 @@ stynx --json -p "list files modified in the last commit"`} />
       <!-- PERMISSIONS -->
       <section id="permissions">
         <h2>Permission system</h2>
-        <p>stynx is permission-first. Tool calls are gated by the current mode and your allow/deny rules; confirmation happens in an in-TUI modal — no terminal mode-switching.</p>
+        <p>stynx is permission-first. Tool calls are gated by the current mode and your allow/deny rules; confirmation happens in an in-TUI modal, no terminal mode-switching.</p>
         <table class="tbl">
           <thead><tr><th>Mode</th><th>Behavior</th></tr></thead>
           <tbody>
             <tr><td><strong>Normal</strong></td><td>Prompts before each gated tool call.</td></tr>
             <tr><td><strong>Auto-accept</strong></td><td>Runs tools without prompting.</td></tr>
-            <tr><td><strong>Plan</strong></td><td>Read-only tools only — no mutations (see Plan mode).</td></tr>
+            <tr><td><strong>Plan</strong></td><td>Read-only tools only, no mutations (see Plan mode).</td></tr>
             <tr><td><strong>Bypass</strong></td><td>Skips all permission checks.</td></tr>
           </tbody>
         </table>
-        <p>Cycle modes with <kbd>Shift+Tab</kbd> or <code>/mode</code>. Define per-tool rules in <code>.stynx/settings.json</code> — patterns are <code>tool:argument-glob</code>:</p>
+        <p>Cycle modes with <kbd>Shift+Tab</kbd> or <code>/mode</code>. Define per-tool rules in <code>.stynx/settings.json</code>. Patterns are <code>tool:argument-glob</code>:</p>
         <DocCode title="permissions" lang="json" code={`"permissions": {
   "allow": ["bash:cargo *", "read:*"],
   "deny":  ["bash:rm -rf*"]
@@ -362,7 +362,7 @@ stynx --json -p "list files modified in the last commit"`} />
         <p>
           <code>/plan [task]</code> toggles plan mode, restricting the model to
           read-only tools. It can explore, reason, and propose a plan with zero
-          risk of mutating your working tree — ideal for scoping a change before
+          risk of mutating your working tree, ideal for scoping a change before
           you let it write. Toggle back to a write-capable mode to execute.
         </p>
       </section>
@@ -373,8 +373,7 @@ stynx --json -p "list files modified in the last commit"`} />
         <p>
           Run any model as the senior and delegate grunt work to one or more
           cheaper OpenAI-compatible models. Each intern becomes its own
-          <code>delegate_to_&lt;name&gt;</code> tool the senior can pick from —
-          chosen by each tool's <code>description</code>, so describe what each is
+          <code>delegate_to_&lt;name&gt;</code> tool the senior can pick from, chosen by each tool's <code>description</code>, so describe what each is
           good at. Interns run a restricted toolset (<code>bash</code>,
           <code>read</code>, <code>file_write</code>, <code>file_edit</code>,
           <code>glob</code>, <code>grep</code>) and cannot spawn sub-agents. They
@@ -382,21 +381,21 @@ stynx --json -p "list files modified in the last commit"`} />
           integrates.
         </p>
 
-        <h3>Option 1 — .env shorthand</h3>
+        <h3>Option 1: .env shorthand</h3>
         <DocCode title=".env" lang="ini" code={`# DeepSeek (legacy single-intern shortcut)
 DEEPSEEK_API_KEY=sk-...
 DEEPSEEK_MODEL=deepseek-chat                  # optional
 
-# OpenRouter — declare multiple interns via name:model pairs
+# OpenRouter: declare multiple interns via name:model pairs
 OPENROUTER_API_KEY=sk-or-...
 OPENROUTER_INTERNS=qwen-coder:qwen/qwen3-coder,haiku:anthropic/claude-haiku-4.5,kimi:moonshotai/kimi-k2
 
 # Qwen / Alibaba DashScope (auto-registers a "qwen" intern)
 QWEN_API_KEY=sk-...
 QWEN_MODEL=qwen-plus                          # optional`} />
-        <p>Copy <code>.env.example</code> to <code>.env</code>, fill in keys, and add it to <code>.gitignore</code> — stynx autoloads it on startup. At launch you'll see one <code>· intern ready: &lt;name&gt;</code> line per intern that resolved; interns missing their key are silently skipped.</p>
+        <p>Copy <code>.env.example</code> to <code>.env</code>, fill in keys, and add it to <code>.gitignore</code>; stynx autoloads it on startup. At launch you'll see one <code>· intern ready: &lt;name&gt;</code> line per intern that resolved; interns missing their key are silently skipped.</p>
 
-        <h3>Option 2 — interns array in settings.json</h3>
+        <h3>Option 2: interns array in settings.json</h3>
         <DocCode title="settings.json" lang="json" code={`{
   "interns": [
     { "name": "deepseek",   "provider": "deepseek",   "model": "deepseek-chat",
@@ -423,7 +422,7 @@ QWEN_MODEL=qwen-plus                          # optional`} />
         <DocCode title="in-session" lang="bash" code={`/intern                                   # show available interns
 /intern list every public fn and one-line it   # picks the first intern
 /intern qwen-coder write a unit test for util::strip_ansi`} />
-        <p>Or let the senior decide: <em>"refactor every <code>println!</code> in src/foo.rs to <code>tracing::info!</code>; hand it to qwen-coder"</em> — the senior calls <code>delegate_to_qwen_coder</code> with a focused task.</p>
+        <p>Or let the senior decide: <em>"refactor every <code>println!</code> in src/foo.rs to <code>tracing::info!</code>; hand it to qwen-coder"</em>, the senior calls <code>delegate_to_qwen_coder</code> with a focused task.</p>
       </section>
 
       <!-- BENCH -->
@@ -433,13 +432,13 @@ QWEN_MODEL=qwen-plus                          # optional`} />
         <DocCode title="in-session" lang="text" code={`/intern-bench                 # benchmark every configured intern
 /intern-bench qwen-coder      # benchmark just one
 
-🏁 Intern Benchmark — 3 intern(s) × 6 tasks
+🏁 Intern Benchmark · 3 intern(s) × 6 tasks
 
 Leaderboard (avg score, then speed):
   🥇 #1  deepseek    8.5/10   pass 6/6     42.3s
   🥈 #2  qwen-coder  7.2/10   pass 5/6     55.1s
   🥉 #3  mimo        5.0/10   pass 4/6     88.0s`} />
-        <p>The full report — including the judge's one-line note per task — is written to <code>.stynx/intern-bench.md</code>. The benchmark forces Auto-accept while it runs and restores your previous permission mode afterward.</p>
+        <p>The full report (including the judge's one-line note per task) is written to <code>.stynx/intern-bench.md</code>. The benchmark forces Auto-accept while it runs and restores your previous permission mode afterward.</p>
       </section>
 
       <!-- SESSIONS -->
@@ -465,7 +464,7 @@ Leaderboard (avg score, then speed):
         <p>
           Skills are markdown files that become slash commands. Drop a file under
           <code>~/.claude/skills/</code> (global) or <code>./.claude/skills/</code>
-          (project) — <code>.claude/commands/</code> works too — and it appears as
+          (project). <code>.claude/commands/</code> works too, and it appears as
           <code>/your-skill</code> in the slash-command popover, with its
           description shown inline. List what's available with <code>/skills</code>.
           The <code>skill</code> tool lets the model invoke a skill (it reads
@@ -495,7 +494,7 @@ Leaderboard (avg score, then speed):
       <!-- TOOLS -->
       <section id="tools">
         <h2>Tools</h2>
-        <p>The engine provides 40 tools — 37 built-in plus 3 MCP dynamic-tool wrappers. Concurrent-safe tools run in parallel; the rest run sequentially.</p>
+        <p>The engine provides 40 tools: 37 built-in plus 3 MCP dynamic-tool wrappers. Concurrent-safe tools run in parallel; the rest run sequentially.</p>
         <table class="tbl">
           <thead><tr><th>Category</th><th>Tools</th><th>Purpose</th></tr></thead>
           <tbody>
@@ -517,12 +516,12 @@ Leaderboard (avg score, then speed):
           files, and function definitions survive across calls.
         </p>
         <p>For long-running processes (dev servers, watchers, log tails), pass <code>background: true</code>:</p>
-        <DocCode title="bash tool — background processes" lang="jsonc" code={`{"command": "bun run dev", "background": true}   // → "started background process 'bg1'"
+        <DocCode title="bash tool · background processes" lang="jsonc" code={`{"command": "bun run dev", "background": true}   // → "started background process 'bg1'"
 {"status": "bg1"}                                // new output since last read
 {"status": "bg1", "full": true}                  // everything it has emitted
 {"list": true}                                   // all background processes
 {"kill": "bg1"}                                  // stop it`} />
-        <p>Foreground commands have a 120s default timeout (override with <code>"timeout"</code>). For longer work, use <code>background: true</code> — a timed-out foreground command leaves the shell in an unknown state.</p>
+        <p>Foreground commands have a 120s default timeout (override with <code>"timeout"</code>). For longer work, use <code>background: true</code>. A timed-out foreground command leaves the shell in an unknown state.</p>
       </section>
 
       <!-- COMPACTION -->
@@ -532,8 +531,7 @@ Leaderboard (avg score, then speed):
           When tokens exceed 60% of the limit, the engine summarizes the
           conversation and sends it to the provider for compaction; if that call
           fails, it falls back to keeping the last 6 messages intact. The
-          <code>stynx-code-compact</code> crate provides a deeper 4-stage pipeline
-          — <strong>Auto → Micro → Session Memory → Full</strong>. You can also
+          <code>stynx-code-compact</code> crate provides a deeper 4-stage pipeline: <strong>Auto → Micro → Session Memory → Full</strong>. You can also
           trigger it manually with <code>/compact</code>.
         </p>
       </section>
@@ -597,11 +595,11 @@ Leaderboard (avg score, then speed):
         <table class="tbl">
           <thead><tr><th>Crate</th><th>Responsibility</th></tr></thead>
           <tbody>
-            <tr><td><code>stynx-code</code></td><td>Main executable — CLI, TUI orchestration, agent/intern delegation, skill loading, prompt assembly.</td></tr>
-            <tr><td><code>stynx-code-engine</code></td><td>Core query engine — agentic loop, tool execution, compaction, hooks, undo stack.</td></tr>
-            <tr><td><code>stynx-code-tools</code></td><td>40 tools — file I/O, shell, web, tasks, scheduling, LSP, MCP wrappers.</td></tr>
+            <tr><td><code>stynx-code</code></td><td>Main executable: CLI, TUI orchestration, agent/intern delegation, skill loading, prompt assembly.</td></tr>
+            <tr><td><code>stynx-code-engine</code></td><td>Core query engine: agentic loop, tool execution, compaction, hooks, undo stack.</td></tr>
+            <tr><td><code>stynx-code-tools</code></td><td>40 tools: file I/O, shell, web, tasks, scheduling, LSP, MCP wrappers.</td></tr>
             <tr><td><code>stynx-code-provider</code></td><td>Anthropic SSE streaming and OpenAI-compatible integrations.</td></tr>
-            <tr><td><code>stynx-code-tui</code></td><td>ratatui terminal UI — state, rendering, themes, widgets.</td></tr>
+            <tr><td><code>stynx-code-tui</code></td><td>ratatui terminal UI: state, rendering, themes, widgets.</td></tr>
             <tr><td><code>stynx-code-server</code></td><td>Axum HTTP API for headless operation.</td></tr>
             <tr><td><code>stynx-code-auth</code></td><td>OAuth PKCE and API-key credential resolution.</td></tr>
             <tr><td><code>stynx-code-permission</code></td><td>Interactive and config-driven permission gating.</td></tr>
@@ -611,7 +609,7 @@ Leaderboard (avg score, then speed):
             <tr><td><code>stynx-code-services</code></td><td>Analytics, LSP bridge, rate limiting, token estimation, diagnostics, notifications.</td></tr>
             <tr><td><code>stynx-code-compact</code></td><td>Conversation summarization pipeline.</td></tr>
             <tr><td><code>stynx-code-bridge</code></td><td>External integration bridge (stdio, WebSocket, JWT).</td></tr>
-            <tr><td><code>stynx-code-plugins</code></td><td>Plugin lifecycle — subprocess plugins, builtins, config.</td></tr>
+            <tr><td><code>stynx-code-plugins</code></td><td>Plugin lifecycle: subprocess plugins, builtins, config.</td></tr>
             <tr><td><code>stynx-code-types</code></td><td>Core traits/structs for tools, providers, messages, permissions.</td></tr>
             <tr><td><code>stynx-code-errors</code></td><td>Common application error types and results.</td></tr>
           </tbody>

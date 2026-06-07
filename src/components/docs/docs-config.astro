@@ -1,0 +1,119 @@
+---
+import DocCode from "./doc-code.astro";
+---
+
+<section id="config">
+  <h2>Configuration: settings.json</h2>
+  <p>
+    Settings live in <code>.stynx/settings.json</code>. The global file at
+    <code>~/.stynx/settings.json</code> and the project file at
+    <code>./.stynx/settings.json</code> are merged: scalar keys
+    (<code>model</code>, <code>effort</code>, …) take the project value when
+    set and fall back to global, while <code>permissions</code>,
+    <code>hooks</code>, and <code>interns</code> concatenate (interns are
+    merged by <code>name</code>). Run <code>/config</code> to see the merged
+    view.
+  </p>
+  <div class="callout">
+    <strong>Migrating from Claude Code?</strong> <code>.stynx/</code> is the
+    primary config directory now, but <code>.claude/</code> is still honored
+    for credentials, skills &amp; commands, MCP servers, and
+    <code>CLAUDE.md</code> / <code>MEMORY.md</code>, so existing setups keep
+    working. Only <code>settings.json</code> itself moved to
+    <code>.stynx/</code>. See the <a href="#paths">paths reference</a> below.
+  </div>
+  <DocCode title="~/.stynx/settings.json" lang="json" code={`{
+  "model": "claude-sonnet-4-6",
+  "max_turns": 200,
+  "max_tokens": 8192,
+  "effort": "medium",
+  "commit_attribution": false,
+  "interns": [
+    { "name": "deepseek", "provider": "deepseek", "model": "deepseek-chat" }
+  ],
+  "permissions": {
+    "allow": ["bash:cargo *", "read:*"],
+    "deny":  ["bash:rm -rf*"]
+  },
+  "hooks": {
+    "SessionStart":  [{ "command": "scripts/session-start.sh" }],
+    "PreToolUse":    [{ "matcher": "file_write", "command": "scripts/check.sh" }],
+    "PostToolUse":   [{ "command": "scripts/audit.sh" }]
+  }
+}`} />
+  <table class="tbl">
+    <thead><tr><th>Key</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>model</code></td><td>Default senior model.</td></tr>
+      <tr><td><code>max_turns</code></td><td>Max agentic turns per request (default 200).</td></tr>
+      <tr><td><code>max_tokens</code></td><td>Max output tokens per response.</td></tr>
+      <tr><td><code>effort</code></td><td>Default reasoning effort: low / medium / high / max.</td></tr>
+      <tr><td><code>commit_attribution</code></td><td><code>false</code> (default) omits AI attribution from commits, no <code>Co-Authored-By</code> trailers. Set <code>true</code> to add it back.</td></tr>
+      <tr><td><code>interns</code></td><td>Array of delegate models (see Intern mode).</td></tr>
+      <tr><td><code>permissions</code></td><td><code>allow</code> / <code>deny</code> rule lists (see Permission system).</td></tr>
+      <tr><td><code>hooks</code></td><td>Lifecycle shell hooks (see Hooks).</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="paths">Where things live</h3>
+  <table class="tbl">
+    <thead><tr><th>Path</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>~/.stynx/settings.json</code></td><td>Global settings.</td></tr>
+      <tr><td><code>./.stynx/settings.json</code></td><td>Project settings (merged over global).</td></tr>
+      <tr><td><code>~/.stynx/.credentials.json</code></td><td>Anthropic credentials, primary location.</td></tr>
+      <tr><td><code>~/.claude/.credentials.json</code></td><td>Anthropic credentials, fallback (Claude Code compatible).</td></tr>
+      <tr><td><code>~/.claude/skills/</code> · <code>./.claude/skills/</code></td><td>Skills (also <code>.claude/commands/</code>).</td></tr>
+      <tr><td><code>.claude/mcp.json</code> · <code>~/.claude/mcp.json</code></td><td>MCP server definitions.</td></tr>
+      <tr><td><code>.claude/CLAUDE.md</code> · <code>MEMORY.md</code></td><td>Project instructions / memory.</td></tr>
+      <tr><td><code>~/.claude/plugins/</code></td><td>Installed plugins.</td></tr>
+      <tr><td><code>~/.stynx-code/projects/&lt;slug&gt;/session.json</code></td><td>Per-project session persistence.</td></tr>
+      <tr><td><code>.stynx/intern-bench.md</code></td><td>Latest intern benchmark report.</td></tr>
+      <tr><td><code>~/.stynx/logs/</code></td><td>Runtime logs.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="models">
+  <h2>Models &amp; AI controls</h2>
+  <p>The senior model is your choice and can change at any time mid-session. These controls tune how it thinks and how much it spends.</p>
+  <table class="tbl">
+    <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><code>/model [name]</code></td><td>Switch the senior model. Aliases: <code>opus</code>, <code>sonnet</code>, <code>haiku</code>. Also bound to <kbd>Ctrl+M</kbd>.</td></tr>
+      <tr><td><code>/fast</code></td><td>Toggle fast mode, drops to <code>claude-haiku-4-5</code> for cheap, instant turns.</td></tr>
+      <tr><td><code>/think</code></td><td>Toggle extended thinking. The model emits a visible reasoning block before acting (also <kbd>Alt+T</kbd>).</td></tr>
+      <tr><td><code>/effort low|medium|high|max</code></td><td>Set reasoning effort, trade latency for depth per task.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="permissions">
+  <h2>Permission system</h2>
+  <p>stynx is permission-first. Tool calls are gated by the current mode and your allow/deny rules; confirmation happens in an in-TUI modal, no terminal mode-switching.</p>
+  <table class="tbl">
+    <thead><tr><th>Mode</th><th>Behavior</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Normal</strong></td><td>Prompts before each gated tool call.</td></tr>
+      <tr><td><strong>Auto-accept</strong></td><td>Runs tools without prompting.</td></tr>
+      <tr><td><strong>Plan</strong></td><td>Read-only tools only, no mutations (see Plan mode).</td></tr>
+      <tr><td><strong>Bypass</strong></td><td>Skips all permission checks.</td></tr>
+    </tbody>
+  </table>
+  <p>Cycle modes with <kbd>Shift+Tab</kbd> or <code>/mode</code>. Define per-tool rules in <code>.stynx/settings.json</code>. Patterns are <code>tool:argument-glob</code>:</p>
+  <DocCode title="permissions" lang="json" code={`"permissions": {
+  "allow": ["bash:cargo *", "read:*"],
+  "deny":  ["bash:rm -rf*"]
+}`} />
+  <p>Run <code>/permissions</code> to view the active allow/deny rules.</p>
+</section>
+
+<section id="plan">
+  <h2>Plan mode</h2>
+  <p>
+    <code>/plan [task]</code> toggles plan mode, restricting the model to
+    read-only tools. It can explore, reason, and propose a plan with zero
+    risk of mutating your working tree, ideal for scoping a change before
+    you let it write. Toggle back to a write-capable mode to execute.
+  </p>
+</section>

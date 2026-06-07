@@ -1,5 +1,7 @@
 ---
-import "../styles/global.css";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import "../styles/components.css";
 
 interface Props {
   title?: string;
@@ -55,13 +57,11 @@ const jsonLd = {
     <meta name="theme-color" content="#191724" />
     <meta name="color-scheme" content="dark" />
 
-    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="stynx-code" />
     <meta property="og:locale" content="en_US" />
@@ -73,16 +73,13 @@ const jsonLd = {
     <meta property="og:image:height" content="1251" />
     <meta property="og:image:alt" content="stynx-code terminal UI mid-session, delegating to an intern" />
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- Structured data -->
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -93,7 +90,6 @@ const jsonLd = {
   <body>
     <slot />
 
-    <!-- Scroll reveal: progressive enhancement only -->
     <script is:inline>
       (function () {
         const els = document.querySelectorAll(".reveal");

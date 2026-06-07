@@ -1,0 +1,68 @@
+---
+const toc = [
+  {
+    group: "Getting started",
+    items: [
+      { id: "overview", label: "What it is" },
+      { id: "install", label: "Installation" },
+      { id: "quickstart", label: "Quickstart" },
+      { id: "auth", label: "Authentication" },
+    ],
+  },
+  {
+    group: "Configuration",
+    items: [
+      { id: "config", label: "settings.json" },
+      { id: "models", label: "Models & AI controls" },
+      { id: "permissions", label: "Permission system" },
+      { id: "plan", label: "Plan mode" },
+    ],
+  },
+  {
+    group: "Delegation",
+    items: [
+      { id: "interns", label: "Intern mode" },
+      { id: "bench", label: "Benchmarking interns" },
+    ],
+  },
+  {
+    group: "Workflow",
+    items: [
+      { id: "sessions", label: "Sessions & history" },
+      { id: "skills", label: "Skills" },
+      { id: "hooks", label: "Hooks" },
+    ],
+  },
+  {
+    group: "Reference",
+    items: [
+      { id: "tools", label: "Tools" },
+      { id: "bash", label: "Terminal sessions" },
+      { id: "compaction", label: "Context compaction" },
+      { id: "mcp", label: "MCP & LSP" },
+      { id: "server", label: "Headless server" },
+      { id: "keys", label: "Keybindings" },
+      { id: "commands", label: "Slash commands" },
+      { id: "architecture", label: "Architecture" },
+    ],
+  },
+];
+---
+
+<aside class="sidebar" aria-label="Documentation navigation">
+  <a class="back" href="/">← stynx<span class="dim">-code</span></a>
+  <nav>
+    {
+      toc.map((g) => (
+        <div class="toc-group">
+          <p class="toc-title">{g.group}</p>
+          <ul>
+            {g.items.map((it) => (
+              <li><a href={`#${it.id}`} data-toc={it.id}>{it.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </nav>
+</aside>

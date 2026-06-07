@@ -5,7 +5,6 @@ const apiUrl = "https://api.github.com/repos/maulanasdqn/stynx-code";
 const fmt = (n: number) =>
   n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n);
 
-// Build-time star count (accurate at deploy); refreshed live client-side below.
 let stars = 11;
 try {
   const r = await fetch(apiUrl, { headers: { "User-Agent": "stynx-app" } });

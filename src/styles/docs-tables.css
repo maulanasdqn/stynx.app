@@ -1,0 +1,47 @@
+.callout {
+  border: 1px solid var(--hl-med);
+  border-left: 3px solid var(--gold);
+  background: color-mix(in srgb, var(--gold) 7%, var(--surface));
+  border-radius: var(--radius-sm);
+  padding: 0.95rem 1.1rem;
+  margin: 0 0 1.4rem;
+  color: var(--subtle);
+  font-size: 0.92rem;
+  max-width: 48rem;
+}
+.callout strong {
+  color: var(--gold);
+}
+.callout a {
+  color: var(--foam);
+}
+
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0 1.4rem;
+  font-size: 0.9rem;
+  display: block;
+  overflow-x: auto;
+}
+.tbl th,
+.tbl td {
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid var(--hl-low);
+  vertical-align: top;
+}
+.tbl th {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom-color: var(--hl-med);
+}
+.tbl td {
+  color: var(--subtle);
+}
+.tbl tr:hover td {
+  background: var(--surface);
+}

@@ -1,0 +1,83 @@
+---
+import DocCode from "./doc-code.astro";
+
+const providerRows = [
+  ["deepseek", "https://api.deepseek.com/v1", "DEEPSEEK_API_KEY"],
+  ["openrouter", "https://openrouter.ai/api/v1", "OPENROUTER_API_KEY"],
+  ["openai", "https://api.openai.com/v1", "OPENAI_API_KEY"],
+  ["qwen", "https://dashscope-intl.aliyuncs.com/compatible-mode/v1", "QWEN_API_KEY"],
+  ["custom", "(set via base_url)", "(set via api_key_env)"],
+];
+---
+
+<section id="interns">
+  <h2>Intern mode</h2>
+  <p>
+    Run any model as the senior and delegate grunt work to one or more
+    cheaper OpenAI-compatible models. Each intern becomes its own
+    <code>delegate_to_&lt;name&gt;</code> tool the senior can pick from, chosen by each tool's <code>description</code>, so describe what each is
+    good at. Interns run a restricted toolset (<code>bash</code>,
+    <code>read</code>, <code>file_write</code>, <code>file_edit</code>,
+    <code>glob</code>, <code>grep</code>) and cannot spawn sub-agents. They
+    return <em>Summary / Files changed / Output</em>; the senior reviews and
+    integrates.
+  </p>
+
+  <h3>Option 1: .env shorthand</h3>
+  <DocCode title=".env" lang="ini" code={`# DeepSeek (legacy single-intern shortcut)
+DEEPSEEK_API_KEY=sk-...
+DEEPSEEK_MODEL=deepseek-chat                  # optional
+
+# OpenRouter: declare multiple interns via name:model pairs
+OPENROUTER_API_KEY=sk-or-...
+OPENROUTER_INTERNS=qwen-coder:qwen/qwen3-coder,haiku:anthropic/claude-haiku-4.5,kimi:moonshotai/kimi-k2
+
+# Qwen / Alibaba DashScope (auto-registers a "qwen" intern)
+QWEN_API_KEY=sk-...
+QWEN_MODEL=qwen-plus                          # optional`} />
+  <p>Copy <code>.env.example</code> to <code>.env</code>, fill in keys, and add it to <code>.gitignore</code>; stynx autoloads it on startup. At launch you'll see one <code>· intern ready: &lt;name&gt;</code> line per intern that resolved; interns missing their key are silently skipped.</p>
+
+  <h3>Option 2: interns array in settings.json</h3>
+  <DocCode title="settings.json" lang="json" code={`{
+  "interns": [
+    { "name": "deepseek",   "provider": "deepseek",   "model": "deepseek-chat",
+      "description": "Cheap general-purpose intern; boilerplate and mechanical refactors." },
+    { "name": "qwen-coder", "provider": "openrouter", "model": "qwen/qwen3-coder",
+      "description": "Coding specialist; strong at multi-file edits." },
+    { "name": "local",      "provider": "custom",     "model": "qwen2.5-coder:32b",
+      "base_url": "http://localhost:11434/v1", "api_key_env": "OLLAMA_API_KEY",
+      "description": "Local Ollama intern; free but slower." }
+  ]
+}`} />
+
+  <h3>Provider shorthand</h3>
+  <table class="tbl">
+    <thead><tr><th>provider</th><th>base_url</th><th>default key env</th></tr></thead>
+    <tbody>
+      {providerRows.map((r) => (
+        <tr><td><code>{r[0]}</code></td><td><code>{r[1]}</code></td><td><code>{r[2]}</code></td></tr>
+      ))}
+    </tbody>
+  </table>
+
+  <h3>Invoking interns</h3>
+  <DocCode title="in-session" lang="bash" code={`/intern                                   # show available interns
+/intern list every public fn and one-line it   # picks the first intern
+/intern qwen-coder write a unit test for util::strip_ansi`} />
+  <p>Or let the senior decide: <em>"refactor every <code>println!</code> in src/foo.rs to <code>tracing::info!</code>; hand it to qwen-coder"</em>, the senior calls <code>delegate_to_qwen_coder</code> with a focused task.</p>
+</section>
+
+<section id="bench">
+  <h2>Benchmarking interns</h2>
+  <p>Not sure which intern earns its keep? The built-in benchmark runs a fixed suite of self-contained tasks (coding, debugging, an algorithm, reasoning, instruction-following, a refactor) against each intern, then has the <strong>main model grade every answer</strong> against a per-task rubric on a 0–10 scale (LLM-as-judge). Each run is timed.</p>
+  <DocCode title="in-session" lang="text" code={`/intern-bench                 # benchmark every configured intern
+/intern-bench qwen-coder      # benchmark just one
+
+🏁 Intern Benchmark · 3 intern(s) × 6 tasks
+
+Leaderboard (avg score, then speed):
+  🥇 #1  deepseek    8.5/10   pass 6/6     42.3s
+  🥈 #2  qwen-coder  7.2/10   pass 5/6     55.1s
+  🥉 #3  mimo        5.0/10   pass 4/6     88.0s`} />
+  <p>The full report (including the judge's one-line note per task) is written to <code>.stynx/intern-bench.md</code>. The benchmark forces Auto-accept while it runs and restores your previous permission mode afterward.</p>
+</section>

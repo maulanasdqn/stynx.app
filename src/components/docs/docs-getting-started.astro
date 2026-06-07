@@ -1,0 +1,78 @@
+---
+import DocCode from "./doc-code.astro";
+---
+
+<section id="overview">
+  <h2>What it is</h2>
+  <p>
+    A self-contained terminal app for getting work done with an LLM. It
+    speaks Anthropic's Claude API natively and any OpenAI-compatible
+    endpoint (DeepSeek, OpenAI, OpenRouter, Together, local Ollama, …) for
+    cheap delegation. It runs an autonomous tool-using loop with bash, file
+    edit, glob, grep, and web fetch behind a permission system that prompts
+    you only when you ask it to.
+  </p>
+  <p>
+    The engine runs concurrent-safe tools in parallel via
+    <code>tokio::spawn</code> and sequential ones in order. Context is
+    compacted automatically at a 60% token threshold. File mutations are
+    tracked on an undo stack, and provider overload triggers exponential
+    backoff with up to 3 retries.
+  </p>
+  <ul class="bullets">
+    <li><strong>Modern terminal UI</strong>: sidebar, command palette, model picker, session list, runtime theme switcher (rose-pine, catppuccin, tokyo-night, gruvbox), mouse + bracketed paste, <code>@</code>-file mentions, slash-command popover, toasts, and a colorized diff renderer.</li>
+    <li><strong>Intern mode</strong>: a senior model delegates to one or more cheaper OpenAI-compatible models, each exposed as a <code>delegate_to_&lt;name&gt;</code> tool.</li>
+    <li><strong>Permission-first</strong>: Normal / Auto-accept / Plan / Bypass modes with per-tool allow rules.</li>
+    <li><strong>Skills as slash commands</strong>: drop a markdown file under <code>.claude/skills/</code> and it appears as <code>/your-skill</code>.</li>
+    <li><strong>Sessions</strong>: automatic per-project persistence.</li>
+    <li><strong>Hooks</strong>: shell hooks for <code>session-start</code>, <code>pre-tool-use</code>, <code>post-tool-use</code>, and <code>stop</code>.</li>
+  </ul>
+</section>
+
+<section id="install">
+  <h2>Installation</h2>
+  <p>The installed binary is <code>stynx</code>. Published on crates.io.</p>
+  <DocCode title="bash · fastest, from crates.io" lang="bash" code={`# install the latest release
+cargo install stynx-code
+
+# then run it
+stynx`} />
+  <DocCode title="bash · from source / with nix" lang="bash" code={`# from source
+git clone https://github.com/maulanasdqn/stynx-code
+cd stynx-code
+cargo install --path stynx-code
+
+# with nix
+nix develop
+cargo build --release --workspace
+./target/release/stynx`} />
+</section>
+
+<section id="quickstart">
+  <h2>Quickstart</h2>
+  <p>Four ways to run, depending on whether you want the interactive UI or a scriptable one-shot.</p>
+  <DocCode title="bash" lang="bash" code={`# interactive TUI (the main mode)
+stynx
+
+# one-shot prompt
+stynx -p "find every TODO comment under src/ and group by file"
+
+# pipe mode: read stdin as the prompt
+echo "explain this file" | stynx
+
+# JSON output for scripting
+stynx --json -p "list files modified in the last commit"`} />
+</section>
+
+<section id="auth">
+  <h2>Authentication</h2>
+  <p>Anthropic credentials are resolved in this order, the first one found wins:</p>
+  <ol class="bullets">
+    <li>macOS Keychain / Linux libsecret (the Claude Code OAuth token at <code>Claude Code-credentials</code>)</li>
+    <li><code>~/.stynx/.credentials.json</code></li>
+    <li><code>~/.claude/.credentials.json</code> <em>(Claude Code compatible fallback)</em></li>
+    <li><code>~/.stynx/settings.json</code> → <code>env.ANTHROPIC_AUTH_TOKEN</code> (with optional <code>env.ANTHROPIC_BASE_URL</code>)</li>
+    <li>The <code>ANTHROPIC_API_KEY</code> environment variable</li>
+  </ol>
+  <p>Run <code>/login</code> inside <code>stynx</code> for interactive instructions, and <code>/logout</code> to clear credentials. Intern (OpenAI-compatible) keys are read from environment variables; see <a href="#interns">Intern mode</a>.</p>
+</section>

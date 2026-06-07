@@ -8,7 +8,6 @@ interface Props {
 }
 const { title, lang = "bash", code } = Astro.props;
 
-// strip a single leading/trailing newline so template-literal blocks render tight
 const src = code.replace(/^\n/, "").replace(/\n$/, "");
 ---
 
@@ -33,7 +32,6 @@ const src = code.replace(/^\n/, "").replace(/\n$/, "");
     background: var(--overlay);
     border-bottom: 1px solid var(--hl-low);
   }
-  /* Shiki renders <pre class="astro-code"> with the rose-pine background (#191724). */
   .code :global(pre) {
     margin: 0;
     padding: 1rem 1.1rem;

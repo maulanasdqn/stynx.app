@@ -1,0 +1,49 @@
+---
+---
+
+<section id="sessions">
+  <h2>Sessions &amp; history</h2>
+  <p>Sessions persist automatically per project at <code>~/.stynx-code/projects/&lt;slug&gt;/session.json</code>. History is fully editable.</p>
+  <table class="tbl">
+    <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><code>/session</code></td><td>List and load sessions (also <kbd>Ctrl+S</kbd>).</td></tr>
+      <tr><td><code>/rewind [n]</code></td><td>Remove the last n exchanges.</td></tr>
+      <tr><td><code>/undo [n]</code></td><td>Restore the last n file edits from the undo stack.</td></tr>
+      <tr><td><code>/export</code></td><td>Write the transcript to disk.</td></tr>
+      <tr><td><code>/copy</code></td><td>Copy the last response to the clipboard.</td></tr>
+      <tr><td><code>/cost</code> · <code>/usage</code></td><td>Show token usage / cost, and plan limits (OAuth only).</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="skills">
+  <h2>Skills</h2>
+  <p>
+    Skills are markdown files that become slash commands. Drop a file under
+    <code>~/.claude/skills/</code> (global) or <code>./.claude/skills/</code>
+    (project). <code>.claude/commands/</code> works too, and it appears as
+    <code>/your-skill</code> in the slash-command popover, with its
+    description shown inline. List what's available with <code>/skills</code>.
+    The <code>skill</code> tool lets the model invoke a skill (it reads
+    <code>~/.claude/skills/&lt;name&gt;/SKILL.md</code>) programmatically.
+    Skills stay under <code>.claude/</code> even though
+    <code>settings.json</code> now lives in <code>.stynx/</code>.
+  </p>
+</section>
+
+<section id="hooks">
+  <h2>Hooks</h2>
+  <p>Each hook command receives the relevant JSON on stdin and writes text to stdout (mixed into the conversation as a system message). Configure them under <code>hooks</code> in <code>.stynx/settings.json</code>.</p>
+  <table class="tbl">
+    <thead><tr><th>Hook</th><th>When it runs</th></tr></thead>
+    <tbody>
+      <tr><td><code>SessionStart</code></td><td>Once when a session begins.</td></tr>
+      <tr><td><code>PreToolUse</code></td><td>Before each tool call; exit non-zero to short-circuit it.</td></tr>
+      <tr><td><code>PostToolUse</code></td><td>After each tool call; can post-process the result.</td></tr>
+      <tr><td><code>Stop</code></td><td>When the assistant finishes a turn.</td></tr>
+    </tbody>
+  </table>
+  <p>Each entry takes an optional <code>matcher</code> (substring against the tool name) and a required <code>command</code>.</p>
+  <p>Project hooks are gated for safety: set <code>STYNX_TRUST_HOOKS=1</code> or add the project's path to <code>~/.stynx/trusted_hook_projects</code> to allow them to run.</p>
+</section>

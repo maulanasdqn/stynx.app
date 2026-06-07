@@ -1,0 +1,82 @@
+---
+import DocCode from "./doc-code.astro";
+
+const tools = [
+  ["File I/O", "read · file_write · file_edit", "Read files, create new files, and apply surgical edits. Every write/edit is pushed to the undo stack."],
+  ["Discovery", "glob · grep", "Find files by pattern and search file contents with regex."],
+  ["Shell", "bash", "A single persistent shell session: cd, export, and sourced state survive across calls. Supports background processes."],
+  ["Web", "web_fetch · web_search", "Fetch a URL as text and run web searches."],
+  ["Tasks (todo)", "todo_read · todo_write", "Maintain a structured task list for the current turn."],
+  ["Background tasks", "task_create · task_get · task_list · task_stop · task_update · task_output", "Spawn and manage long-running background jobs."],
+  ["Scheduling", "cron_create · cron_delete", "Schedule recurring or future work."],
+  ["Interaction", "ask_user_question", "Pause and ask you a structured question mid-run."],
+  ["Integration", "MCP (dynamic) · lsp", "Tools loaded per MCP server, plus language-server queries."],
+  ["Skills", "skill", "Invoke a markdown-defined skill as a tool."],
+  ["Misc", "notebook_edit · repl · send_message · sleep · synthetic_output · plan_mode", "Notebook cell edits, a REPL, messaging, delays, and mode control."],
+];
+---
+
+<section id="tools">
+  <h2>Tools</h2>
+  <p>The engine provides 40 tools: 37 built-in plus 3 MCP dynamic-tool wrappers. Concurrent-safe tools run in parallel; the rest run sequentially.</p>
+  <table class="tbl">
+    <thead><tr><th>Category</th><th>Tools</th><th>Purpose</th></tr></thead>
+    <tbody>
+      {tools.map((t) => (
+        <tr><td>{t[0]}</td><td><code>{t[1]}</code></td><td>{t[2]}</td></tr>
+      ))}
+    </tbody>
+  </table>
+</section>
+
+<section id="bash">
+  <h2>Terminal sessions</h2>
+  <p>
+    <code>bash</code> is a <strong>persistent shell</strong>, not a series of
+    disposable subshells. The first call boots a long-lived
+    <code>bash --norc --noprofile</code> process; every later call runs
+    through the same shell, so <code>cd</code>, <code>export</code>, sourced
+    files, and function definitions survive across calls.
+  </p>
+  <p>For long-running processes (dev servers, watchers, log tails), pass <code>background: true</code>:</p>
+  <DocCode title="bash tool · background processes" lang="jsonc" code={`{"command": "bun run dev", "background": true}   // → "started background process 'bg1'"
+{"status": "bg1"}                                // new output since last read
+{"status": "bg1", "full": true}                  // everything it has emitted
+{"list": true}                                   // all background processes
+{"kill": "bg1"}                                  // stop it`} />
+  <p>Foreground commands have a 120s default timeout (override with <code>"timeout"</code>). For longer work, use <code>background: true</code>. A timed-out foreground command leaves the shell in an unknown state.</p>
+</section>
+
+<section id="compaction">
+  <h2>Context compaction</h2>
+  <p>
+    When tokens exceed 60% of the limit, the engine summarizes the
+    conversation and sends it to the provider for compaction; if that call
+    fails, it falls back to keeping the last 6 messages intact. The
+    <code>stynx-code-compact</code> crate provides a deeper 4-stage pipeline: <strong>Auto → Micro → Session Memory → Full</strong>. You can also
+    trigger it manually with <code>/compact</code>.
+  </p>
+</section>
+
+<section id="mcp">
+  <h2>MCP &amp; LSP</h2>
+  <p>
+    stynx loads tools dynamically per MCP (Model Context Protocol) server,
+    exposing each server's tools to the model alongside the built-ins.
+    Servers are declared in <code>.claude/mcp.json</code> (project) or
+    <code>~/.claude/mcp.json</code> (global). The <code>lsp</code> tool
+    queries language servers for diagnostics and symbol information via the
+    services layer's LSP bridge.
+  </p>
+</section>
+
+<section id="server">
+  <h2>Headless server</h2>
+  <p>
+    The <code>stynx-code-server</code> crate exposes an Axum HTTP API for
+    headless operation, while <code>stynx-code-bridge</code> provides
+    external integration over stdio, WebSocket, and JWT. Combined with
+    one-shot <code>-p</code> prompts, stdin pipe mode, and
+    <code>--json</code> output, stynx drops cleanly into scripts and CI.
+  </p>
+</section>

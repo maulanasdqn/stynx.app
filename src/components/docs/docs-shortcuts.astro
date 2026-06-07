@@ -1,0 +1,107 @@
+---
+const keys = [
+  ["Enter", "Submit message"],
+  ["Shift+Enter", "Newline (also Alt+Enter, Ctrl+J)"],
+  ["Esc", "Interrupt streaming · or vim normal mode"],
+  ["Ctrl+P", "Command palette"],
+  ["Ctrl+S", "Session list"],
+  ["Ctrl+M", "Switch model"],
+  ["Ctrl+B", "Toggle sidebar"],
+  ["Ctrl+T", "Toggle tool block details"],
+  ["Shift+Tab", "Cycle permission mode"],
+  ["Shift+↑/↓", "Scroll messages by line (works while typing)"],
+  ["PgUp/PgDn", "Scroll by page"],
+  ["Ctrl+Alt+U/D", "Scroll messages by half page"],
+  ["@", "File-mention picker"],
+  ["/", "Slash-command popover"],
+  ["Ctrl+C", "Quit"],
+];
+
+const commands = [
+  ["/help", "Show help"],
+  ["/status", "git status"],
+  ["/version", "Show stynx version"],
+  ["/quit, /exit", "Exit"],
+  ["/model [name]", "Switch model (aliases: opus/sonnet/haiku)"],
+  ["/fast", "Toggle fast (haiku) mode"],
+  ["/effort low|medium|high|max", "Set reasoning effort"],
+  ["/think", "Toggle extended thinking"],
+  ["/mode", "Cycle permission mode"],
+  ["/plan [task]", "Toggle plan mode (read-only tools only)"],
+  ["/compact", "Summarize older turns to free up context"],
+  ["/cost", "Show token usage and cost"],
+  ["/usage", "Show plan limits (OAuth only)"],
+  ["/diff", "Show git diff"],
+  ["/review", "Review the current diff"],
+  ["/commit", "Generate a commit message"],
+  ["/init", "Create/update CLAUDE.md"],
+  ["/memory", "Show CLAUDE.md"],
+  ["/add <path>", "Pin a file into every message"],
+  ["/files", "List pinned files"],
+  ["/skills", "List available skills"],
+  ["/intern <task>", "Hand work to the first intern"],
+  ["/intern <name> <task>", "Hand work to a specific intern"],
+  ["/intern-bench [name]", "Benchmark & rank interns"],
+  ["/session", "List / load sessions"],
+  ["/rewind [n]", "Remove last n exchanges"],
+  ["/undo [n]", "Restore last n file edits"],
+  ["/export", "Write transcript to disk"],
+  ["/copy", "Copy last response to clipboard"],
+  ["/config", "Show merged config"],
+  ["/permissions", "Show allow / deny rules"],
+  ["/login, /logout", "Credential management"],
+  ["!<command>", "Run a shell command without leaving the TUI"],
+];
+
+const crates = [
+  ["stynx-code", "Main executable: CLI, TUI orchestration, agent/intern delegation, skill loading, prompt assembly."],
+  ["stynx-code-engine", "Core query engine: agentic loop, tool execution, compaction, hooks, undo stack."],
+  ["stynx-code-tools", "40 tools: file I/O, shell, web, tasks, scheduling, LSP, MCP wrappers."],
+  ["stynx-code-provider", "Anthropic SSE streaming and OpenAI-compatible integrations."],
+  ["stynx-code-tui", "ratatui terminal UI: state, rendering, themes, widgets."],
+  ["stynx-code-server", "Axum HTTP API for headless operation."],
+  ["stynx-code-auth", "OAuth PKCE and API-key credential resolution."],
+  ["stynx-code-permission", "Interactive and config-driven permission gating."],
+  ["stynx-code-commands", "Slash-command expansion and file-reference resolution."],
+  ["stynx-code-memory", "Per-project session persistence."],
+  ["stynx-code-config", "Global + project settings, hooks, intern config."],
+  ["stynx-code-services", "Analytics, LSP bridge, rate limiting, token estimation, diagnostics, notifications."],
+  ["stynx-code-compact", "Conversation summarization pipeline."],
+  ["stynx-code-bridge", "External integration bridge (stdio, WebSocket, JWT)."],
+  ["stynx-code-plugins", "Plugin lifecycle: subprocess plugins, builtins, config."],
+  ["stynx-code-types", "Core traits/structs for tools, providers, messages, permissions."],
+  ["stynx-code-errors", "Common application error types and results."],
+];
+---
+
+<section id="keys">
+  <h2>Keybindings</h2>
+  <table class="tbl">
+    <thead><tr><th>Key</th><th>Action</th></tr></thead>
+    <tbody>
+      {keys.map((k) => <tr><td><kbd>{k[0]}</kbd></td><td>{k[1]}</td></tr>)}
+    </tbody>
+  </table>
+  <p>Mouse scroll works in any terminal with mouse capture.</p>
+</section>
+
+<section id="commands">
+  <h2>Slash commands</h2>
+  <table class="tbl">
+    <thead><tr><th>Command</th><th>Description</th></tr></thead>
+    <tbody>
+      {commands.map((c) => <tr><td><code>{c[0]}</code></td><td>{c[1]}</td></tr>)}
+    </tbody>
+  </table>
+</section>
+
+<section id="architecture">
+  <h2>Architecture</h2>
+  <p>A 17-crate Rust workspace; most crates follow clean architecture with <code>domain</code>, <code>application</code>, and <code>infrastructure</code> layers.</p>
+  <table class="tbl">
+    <thead><tr><th>Crate</th><th>Responsibility</th></tr></thead>
+    <tbody>
+      {crates.map((c) => <tr><td><code>{c[0]}</code></td><td>{c[1]}</td></tr>)}
+    </tbody>
+  </table>
+</section>

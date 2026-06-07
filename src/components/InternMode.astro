@@ -8,19 +8,59 @@ const interns = [
   { name: "gemini-flash", color: "var(--rose)" },
   { name: "mimo", color: "var(--pine)" },
 ];
+
+const features = [
+  {
+    icon: "⚇",
+    color: "var(--foam)",
+    title: "Mix any providers",
+    body: "Run any number of interns at once — DeepSeek, OpenRouter, Qwen, OpenAI, or a local Ollama — side by side, each on its own model.",
+  },
+  {
+    icon: "⛓",
+    color: "var(--iris)",
+    title: "First-class tools",
+    body: "Every intern is exposed as its own delegate_to_<name> tool, so the senior delegates with a normal tool call — no special syntax.",
+  },
+  {
+    icon: "⇄",
+    color: "var(--gold)",
+    title: "Routes by description",
+    body: "The senior picks the right intern from each tool's description — write what each is good at (speed, cost, specialty) and it chooses.",
+  },
+  {
+    icon: "→",
+    color: "var(--rose)",
+    title: "Call one directly",
+    body: "/intern <name> <task> hands work to a specific intern; /intern <task> uses the first one. You stay in control when you want it.",
+  },
+  {
+    icon: "⛨",
+    color: "var(--pine)",
+    title: "Sandboxed & safe",
+    body: "Interns get a restricted toolset — bash, read, file_write, file_edit, glob, grep — and can't spawn further sub-agents.",
+  },
+  {
+    icon: "🏁",
+    color: "var(--love)",
+    title: "Benchmark & rank",
+    body: "/intern-bench runs a fixed suite and grades each intern (LLM-as-judge) into a leaderboard, saved to .stynx/intern-bench.md.",
+  },
+];
 ---
 
 <section class="section intern" id="intern">
   <div class="container">
     <div class="section-head reveal">
-      <span class="eyebrow">// the differentiator</span>
-      <h2 class="section-title">You pick the senior. The rest are interns.</h2>
+      <span class="eyebrow">// the killer feature</span>
+      <h2 class="section-title">Intern mode: one senior, a team of cheap interns.</h2>
       <p class="section-sub">
-        The lead model is your choice — Claude, DeepSeek, Qwen, or anything you
-        configure. Swap it any time with <code>/model</code>. Every other model
-        becomes an intern, surfaced as its own
-        <code>delegate_to_&lt;name&gt;</code> tool the senior can pick from — or
-        you call one directly with <code>/intern &lt;name&gt; &lt;task&gt;</code>.
+        This is what sets stynx-code apart. Pick any lead model, then let it
+        delegate the grunt work to one or more cheaper models running in
+        parallel. The senior does the thinking; the interns do the typing — and
+        you spend a fraction of the tokens. Swap the lead any time with
+        <code>/model</code>; every other model becomes a
+        <code>delegate_to_&lt;name&gt;</code> tool.
       </p>
     </div>
 
@@ -74,6 +114,18 @@ const interns = [
           leaderboard.
         </p>
       </div>
+    </div>
+
+    <div class="intern-features">
+      {
+        features.map((f) => (
+          <article class="ifeat reveal" style={`--c:${f.color}`}>
+            <span class="ifeat-ic">{f.icon}</span>
+            <h3>{f.title}</h3>
+            <p>{f.body}</p>
+          </article>
+        ))
+      }
     </div>
   </div>
 </section>
@@ -152,9 +204,57 @@ const interns = [
     color: var(--foam);
     font-size: 0.85em;
   }
+
+  .intern-features {
+    margin-top: 2.6rem;
+    display: grid;
+    gap: 1.1rem;
+    grid-template-columns: 1fr;
+  }
+  .ifeat {
+    border: 1px solid var(--hl-med);
+    border-top: 2px solid var(--c);
+    border-radius: var(--radius);
+    background: var(--surface);
+    padding: 1.4rem;
+    transition: transform 0.22s var(--ease), border-color 0.22s var(--ease);
+  }
+  .ifeat:hover {
+    transform: translateY(-4px);
+  }
+  .ifeat-ic {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 1.15rem;
+    color: var(--c);
+    background: color-mix(in srgb, var(--c) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--c) 30%, transparent);
+    margin-bottom: 0.85rem;
+  }
+  .ifeat h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+  }
+  .ifeat p {
+    color: var(--subtle);
+    font-size: 0.9rem;
+  }
+
   @media (min-width: 880px) {
     .intern-grid {
       grid-template-columns: 1fr 1fr;
+    }
+    .intern-features {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 560px) and (max-width: 879px) {
+    .intern-features {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>

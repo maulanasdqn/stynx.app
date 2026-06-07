@@ -2,6 +2,7 @@
 import "../styles/tokens.css";
 import "../styles/base.css";
 import "../styles/components.css";
+import BackToTop from "../components/back-to-top.astro";
 
 interface Props {
   title?: string;
@@ -89,6 +90,7 @@ const jsonLd = {
   </head>
   <body>
     <slot />
+    <BackToTop />
 
     <script is:inline>
       (function () {

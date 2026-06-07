@@ -1,0 +1,69 @@
+---
+---
+
+<button id="to-top" class="to-top" aria-label="Back to top" title="Back to top">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5" />
+    <path d="M5 12l7-7 7 7" />
+  </svg>
+</button>
+
+<style>
+  .to-top {
+    position: fixed;
+    right: 1.4rem;
+    bottom: 1.4rem;
+    z-index: 60;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    color: var(--base);
+    background: var(--iris);
+    border: 1px solid transparent;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 0.25s var(--ease), transform 0.25s var(--ease),
+      background 0.18s var(--ease);
+    box-shadow: 0 10px 26px -8px rgba(0, 0, 0, 0.55);
+  }
+  .to-top.visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .to-top:hover {
+    background: color-mix(in srgb, var(--iris) 88%, white);
+    transform: translateY(-2px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .to-top {
+      transition: opacity 0.2s linear;
+      transform: none;
+    }
+    .to-top.visible {
+      transform: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const btn = document.getElementById("to-top");
+    if (!btn) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const toggle = () => {
+      if (window.scrollY > 600) btn.classList.add("visible");
+      else btn.classList.remove("visible");
+    };
+    window.addEventListener("scroll", toggle, { passive: true });
+    toggle();
+    btn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    });
+  })();
+</script>

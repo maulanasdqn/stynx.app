@@ -119,5 +119,23 @@ const jsonLd = {
         els.forEach((el) => io.observe(el));
       })();
     </script>
+
+    <script is:inline>
+      (function () {
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        document.querySelectorAll('a[href^="#"]').forEach((a) => {
+          a.addEventListener("click", (e) => {
+            const id = a.getAttribute("href").slice(1);
+            if (!id) return;
+            const target = document.getElementById(id);
+            if (!target) return;
+            e.preventDefault();
+            const top = target.getBoundingClientRect().top + window.scrollY - 72;
+            window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
+            history.pushState(null, "", "#" + id);
+          });
+        });
+      })();
+    </script>
   </body>
 </html>

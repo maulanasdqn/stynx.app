@@ -1,19 +1,19 @@
 :root {
-  --base: #191724;
-  --surface: #1f1d2e;
-  --overlay: #26233a;
-  --muted: #6e6a86;
-  --subtle: #908caa;
-  --text: #e0def4;
-  --love: #eb6f92;
+  --base: #0a1019;
+  --surface: #0f1825;
+  --overlay: #152234;
+  --muted: #5f718a;
+  --subtle: #97a6bb;
+  --text: #e6edf6;
+  --love: #ff6b81;
   --gold: #f6c177;
-  --rose: #ebbcba;
-  --pine: #31748f;
-  --foam: #9ccfd8;
-  --iris: #c4a7e7;
-  --hl-low: #21202e;
-  --hl-med: #403d52;
-  --hl-high: #524f67;
+  --rose: #9cc8ff;
+  --pine: #1d5ce6;
+  --foam: #6cf0e2;
+  --iris: #4ea7ff;
+  --hl-low: #121c2a;
+  --hl-med: #20304a;
+  --hl-high: #2c4262;
 
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;

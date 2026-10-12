@@ -5,19 +5,20 @@ const repo = "https://github.com/maulanasdqn/stynx-code";
 <footer class="footer">
   <div class="container footer-inner">
     <div class="f-brand">
-      <span class="brand-mark">▚</span>
+      <img class="brand-mark" src="/favicon.svg" width="22" height="22" alt="" />
       <span class="brand-name">stynx<span class="brand-accent">-code</span></span>
     </div>
     <p class="f-tag">Built in Rust · MIT licensed · v0.33.17</p>
     <nav class="f-links" aria-label="Footer">
       <a href={repo} target="_blank" rel="noopener">GitHub</a>
       <a href="/docs/">Docs</a>
+      <a href="#desktop">Desktop</a>
       <a href="#features">Features</a>
       <a href="#install">Install</a>
     </nav>
   </div>
   <div class="container f-fine">
-    <span>An interactive AI coding assistant for the terminal.</span>
+    <span>An interactive AI coding assistant for the terminal and desktop.</span>
   </div>
 </footer>
 
@@ -42,7 +43,8 @@ const repo = "https://github.com/maulanasdqn/stynx-code";
     font-weight: 700;
   }
   .brand-mark {
-    color: var(--iris);
+    display: block;
+    border-radius: 6px;
   }
   .brand-accent {
     color: var(--muted);

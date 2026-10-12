@@ -11,8 +11,8 @@ interface Props {
 }
 
 const {
-  title = "stynx-code: AI coding agent for your terminal",
-  description = "An interactive, tool-using AI coding agent for the terminal. Bring any model as the senior, delegate to cheaper interns, with extended thinking, a tunable effort dial, and an autonomous agentic loop. Written in Rust, MIT licensed.",
+  title = "stynx-code: AI coding agent for your terminal and desktop",
+  description = "An interactive, tool-using AI coding agent for the terminal and desktop. Bring any model as the senior, delegate to cheaper interns, with extended thinking, a tunable effort dial, and an autonomous agentic loop. Written in Rust, MIT licensed.",
   image = "/stynx-tui.png",
 } = Astro.props;
 
@@ -26,7 +26,7 @@ const jsonLd = {
   name: "stynx-code",
   alternateName: "stynx",
   applicationCategory: "DeveloperApplication",
-  operatingSystem: "Linux, macOS",
+  operatingSystem: "Linux, macOS, Windows",
   description,
   url: SITE,
   downloadUrl: "https://crates.io/crates/stynx-code",
@@ -53,9 +53,9 @@ const jsonLd = {
     <meta name="author" content="maulanasdqn" />
     <meta
       name="keywords"
-      content="stynx, stynx-code, AI coding agent, terminal AI, TUI, Rust, Claude, intern mode, multi-provider, agentic, coding assistant, CLI"
+      content="stynx, stynx-code, AI coding agent, terminal AI, TUI, desktop app, IDE, Rust, Claude, intern mode, multi-provider, agentic, coding assistant, CLI"
     />
-    <meta name="theme-color" content="#191724" />
+    <meta name="theme-color" content="#0a1019" />
     <meta name="color-scheme" content="dark" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

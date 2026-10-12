@@ -11,14 +11,14 @@ const repo = "https://github.com/maulanasdqn/stynx-code";
       </span>
 
       <h1 class="hero-title">
-        The AI coding agent that <span class="grad">lives in your terminal</span>.
+        The AI coding agent for <span class="grad">your terminal and your desktop</span>.
       </h1>
 
       <p class="hero-sub">
-        <strong>stynx-code</strong> is a self-contained terminal app for getting
-        work done with an LLM. Native Claude API, any OpenAI-compatible endpoint,
-        and an autonomous tool-using loop behind a permission system that prompts
-        only when you ask it to.
+        <strong>stynx-code</strong> gets work done with an LLM, in a fast terminal
+        UI or a desktop app with a full IDE built in. Native Claude API, any
+        OpenAI-compatible endpoint, and an autonomous tool-using loop behind a
+        permission system that prompts only when you ask it to.
       </p>
 
       <div class="hero-cta">
@@ -56,18 +56,18 @@ const repo = "https://github.com/maulanasdqn/stynx-code";
     height: 8px;
     border-radius: 50%;
     background: var(--foam);
-    box-shadow: 0 0 0 0 rgba(156, 207, 216, 0.6);
+    box-shadow: 0 0 0 0 rgba(108, 240, 226, 0.6);
     animation: ping 2s var(--ease) infinite;
   }
   @keyframes ping {
     0% {
-      box-shadow: 0 0 0 0 rgba(156, 207, 216, 0.5);
+      box-shadow: 0 0 0 0 rgba(108, 240, 226, 0.5);
     }
     70% {
-      box-shadow: 0 0 0 8px rgba(156, 207, 216, 0);
+      box-shadow: 0 0 0 8px rgba(108, 240, 226, 0);
     }
     100% {
-      box-shadow: 0 0 0 0 rgba(156, 207, 216, 0);
+      box-shadow: 0 0 0 0 rgba(108, 240, 226, 0);
     }
   }
   .hero-title {
@@ -75,7 +75,10 @@ const repo = "https://github.com/maulanasdqn/stynx-code";
     font-size: clamp(2.2rem, 6vw, 3.6rem);
   }
   .grad {
-    color: var(--iris);
+    background: linear-gradient(100deg, var(--foam), var(--iris) 55%, var(--pine));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   .hero-sub {
     margin-top: 1.3rem;

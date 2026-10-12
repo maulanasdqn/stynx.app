@@ -1,0 +1,160 @@
+---
+const features = [
+  { color: "var(--iris)", title: "Explorer and editor", body: "Monaco tabs, ⌘P quick open, save with conflict detection, and live reload when the agent edits an open file." },
+  { color: "var(--foam)", title: "Every language", body: "TextMate highlighting for every common language, plus installable language servers for completion, hover, and diagnostics." },
+  { color: "var(--gold)", title: "Terminal and git", body: "Real PTY terminals on your login shell, and a git panel to stage, commit, and review side-by-side diffs." },
+  { color: "var(--love)", title: "Ask Stynx", body: "⌘L sends the current file or selection to the agent panel as context, so every answer knows where you are." },
+  { color: "var(--rose)", title: "MCP marketplace", body: "Browse the official MCP registry and add servers to a project or globally in one click." },
+  { color: "var(--pine)", title: "Interns in the editor", body: "Add, edit, and remove intern providers without leaving Code mode." },
+];
+---
+
+<section class="section desktop" id="desktop">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// desktop app</span>
+      <h2 class="section-title">A full IDE, with the agent beside it.</h2>
+      <p class="section-sub">
+        The same engine as the TUI, in a native window for macOS, Windows, and
+        Linux. <strong>Chat mode</strong> keeps the conversation front and
+        center. <strong>Code mode</strong> (<code>⌘⇧E</code>) turns it into an
+        editor with the Stynx Agent docked on the right.
+      </p>
+    </div>
+
+    <figure class="frame reveal">
+      <img
+        src="/desktop-code.webp"
+        width="2880"
+        height="1800"
+        alt="Stynx desktop app in Code mode: file explorer, a Rust file open in the editor, a terminal showing passing tests, and the Stynx Agent panel reporting a performance fix."
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+
+    <div class="split">
+      <figure class="frame small reveal">
+        <img
+          src="/desktop-chat.webp"
+          width="2880"
+          height="1800"
+          alt="Stynx desktop app in Chat mode: workspaces and sessions on the left, the conversation with tool cards in the middle, and a live diff panel on the right."
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>Chat mode: workspaces, sessions, and a live diff of every edit.</figcaption>
+      </figure>
+
+      <ul class="list">
+        {features.map((f) => (
+          <li class="reveal">
+            <span class="dot" style={`--c: ${f.color}`}></span>
+            <div>
+              <strong>{f.title}</strong>
+              <p>{f.body}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="build reveal">
+      <span class="cmd"><span class="prompt">$</span> cd stynx-code-desktop &amp;&amp; npm install &amp;&amp; npm run tauri build</span>
+      <span class="note">.dmg · .msi · .deb · .AppImage</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-sub strong {
+    color: var(--text);
+  }
+  .section-sub code {
+    color: var(--foam);
+  }
+  .frame {
+    margin: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--hl-med);
+    background: var(--surface);
+    box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(78, 167, 255, 0.06);
+    line-height: 0;
+  }
+  .frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .frame.small figcaption {
+    line-height: 1.5;
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
+    color: var(--subtle);
+    border-top: 1px solid var(--hl-low);
+  }
+  .split {
+    display: grid;
+    gap: 2rem;
+    margin-top: 2.4rem;
+    align-items: start;
+  }
+  .list {
+    list-style: none;
+    display: grid;
+    gap: 1.2rem;
+  }
+  .list li {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .list strong {
+    display: block;
+    font-size: 0.98rem;
+    margin-bottom: 0.2rem;
+  }
+  .list p {
+    color: var(--subtle);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--c);
+    margin-top: 0.45rem;
+    flex-shrink: 0;
+  }
+  .build {
+    margin-top: 2.4rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--hl-med);
+    background: var(--surface);
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    overflow-x: auto;
+  }
+  .build .cmd {
+    min-width: 0;
+  }
+  .build .prompt {
+    color: var(--iris);
+  }
+  .build .note {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+  @media (min-width: 900px) {
+    .split {
+      grid-template-columns: 1.15fr 1fr;
+    }
+  }
+</style>

@@ -11,6 +11,9 @@ import "../styles/docs.css";
 import "../styles/docs-tables.css";
 
 const repo = "https://github.com/maulanasdqn/stynx-code";
+import { latestVersion } from "../lib/desktop-release";
+
+const version = await latestVersion();
 ---
 
 <Layout
@@ -22,7 +25,7 @@ const repo = "https://github.com/maulanasdqn/stynx-code";
 
     <main class="content">
       <header class="doc-hero">
-        <span class="eyebrow">// documentation · v0.33.17</span>
+        <span class="eyebrow">// documentation{version && ` · v${version}`}</span>
         <h1>stynx-code</h1>
         <p class="lede">
           An interactive AI coding assistant for the terminal and desktop. Multi-provider,

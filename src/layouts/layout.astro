@@ -3,6 +3,7 @@ import "../styles/tokens.css";
 import "../styles/base.css";
 import "../styles/components.css";
 import BackToTop from "../components/back-to-top.astro";
+import { latestVersion } from "../lib/desktop-release";
 
 interface Props {
   title?: string;
@@ -27,10 +28,10 @@ const jsonLd = {
   alternateName: "stynx",
   applicationCategory: "DeveloperApplication",
   operatingSystem: "Linux, macOS, Windows",
+  downloadUrl: "https://stynx.app/#download",
   description,
   url: SITE,
-  downloadUrl: "https://crates.io/crates/stynx-code",
-  softwareVersion: "0.33.17",
+  softwareVersion: (await latestVersion()) ?? undefined,
   programmingLanguage: "Rust",
   license: "https://opensource.org/licenses/MIT",
   image: ogImage,

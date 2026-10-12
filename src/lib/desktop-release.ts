@@ -60,7 +60,14 @@ const requestHeaders = (): Record<string, string> => {
   return token ? { "User-Agent": "stynx-app", Authorization: `Bearer ${token}` } : { "User-Agent": "stynx-app" };
 };
 
-const fetchReleases = async (): Promise<IRelease[]> => {
+let releasesRequest: Promise<IRelease[]> | null = null;
+
+const fetchReleases = (): Promise<IRelease[]> => {
+  releasesRequest ??= requestReleases();
+  return releasesRequest;
+};
+
+const requestReleases = async (): Promise<IRelease[]> => {
   try {
     const response = await fetch(RELEASES_API, { headers: requestHeaders() });
     return response.ok ? ((await response.json()) as IRelease[]) : [];
@@ -84,3 +91,5 @@ export const loadDesktopRelease = async (): Promise<IDesktopRelease | null> => {
     platforms: PLATFORMS.map((platform) => ({ ...platform, downloads: toDownloads(release.assets, platform.id) })),
   };
 };
+
+export const latestVersion = async (): Promise<string | null> => (await loadDesktopRelease())?.version ?? null;

@@ -1,5 +1,7 @@
 ---
-const repo = "https://github.com/maulanasdqn/stynx-code";
+import { latestVersion } from "../lib/desktop-release";
+
+const version = await latestVersion();
 const trust = ["Free and open source (MIT)", "Bring your own API keys", "No telemetry", "macOS · Windows · Linux"];
 const providers = ["Claude", "DeepSeek", "OpenRouter", "Qwen", "OpenAI", "Ollama"];
 ---
@@ -7,7 +9,7 @@ const providers = ["Claude", "DeepSeek", "OpenRouter", "Qwen", "OpenAI", "Ollama
 <section class="hero" id="top">
   <div class="container hero-inner">
     <a class="tag hero-badge reveal" href="#download">
-      <span class="ping"></span> New: desktop app with a built-in IDE <span class="arrow">→</span>
+      <span class="ping"></span>{version && <span class="ver">v{version}</span>} Desktop app is out <span class="arrow">→</span>
     </a>
 
     <h1 class="hero-title reveal">
@@ -45,8 +47,6 @@ const providers = ["Claude", "DeepSeek", "OpenRouter", "Qwen", "OpenAI", "Ollama
       {providers.map((name) => <span class="works-chip">{name}</span>)}
       <a class="works-more" href="#providers">and any OpenAI-compatible API</a>
     </div>
-
-    <a class="star-link" href={repo} target="_blank" rel="noopener">Star stynx-code on GitHub ★</a>
   </div>
 </section>
 
@@ -66,6 +66,10 @@ const providers = ["Claude", "DeepSeek", "OpenRouter", "Qwen", "OpenAI", "Ollama
   }
   .hero-badge:hover {
     border-color: var(--iris);
+  }
+  .ver {
+    color: var(--foam);
+    font-weight: 600;
   }
   .arrow {
     color: var(--iris);
@@ -175,11 +179,6 @@ const providers = ["Claude", "DeepSeek", "OpenRouter", "Qwen", "OpenAI", "Ollama
   .works-more {
     color: var(--subtle);
     border-bottom: 1px dashed var(--hl-high);
-  }
-  .star-link {
-    margin-top: 1.2rem;
-    font-size: 0.85rem;
-    color: var(--gold);
   }
 </style>
 

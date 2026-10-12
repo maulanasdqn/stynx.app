@@ -7,19 +7,18 @@
       <span class="eyebrow">// see it in action</span>
       <h2 class="section-title">Real sessions. Real delegation.</h2>
       <p class="section-sub">
-        A live <code>stynx</code> session: the senior reads the README, then
-        hands the analysis to a <code>mimo</code> intern via
-        <code>delegate_to_mimo</code>: model, elapsed time, and running cost
-        right there in the status bar.
+        A live <code>stynx</code> session: the senior hands a file to the
+        <code>netra</code> intern via <code>delegate_to_netra</code>, scores
+        its work, then answers. Context, cost, and every tool call stay in view.
       </p>
     </div>
 
     <figure class="shot reveal">
       <img
-        src="/stynx-tui.png"
-        width="1999"
-        height="1251"
-        alt="stynx-code terminal UI: the Tools sidebar shows a Read of README.md and a delegate_to_mimo call; the conversation shows the senior delegating README analysis to a mimo intern; the status bar shows the develop branch, deepseek-v4-pro model, a 1m 30s generating timer and a $0.0129 cost."
+        src="/stynx-tui.webp"
+        width="2904"
+        height="1920"
+        alt="stynx-code terminal UI in the Stynx theme: the conversation shows the senior delegating a file read to the netra intern, a scored review of the intern's work, and the final three-bullet answer; the right panel shows context usage, $0.11 spent, modified files and the activity list; the status line shows BUILD mode, Opus 4.6 1M, the develop branch and token counts."
         loading="lazy"
         decoding="async"
       />
@@ -29,22 +28,22 @@
       <li>
         <span class="dot" style="--c: var(--iris)"></span>
         <div class="co-body">
-          <strong>Tools sidebar</strong>
-          <p>Every <code>read</code>, <code>grep</code>, and <code>delegate_to_*</code> call, live.</p>
+          <strong>Context panel</strong>
+          <p>Tokens, cost, modified files, and an Activity list of every <code>read</code> and <code>delegate_to_*</code> call.</p>
         </div>
       </li>
       <li>
         <span class="dot" style="--c: var(--foam)"></span>
         <div class="co-body">
-          <strong>Intern delegation</strong>
-          <p>The senior routes work to the <code>mimo</code> intern with one tool call.</p>
+          <strong>Reviewed delegation</strong>
+          <p>The senior routes work to the <code>netra</code> intern, then checks and scores the result.</p>
         </div>
       </li>
       <li>
         <span class="dot" style="--c: var(--gold)"></span>
         <div class="co-body">
-          <strong>Live status bar</strong>
-          <p>Branch, model, generating timer, and cost-per-turn at a glance.</p>
+          <strong>Status line</strong>
+          <p>Mode, model, branch, tokens, context used, and cost at a glance.</p>
         </div>
       </li>
     </ul>

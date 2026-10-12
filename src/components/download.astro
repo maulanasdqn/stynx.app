@@ -1,0 +1,132 @@
+---
+import { loadDesktopRelease, RELEASES_PAGE } from "../lib/desktop-release";
+
+const release = await loadDesktopRelease();
+const colors = { mac: "var(--iris)", windows: "var(--foam)", linux: "var(--gold)" };
+---
+
+<section class="section download" id="download">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">// download</span>
+      <h2 class="section-title">Get the desktop app.</h2>
+      <p class="section-sub">
+        Free and open source. {release ? <>Latest version <strong>v{release.version}</strong>.</> : "Builds are published on GitHub Releases."}
+      </p>
+    </div>
+
+    {release ? (
+      <div class="grid">
+        {release.platforms.map((platform) => (
+          <article class="platform reveal" data-os={platform.id} style={`--c: ${colors[platform.id]}`}>
+            <header>
+              <span class="dot"></span>
+              <h3>{platform.name}</h3>
+              <span class="yours">Your system</span>
+            </header>
+            <p class="req">{platform.requirement}</p>
+            <div class="links">
+              {platform.downloads.length ? platform.downloads.map((download, index) => (
+                <a class:list={["dl", { primary: index === 0 }]} href={download.url}>
+                  <span class="dl-label">{download.label}</span>
+                  <span class="dl-note">{download.note} · {download.size}</span>
+                </a>
+              )) : (
+                <a class="dl" href={release.pageUrl}>
+                  <span class="dl-label">See release</span>
+                  <span class="dl-note">Build in progress</span>
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <a class="btn btn-primary reveal" href={RELEASES_PAGE}>Open GitHub Releases →</a>
+    )}
+
+    <div class="notes reveal">
+      <p>
+        <strong>macOS:</strong> the app isn't notarized yet. After dragging Stynx to Applications, run
+        <code>xattr -dr com.apple.quarantine /Applications/Stynx.app</code> once.
+      </p>
+      <p>
+        <strong>Windows:</strong> SmartScreen may warn about an unknown publisher. Choose <em>More info → Run anyway</em>.
+      </p>
+      <p>
+        All builds and checksums: <a href={release?.pageUrl ?? RELEASES_PAGE} target="_blank" rel="noopener">GitHub Releases</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-sub strong { color: var(--text); }
+  .grid { display: grid; gap: 1.2rem; }
+  .platform {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.4rem;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--hl-med);
+    transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+  }
+  .platform.is-current {
+    border-color: color-mix(in srgb, var(--c) 60%, transparent);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--c) 25%, transparent), 0 24px 60px -30px color-mix(in srgb, var(--c) 45%, transparent);
+  }
+  header { display: flex; align-items: center; gap: 0.6rem; }
+  h3 { font-size: 1.2rem; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+  .yours {
+    display: none;
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    color: var(--c);
+    border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
+  }
+  .platform.is-current .yours { display: inline-block; }
+  .req { color: var(--muted); font-size: 0.85rem; margin-top: -0.4rem; }
+  .links { display: flex; flex-direction: column; gap: 0.55rem; margin-top: auto; }
+  .dl {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--hl-med);
+    background: var(--overlay);
+    transition: transform 0.18s var(--ease), border-color 0.18s var(--ease), background 0.18s var(--ease);
+  }
+  .dl:hover { transform: translateY(-2px); border-color: var(--c); }
+  .dl.primary { background: var(--c); border-color: transparent; color: var(--base); }
+  .dl.primary .dl-note { color: color-mix(in srgb, var(--base) 75%, transparent); }
+  .dl-label { font-weight: 600; font-size: 0.95rem; }
+  .dl-note { font-family: var(--font-mono); font-size: 0.76rem; color: var(--subtle); }
+  .notes {
+    margin-top: 2rem;
+    display: grid;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    color: var(--subtle);
+  }
+  .notes strong { color: var(--text); }
+  .notes code { color: var(--foam); font-size: 0.82rem; word-break: break-all; }
+  .notes a { color: var(--iris); border-bottom: 1px solid color-mix(in srgb, var(--iris) 40%, transparent); }
+  @media (min-width: 860px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    const ua = navigator.userAgent;
+    const os = /Mac/.test(ua) ? "mac" : /Win/.test(ua) ? "windows" : /Linux|X11/.test(ua) && !/Android/.test(ua) ? "linux" : null;
+    if (os) document.querySelector('.platform[data-os="' + os + '"]')?.classList.add("is-current");
+  })();
+</script>

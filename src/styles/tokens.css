@@ -1,26 +1,49 @@
 :root {
-  --base: #0a1019;
-  --surface: #0f1825;
-  --overlay: #152234;
-  --muted: #5f718a;
-  --subtle: #97a6bb;
-  --text: #e6edf6;
-  --love: #ff6b81;
-  --gold: #f6c177;
-  --rose: #9cc8ff;
-  --pine: #1d5ce6;
-  --foam: #6cf0e2;
-  --iris: #4ea7ff;
-  --hl-low: #121c2a;
-  --hl-med: #20304a;
-  --hl-high: #2c4262;
+  --base: #ffffff;
+  --surface: #f6f6f5;
+  --overlay: #efefee;
+  --muted: #8b8b90;
+  --subtle: #55555c;
+  --text: #0b0b0c;
+  --love: #e5484d;
+  --gold: #b7791f;
+  --rose: #4f6bed;
+  --pine: #1d4ed8;
+  --foam: #0f9488;
+  --iris: #2563eb;
+  --hl-low: #f6f6f5;
+  --hl-med: #e8e8e6;
+  --hl-high: #d6d6d3;
+  --ink: #0b0b0c;
+  --sky-top: #3f78b5;
+  --sky-bottom: #a9c6e4;
 
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  --maxw: 1080px;
-  --radius: 14px;
-  --radius-sm: 8px;
+  --maxw: 1180px;
+  --radius: 20px;
+  --radius-sm: 12px;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.term,
+.dark {
+  --base: #0b0d12;
+  --surface: #12151c;
+  --overlay: #191d26;
+  --muted: #6b7486;
+  --subtle: #a3adbf;
+  --text: #e8edf5;
+  --love: #ff6b81;
+  --gold: #f6c177;
+  --rose: #9cc8ff;
+  --pine: #4f86ff;
+  --foam: #6cf0e2;
+  --iris: #4ea7ff;
+  --hl-low: #141924;
+  --hl-med: #222a38;
+  --hl-high: #2e3a4e;
+  color: var(--text);
 }

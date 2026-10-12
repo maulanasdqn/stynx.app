@@ -5,48 +5,43 @@ const apiUrl = "https://api.github.com/repos/maulanasdqn/stynx-code";
 const fmt = (n: number) =>
   n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n);
 
-let stars = 11;
+const token = process.env.GITHUB_TOKEN;
+let stars: number | null = null;
 try {
-  const r = await fetch(apiUrl, { headers: { "User-Agent": "stynx-app" } });
+  const r = await fetch(apiUrl, { headers: token ? { "User-Agent": "stynx-app", Authorization: `Bearer ${token}` } : { "User-Agent": "stynx-app" } });
   if (r.ok) {
     const j = await r.json();
     if (typeof j.stargazers_count === "number") stars = j.stargazers_count;
   }
 } catch {}
-const starLabel = fmt(stars);
+const starLabel = stars === null ? "" : fmt(stars);
 ---
 
 <header class="nav">
   <div class="container nav-inner">
-    <a href="#top" class="brand" aria-label="stynx-code home">
-      <img class="brand-mark" src="/favicon.svg" width="26" height="26" alt="" />
-      <span class="brand-name">stynx<span class="brand-accent">-code</span></span>
+    <a href="/#top" class="brand" aria-label="Stynx home">
+      <img class="brand-mark" src="/favicon.svg" width="30" height="30" alt="" />
+      <span class="brand-name">Stynx</span>
     </a>
 
     <nav class="nav-links" aria-label="Primary">
-      <a href="#intern">How&nbsp;it&nbsp;works</a>
-      <a href="#tokens">Save&nbsp;tokens</a>
-      <a href="#desktop">Desktop</a>
-      <a href="#features">Features</a>
-      <a href="#faq">FAQ</a>
-      <a href="/docs/" class="docs-link">Docs</a>
-      <a href="#download" class="install-link">Download</a>
+      <a href="/#intern">How it works</a>
+      <a href="/#desktop">Desktop</a>
+      <a href="/#features">Features</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/docs/">Docs</a>
     </nav>
 
-    <a class="btn btn-primary nav-download" href="#download">Download</a>
-
-    <a class="btn btn-ghost nav-cta" href={repo} target="_blank" rel="noopener" aria-label={`stynx-code on GitHub, ${starLabel} stars`}>
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
-      </svg>
-      <span class="gh-label">GitHub</span>
-      <span class="stars">
-        <svg class="star" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.784 1.401 8.168L12 18.896l-7.335 3.866 1.401-8.168L.132 9.21l8.2-1.192z"/>
+    <div class="nav-actions">
+      <a class="pill pill-light" href={repo} target="_blank" rel="noopener" aria-label={`Stynx on GitHub${starLabel ? `, ${starLabel} stars` : ""}`}>
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
         </svg>
-        <span id="star-count" data-repo={apiUrl}>{starLabel}</span>
-      </span>
-    </a>
+        <span class="gh-label">GitHub</span>
+        <span class="stars" id="star-count" data-repo={apiUrl}>{starLabel && `★ ${starLabel}`}</span>
+      </a>
+      <a class="pill pill-dark" href="/#download">Download</a>
+    </div>
   </div>
 </header>
 
@@ -55,109 +50,85 @@ const starLabel = fmt(stars);
     position: sticky;
     top: 0;
     z-index: 50;
-    backdrop-filter: blur(12px);
-    background: color-mix(in srgb, var(--base) 78%, transparent);
-    border-bottom: 1px solid var(--hl-low);
+    backdrop-filter: saturate(180%) blur(14px);
+    background: color-mix(in srgb, var(--base) 82%, transparent);
   }
   .nav-inner {
     display: flex;
     align-items: center;
-    gap: 1.1rem;
-    height: 64px;
-  }
-  .brand {
-    margin-right: auto;
+    gap: 2rem;
+    height: 76px;
   }
   .brand {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: 1.05rem;
+    gap: 0.6rem;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
   }
   .brand-mark {
     display: block;
-    border-radius: 7px;
-  }
-  .brand-accent {
-    color: var(--muted);
+    border-radius: 9px;
   }
   .nav-links {
     display: none;
     align-items: center;
-    gap: 1.1rem;
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
+    gap: 1.8rem;
+    font-size: 0.95rem;
   }
   .nav-links a {
     color: var(--subtle);
     transition: color 0.18s var(--ease);
   }
   .nav-links a:hover {
-    color: var(--foam);
+    color: var(--text);
   }
-  .nav-links a.docs-link {
-    color: var(--foam);
-    border: 1px solid color-mix(in srgb, var(--foam) 38%, transparent);
+  .nav-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1.05rem;
     border-radius: 999px;
-    padding: 0.3rem 0.85rem;
-    transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
-  }
-  .nav-links a.docs-link:hover {
-    background: color-mix(in srgb, var(--foam) 12%, transparent);
-    border-color: var(--foam);
-  }
-  .nav-links a.install-link {
-    color: var(--love);
-    border: 1px solid color-mix(in srgb, var(--love) 38%, transparent);
-    border-radius: 999px;
-    padding: 0.3rem 0.85rem;
-    transition: background 0.18s var(--ease), border-color 0.18s var(--ease);
-  }
-  .nav-links a.install-link:hover {
-    background: color-mix(in srgb, var(--love) 12%, transparent);
-    border-color: var(--love);
-    color: var(--love);
-  }
-  .brand-name {
+    font-size: 0.92rem;
+    font-weight: 500;
     white-space: nowrap;
+    transition: background 0.18s var(--ease);
+  }
+  .pill-light {
+    background: var(--overlay);
+  }
+  .pill-light:hover {
+    background: var(--hl-med);
+  }
+  .pill-dark {
+    background: var(--ink);
+    color: #ffffff;
+  }
+  .pill-dark:hover {
+    background: #26262a;
+  }
+  .stars {
+    color: var(--subtle);
+    font-variant-numeric: tabular-nums;
   }
   .gh-label {
     display: none;
   }
-  @media (min-width: 520px) {
+  @media (min-width: 560px) {
     .gh-label {
       display: inline;
     }
   }
-  .nav-download {
-    padding: 0.45rem 0.85rem;
-    font-size: 0.82rem;
-  }
-  .nav-cta {
-    padding: 0.5rem 0.85rem;
-    font-size: 0.85rem;
-  }
-  .stars {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.28rem;
-    margin-left: 0.55rem;
-    padding-left: 0.6rem;
-    border-left: 1px solid var(--hl-med);
-    color: var(--gold);
-    font-variant-numeric: tabular-nums;
-  }
-  .stars .star {
-    color: var(--gold);
-  }
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     .nav-links {
       display: flex;
-    }
-    .nav-download {
-      display: none;
     }
   }
 </style>
@@ -169,11 +140,9 @@ const starLabel = fmt(stars);
     try {
       const res = await fetch(el.dataset.repo);
       if (!res.ok) return;
-      const data = await res.json();
-      const n = data.stargazers_count;
+      const n = (await res.json()).stargazers_count;
       if (typeof n !== "number") return;
-      el.textContent =
-        n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n);
+      el.textContent = "★ " + (n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n));
     } catch (e) {}
   })();
 </script>

@@ -8,7 +8,7 @@ const colors = { mac: "var(--iris)", windows: "var(--foam)", linux: "var(--gold)
 <section class="section download" id="download">
   <div class="container">
     <div class="section-head reveal">
-      <span class="eyebrow">// download</span>
+      <span class="eyebrow">Download</span>
       <h2 class="section-title">Get the desktop app.</h2>
       <p class="section-sub">
         Free and open source. {release ? <>Latest version <strong>v{release.version}</strong>.</> : "Builds are published on GitHub Releases."}
@@ -104,10 +104,11 @@ const colors = { mac: "var(--iris)", windows: "var(--foam)", linux: "var(--gold)
     transition: transform 0.18s var(--ease), border-color 0.18s var(--ease), background 0.18s var(--ease);
   }
   .dl:hover { transform: translateY(-2px); border-color: var(--c); }
-  .dl.primary { background: var(--c); border-color: transparent; color: var(--base); }
-  .dl.primary .dl-note { color: color-mix(in srgb, var(--base) 75%, transparent); }
+  .dl.primary { background: var(--ink); border-color: transparent; color: #ffffff; }
+  .dl.primary:hover { border-color: transparent; background: #26262a; }
+  .dl.primary .dl-note { color: rgba(255, 255, 255, 0.65); }
   .dl-label { font-weight: 600; font-size: 0.95rem; }
-  .dl-note { font-family: var(--font-mono); font-size: 0.76rem; color: var(--subtle); }
+  .dl-note { font-size: 0.8rem; color: var(--subtle); }
   .notes {
     margin-top: 2rem;
     display: grid;

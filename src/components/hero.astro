@@ -1,4 +1,5 @@
 ---
+import HeroVisual from "./hero-visual.astro";
 import { loadDesktopRelease } from "../lib/desktop-release";
 
 const release = await loadDesktopRelease();
@@ -10,187 +11,115 @@ const targets = {
   windows: pick("windows", "Installer"),
   linux: pick("linux", "AppImage"),
 };
-const trust = ["Free and open source (MIT)", "Bring your own API keys", "No telemetry", "macOS · Windows · Linux"];
-const providers = ["Claude", "DeepSeek", "OpenRouter", "Qwen", "OpenAI", "Ollama"];
 ---
 
 <section class="hero" id="top">
-  <div class="container hero-inner">
-    <a class="tag hero-badge reveal" href="#download">
-      <span class="ping"></span>{version && <span class="ver">v{version}</span>} Desktop app is out <span class="arrow">→</span>
-    </a>
+  <div class="container hero-grid">
+    <div class="copy">
+      <a class="tag badge reveal" href="#download">
+        <span class="badge-icon">★</span>
+        Free and open source{version && <span class="ver">· v{version}</span>}
+      </a>
 
-    <h1 class="hero-title reveal">
-      Senior-level AI coding<br class="wide" /> at <span class="grad">intern prices</span>.
-    </h1>
+      <h1 class="title reveal">Senior-level AI coding at intern prices</h1>
 
-    <p class="hero-sub reveal">
-      Stynx puts Claude in charge as your lead engineer and hands the busywork to
-      cheaper models. It plans, delegates, reviews every result, and ships the
-      change, in your terminal or a full desktop IDE.
-    </p>
+      <div class="bottom">
+        <p class="sub reveal">
+          Claude leads as your senior engineer and hands the busywork to cheaper
+          models. Stynx plans, delegates, reviews every result, and ships the
+          change, in your terminal or a full desktop IDE.
+        </p>
 
-    <div class="hero-cta reveal">
-      <a class="btn btn-primary btn-lg" href="#download" id="hero-download" data-targets={JSON.stringify(targets)}>Download free →</a>
-      <a class="btn btn-ghost btn-lg" href="#install">Install the CLI</a>
+        <div class="cta reveal">
+          <a class="btn btn-primary btn-lg" href="#download" id="hero-download" data-targets={JSON.stringify(targets)}>Download free</a>
+          <a class="btn btn-ghost btn-lg" href="#install">Install the CLI</a>
+        </div>
+        <p class="dl-meta reveal" id="hero-download-meta"><a href="#download">All platforms and formats</a></p>
+      </div>
     </div>
-    <p class="dl-meta reveal" id="hero-download-meta"><a href="#download">All platforms and formats</a></p>
 
-    <ul class="trust reveal">
-      {trust.map((item) => <li><span class="check">✓</span>{item}</li>)}
-    </ul>
-
-    <figure class="hero-shot reveal">
-      <img
-        src="/desktop-code.webp"
-        width="2880"
-        height="1800"
-        alt="Stynx desktop app in Code mode: file explorer, editor, terminal, and the Stynx Agent panel reporting a fix with passing tests."
-        fetchpriority="high"
-        decoding="async"
-      />
-    </figure>
-
-    <div class="works reveal">
-      <span class="works-label">Works with</span>
-      {providers.map((name) => <span class="works-chip">{name}</span>)}
-      <a class="works-more" href="#providers">and any OpenAI-compatible API</a>
-    </div>
+    <HeroVisual />
   </div>
 </section>
 
 <style>
   .hero {
-    padding-block: 4.5rem 4rem;
-    text-align: center;
+    padding-block: 1.5rem 3.5rem;
   }
-  .hero-inner {
+  .hero-grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .copy {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding-top: 2.5rem;
   }
-  .hero-badge {
-    color: var(--text);
-    transition: border-color 0.18s var(--ease);
+  .badge {
+    align-self: flex-start;
   }
-  .hero-badge:hover {
-    border-color: var(--iris);
+  .badge-icon {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 1px solid var(--hl-med);
+    font-size: 0.8rem;
   }
   .ver {
-    color: var(--foam);
+    color: var(--muted);
+  }
+  .title {
+    margin-top: 2.2rem;
+    font-size: clamp(2.9rem, 5.6vw, 4.7rem);
+    line-height: 0.98;
+    letter-spacing: -0.05em;
     font-weight: 600;
   }
-  .arrow {
-    color: var(--iris);
+  .bottom {
+    margin-top: 2.5rem;
   }
-  .ping {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--foam);
-    animation: ping 2s var(--ease) infinite;
-  }
-  @keyframes ping {
-    0% { box-shadow: 0 0 0 0 rgba(108, 240, 226, 0.5); }
-    70% { box-shadow: 0 0 0 8px rgba(108, 240, 226, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(108, 240, 226, 0); }
-  }
-  .hero-title {
-    margin-top: 1.4rem;
-    font-size: clamp(2.4rem, 7vw, 4.4rem);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
-  }
-  .wide { display: none; }
-  @media (min-width: 720px) { .wide { display: inline; } }
-  .grad {
-    background: linear-gradient(100deg, var(--foam), var(--iris) 55%, var(--pine));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .hero-sub {
-    margin-top: 1.4rem;
-    max-width: 40rem;
+  .sub {
+    max-width: 30rem;
+    font-size: 1.12rem;
+    line-height: 1.6;
     color: var(--subtle);
-    font-size: clamp(1.02rem, 2.2vw, 1.2rem);
   }
-  .hero-cta {
+  .cta {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.8rem;
+    gap: 0.6rem;
     margin-top: 2rem;
   }
   .btn-lg {
-    padding: 0.9rem 1.5rem;
+    padding: 1rem 1.7rem;
     font-size: 1rem;
   }
   .dl-meta {
-    margin-top: 0.8rem;
-    font-size: 0.82rem;
+    margin-top: 0.9rem;
+    font-size: 0.85rem;
     color: var(--muted);
   }
   .dl-meta a {
     color: var(--subtle);
-    border-bottom: 1px dashed var(--hl-high);
+    text-decoration: underline;
+    text-decoration-color: var(--hl-high);
+    text-underline-offset: 3px;
   }
-  .trust {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem 1.4rem;
-    margin-top: 1.4rem;
-    font-size: 0.88rem;
-    color: var(--subtle);
-  }
-  .check {
-    color: var(--foam);
-    margin-right: 0.4rem;
-  }
-  .hero-shot {
-    margin: 3.2rem 0 0;
-    width: 100%;
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1px solid var(--hl-med);
-    background: var(--surface);
-    line-height: 0;
-    box-shadow: 0 50px 120px -40px rgba(78, 167, 255, 0.35), 0 40px 90px -30px rgba(0, 0, 0, 0.8);
-  }
-  .hero-shot img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-  .works {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 2rem;
-    font-size: 0.86rem;
-  }
-  .works-label {
-    color: var(--muted);
-    margin-right: 0.3rem;
-    font-family: var(--font-mono);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.74rem;
-  }
-  .works-chip {
-    padding: 0.28rem 0.7rem;
-    border-radius: 999px;
-    border: 1px solid var(--hl-med);
-    background: var(--surface);
-    color: var(--text);
-  }
-  .works-more {
-    color: var(--subtle);
-    border-bottom: 1px dashed var(--hl-high);
+  @media (min-width: 980px) {
+    .hero-grid {
+      grid-template-columns: 1fr 1.05fr;
+      gap: 3.5rem;
+      align-items: stretch;
+    }
+    .copy {
+      padding-block: 3rem 1rem;
+    }
+    .bottom {
+      margin-top: auto;
+      padding-top: 2.5rem;
+    }
   }
 </style>
 

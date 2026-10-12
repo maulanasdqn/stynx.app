@@ -1,25 +1,25 @@
 .tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  padding: 0.3rem 0.7rem;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 0.35rem 0.8rem 0.35rem 0.4rem;
   border-radius: 999px;
   border: 1px solid var(--hl-med);
-  background: var(--surface);
-  color: var(--subtle);
+  background: var(--base);
+  color: var(--text);
 }
 
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  font-family: var(--font-mono);
-  font-size: 0.92rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
   font-weight: 500;
-  padding: 0.72rem 1.3rem;
-  border-radius: var(--radius-sm);
+  padding: 0.8rem 1.45rem;
+  border-radius: 999px;
   border: 1px solid transparent;
   cursor: pointer;
   transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease),
@@ -27,37 +27,25 @@
 }
 
 .btn-primary {
-  background: var(--iris);
-  color: var(--base);
-  font-weight: 600;
+  background: var(--ink);
+  color: #ffffff;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  background: color-mix(in srgb, var(--iris) 88%, white);
+  transform: translateY(-1px);
+  background: #26262a;
 }
 
-.btn-ghost {
-  background: var(--surface);
-  border-color: var(--hl-med);
+.btn-ghost,
+.btn-foam {
+  background: var(--overlay);
   color: var(--text);
 }
 
-.btn-ghost:hover {
-  border-color: var(--foam);
-  color: var(--foam);
-  transform: translateY(-2px);
-}
-
-.btn-foam {
-  background: var(--foam);
-  color: var(--base);
-  font-weight: 600;
-}
-
+.btn-ghost:hover,
 .btn-foam:hover {
-  transform: translateY(-2px);
-  background: color-mix(in srgb, var(--foam) 88%, white);
+  transform: translateY(-1px);
+  background: var(--hl-med);
 }
 
 .card {
@@ -69,10 +57,15 @@
     box-shadow 0.25s var(--ease);
 }
 
+.card {
+  background: var(--base);
+  border-color: var(--hl-med);
+}
+
 .card:hover {
-  transform: translateY(-4px);
-  border-color: var(--iris);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  transform: translateY(-3px);
+  border-color: var(--hl-high);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.18);
 }
 
 .term {
@@ -80,7 +73,7 @@
   border: 1px solid var(--hl-med);
   background: var(--surface);
   overflow: hidden;
-  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.45);
 }
 
 .term-bar {

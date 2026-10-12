@@ -1,7 +1,15 @@
 ---
-import { latestVersion } from "../lib/desktop-release";
+import { loadDesktopRelease } from "../lib/desktop-release";
 
-const version = await latestVersion();
+const release = await loadDesktopRelease();
+const version = release?.version ?? null;
+const pick = (id: string, label: string) => release?.platforms.find((p) => p.id === id)?.downloads.find((d) => d.label === label) ?? null;
+const targets = {
+  macArm: pick("mac", "Apple Silicon"),
+  macIntel: pick("mac", "Intel"),
+  windows: pick("windows", "Installer"),
+  linux: pick("linux", "AppImage"),
+};
 const trust = ["Free and open source (MIT)", "Bring your own API keys", "No telemetry", "macOS · Windows · Linux"];
 const providers = ["Claude", "DeepSeek", "OpenRouter", "Qwen", "OpenAI", "Ollama"];
 ---
@@ -23,9 +31,10 @@ const providers = ["Claude", "DeepSeek", "OpenRouter", "Qwen", "OpenAI", "Ollama
     </p>
 
     <div class="hero-cta reveal">
-      <a class="btn btn-primary btn-lg" href="#download" id="hero-download">Download free →</a>
+      <a class="btn btn-primary btn-lg" href="#download" id="hero-download" data-targets={JSON.stringify(targets)}>Download free →</a>
       <a class="btn btn-ghost btn-lg" href="#install">Install the CLI</a>
     </div>
+    <p class="dl-meta reveal" id="hero-download-meta"><a href="#download">All platforms and formats</a></p>
 
     <ul class="trust reveal">
       {trust.map((item) => <li><span class="check">✓</span>{item}</li>)}
@@ -92,14 +101,8 @@ const providers = ["Claude", "DeepSeek", "OpenRouter", "Qwen", "OpenAI", "Ollama
     line-height: 1.05;
     letter-spacing: -0.03em;
   }
-  .wide {
-    display: none;
-  }
-  @media (min-width: 720px) {
-    .wide {
-      display: inline;
-    }
-  }
+  .wide { display: none; }
+  @media (min-width: 720px) { .wide { display: inline; } }
   .grad {
     background: linear-gradient(100deg, var(--foam), var(--iris) 55%, var(--pine));
     -webkit-background-clip: text;
@@ -122,6 +125,15 @@ const providers = ["Claude", "DeepSeek", "OpenRouter", "Qwen", "OpenAI", "Ollama
   .btn-lg {
     padding: 0.9rem 1.5rem;
     font-size: 1rem;
+  }
+  .dl-meta {
+    margin-top: 0.8rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .dl-meta a {
+    color: var(--subtle);
+    border-bottom: 1px dashed var(--hl-high);
   }
   .trust {
     list-style: none;
@@ -182,11 +194,4 @@ const providers = ["Claude", "DeepSeek", "OpenRouter", "Qwen", "OpenAI", "Ollama
   }
 </style>
 
-<script is:inline>
-  (function () {
-    const ua = navigator.userAgent;
-    const name = /Mac/.test(ua) ? "macOS" : /Win/.test(ua) ? "Windows" : /Linux|X11/.test(ua) && !/Android/.test(ua) ? "Linux" : null;
-    const button = document.getElementById("hero-download");
-    if (name && button) button.textContent = "Download for " + name + " →";
-  })();
-</script>
+<script src="../scripts/hero-download.js"></script>

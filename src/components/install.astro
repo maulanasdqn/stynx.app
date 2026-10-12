@@ -62,12 +62,13 @@ const repo = "https://github.com/maulanasdqn/stynx-code";
 
     <div class="cta-band reveal">
       <div>
-        <h3>Ready when you are.</h3>
-        <p>MIT licensed. No telemetry. Your keys, your machine.</p>
+        <h3>Ship more. Spend less.</h3>
+        <p>Free and open source. No telemetry. Your keys, your machine.</p>
       </div>
-      <a class="btn btn-primary" href={repo} target="_blank" rel="noopener">
-        Star on GitHub →
-      </a>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="#download">Download the app →</a>
+        <a class="btn btn-ghost" href={repo} target="_blank" rel="noopener">Star on GitHub</a>
+      </div>
     </div>
   </div>
 </section>
@@ -117,6 +118,11 @@ const repo = "https://github.com/maulanasdqn/stynx-code";
     border-radius: var(--radius);
     background: var(--surface);
     border: 1px solid var(--hl-med);
+  }
+  .cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
   }
   .cta-band h3 {
     font-size: 1.4rem;

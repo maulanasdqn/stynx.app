@@ -3,36 +3,40 @@ const repo = "https://github.com/maulanasdqn/stynx-code";
 
 const faqs = [
   {
-    q: "Is stynx-code stable / production-ready?",
-    a: "Not yet. It's early. The version is still pre-1.0 (v0.33.17) and under active development, so expect rough edges, occasional breaking changes, and APIs/flags that may shift between releases. Use it on version-controlled projects, keep backups, and review the diffs it produces before committing. It's very usable day-to-day, just not something to treat as battle-hardened yet.",
+    q: "What does Stynx actually do?",
+    a: "It's an AI coding agent you run on your own machine. Describe a task and it reads your code, plans, edits files, runs commands and tests, and reports back. Use it as a fast terminal app (stynx) or as a desktop app with a full editor, terminal, and git built in.",
   },
   {
-    q: "Which models can I use?",
-    a: "Anthropic's Claude API natively, plus any OpenAI-compatible endpoint: DeepSeek, OpenAI, OpenRouter, Qwen/DashScope, Together, and local Ollama. You can mix providers freely and swap the lead model any time with /model.",
-  },
-  {
-    q: "Do I need an API key or a subscription?",
-    a: "You bring your own. Anthropic credentials resolve from the keychain OAuth token, ~/.stynx/.credentials.json or ~/.claude/.credentials.json, or the ANTHROPIC_API_KEY env var. Intern (OpenAI-compatible) keys come from environment variables. Nothing is bundled. Your keys, your account.",
-  },
-  {
-    q: "What is intern mode?",
-    a: "You pick a senior model and delegate grunt work to cheaper 'intern' models. Each intern shows up as its own delegate_to_<name> tool the senior can call, or you invoke one directly with /intern <name> <task>. It's the main way stynx-code keeps token spend down.",
-  },
-  {
-    q: "Does it send my code anywhere?",
-    a: "Only to the model providers you configure. That's how any LLM agent works. There's no telemetry and no analytics phoning home; your credentials stay on your machine. It's fully open source (MIT), so you can verify exactly what it does.",
+    q: "How is it cheaper than other agents?",
+    a: "Intern mode. A strong model like Claude stays in charge as the senior and spends its tokens on planning and review, while cheaper models (DeepSeek, Qwen, OpenRouter, local Ollama, and more) do the mechanical work. Automatic context compaction and a live cost readout keep spend in check.",
   },
   {
     q: "How much does it cost?",
-    a: "stynx-code itself is free and MIT licensed. You only pay your model providers for token usage, and /cost plus the status-bar readout show your spend live so there are no surprises.",
+    a: "Stynx is free and MIT licensed. You only pay your model providers for the tokens you use, and the status line plus /cost show your spend live, so there are no surprises.",
   },
   {
-    q: "How do I install it, and which OS?",
-    a: "cargo install stynx-code (it's published on crates.io), or build from source / with nix. It runs on Linux and macOS; the installed binary is stynx. The desktop app (Tauri) builds from source for macOS, Windows, and Linux with npm run tauri build in stynx-code-desktop.",
+    q: "Which models can I use?",
+    a: "Anthropic's Claude natively, plus any OpenAI-compatible endpoint: DeepSeek, OpenAI, OpenRouter, Qwen/DashScope, Together, and local Ollama. Mix providers freely and swap the lead model any time with /model.",
+  },
+  {
+    q: "Do I need an API key or a subscription?",
+    a: "You bring your own. Claude works with your Claude login (OAuth) or an ANTHROPIC_API_KEY, and interns use their provider's API key. Nothing is bundled and nothing is resold: your keys, your account.",
+  },
+  {
+    q: "Does it send my code anywhere?",
+    a: "Only to the model providers you configure, which is how every LLM agent works. There's no telemetry and no analytics, and your credentials stay on your machine. It's fully open source, so you can verify exactly what it does.",
+  },
+  {
+    q: "Which platforms are supported?",
+    a: "The desktop app runs on macOS (Apple Silicon and Intel), Windows 10/11, and Linux (AppImage, .deb, .rpm). The CLI installs with cargo install stynx-code on macOS and Linux.",
+  },
+  {
+    q: "Is it production-ready?",
+    a: "It's pre-1.0 and moving fast. It's used daily for real work, but expect the occasional rough edge or breaking change. Work on a git branch and review its diffs before committing, as you would with any agent.",
   },
   {
     q: "How do I report a bug or contribute?",
-    a: "Open an issue or pull request on GitHub. Since it's early, bug reports and feedback are genuinely useful right now.",
+    a: "Open an issue or pull request on GitHub. Bug reports and feedback are genuinely useful right now.",
   },
 ];
 

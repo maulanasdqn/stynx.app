@@ -13,7 +13,7 @@ const features = [
   <div class="container">
     <div class="section-head reveal">
       <span class="eyebrow">// desktop app</span>
-      <h2 class="section-title">A full IDE, with the agent beside it.</h2>
+      <h2 class="section-title">A full IDE, with the agent right beside it.</h2>
       <p class="section-sub">
         The same engine as the TUI, in a native window for macOS, Windows, and
         Linux. <strong>Chat mode</strong> keeps the conversation front and
@@ -21,17 +21,6 @@ const features = [
         editor with the Stynx Agent docked on the right.
       </p>
     </div>
-
-    <figure class="frame reveal">
-      <img
-        src="/desktop-code.webp"
-        width="2880"
-        height="1800"
-        alt="Stynx desktop app in Code mode: file explorer, a Rust file open in the editor, a terminal showing passing tests, and the Stynx Agent panel reporting a performance fix."
-        loading="lazy"
-        decoding="async"
-      />
-    </figure>
 
     <div class="split">
       <figure class="frame small reveal">
@@ -59,9 +48,9 @@ const features = [
       </ul>
     </div>
 
-    <div class="build reveal">
-      <span class="cmd"><span class="prompt">$</span> cd stynx-code-desktop &amp;&amp; npm install &amp;&amp; npm run tauri build</span>
-      <span class="note">.dmg · .msi · .deb · .AppImage</span>
+    <div class="more reveal">
+      <a class="btn btn-primary" href="#download">Download the desktop app →</a>
+      <span>Free for macOS, Windows, and Linux.</span>
     </div>
   </div>
 </section>
@@ -97,7 +86,6 @@ const features = [
   .split {
     display: grid;
     gap: 2rem;
-    margin-top: 2.4rem;
     align-items: start;
   }
   .list {
@@ -127,30 +115,14 @@ const features = [
     margin-top: 0.45rem;
     flex-shrink: 0;
   }
-  .build {
+  .more {
     margin-top: 2.4rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.8rem 1rem;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--hl-med);
-    background: var(--surface);
-    font-family: var(--font-mono);
-    font-size: 0.86rem;
-    overflow-x: auto;
-  }
-  .build .cmd {
-    min-width: 0;
-  }
-  .build .prompt {
-    color: var(--iris);
-  }
-  .build .note {
-    margin-left: auto;
-    color: var(--muted);
-    font-size: 0.78rem;
+    gap: 1rem;
+    color: var(--subtle);
+    font-size: 0.9rem;
   }
   @media (min-width: 900px) {
     .split {
